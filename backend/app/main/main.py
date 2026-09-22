@@ -6,10 +6,10 @@ app = FastAPI()
 
 app.include_router(router)
 
-app.middleware_stack(
+app.add_middleware(
     CORSMiddleware,
-    allow_origin=["http://localhost:5173"],
-    allow_credential = True,
-    allow_methods=['*'],
-    allow_headers=['*']
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
 )

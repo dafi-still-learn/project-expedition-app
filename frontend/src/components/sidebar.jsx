@@ -1,6 +1,28 @@
-import { Dashboard } from "@boxicons/react";
+import {
+  Dashboard,
+  Truck,
+  PlusCircle,
+  PaperPlane,
+  Community,
+  Location,
+  Report,
+  WalletNote,
+  Timeline,
+  Cog,
+  DoorOpenAlt,
+} from "@boxicons/react";
+import { useNavigate } from "react-router-dom";
 
 function Sidebar() {
+  const navigate = useNavigate();
+
+  function handleDashboard() {
+    navigate("/dashboard");
+  }
+
+  function handlePengiriman() {
+    navigate("/pengiriman");
+  }
   return (
     <>
       <div
@@ -14,43 +36,76 @@ function Sidebar() {
           </div>
           <div className="grid grid-rows-10 h-full row-span-6" id="fiture">
             <div>
-              <button>
+              <button onClick={handleDashboard}>
                 <Dashboard />
                 Dashboard
               </button>
             </div>
             <div>
-              <button>Pengiriman</button>
+              <button onClick={handlePengiriman}>
+                <PaperPlane />
+                Pengiriman
+              </button>
             </div>
             <div>
-              <button>Buat pengiriman</button>
+              <button>
+                <PlusCircle />
+                Buat pengiriman
+              </button>
             </div>
             <div>
-              <button>lacak paket</button>
+              <button>
+                <Timeline />
+                lacak paket
+              </button>
             </div>
             <div>
-              <button>Pelanggan</button>
+              <button>
+                <Community />
+                Pelanggan
+              </button>
             </div>
             <div>
-              <button>Kurir</button>
+              <button>
+                <Truck />
+                Kurir
+              </button>
             </div>
             <div>
-              <button>Lokasi</button>
+              <button>
+                <Location />
+                Lokasi
+              </button>
             </div>
             <div>
-              <button>Pembayaran</button>
+              <button>
+                <WalletNote />
+                Pembayaran
+              </button>
             </div>
             <div>
-              <button>Laporan</button>
+              <button>
+                <Report />
+                Laporan
+              </button>
             </div>
           </div>
         </div>
-        <div id="Sidebar-services" className="row-span-2 flex flex-col gap-10">
+        <div
+          id="Sidebar-services"
+          className="row-span-2 flex flex-col gap-10 border-t border-gray-300"
+        >
           <div>
-            <button>Pengaturan</button>
+            <button>
+              <Cog />
+              Pengaturan
+            </button>
           </div>
           <div>
-            <button>Logout</button>
+            <button>
+              <DoorOpenAlt />
+              Logout
+            </button>
           </div>
         </div>
       </div>

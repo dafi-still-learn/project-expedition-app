@@ -3,6 +3,7 @@
 :root {
   --color-primary: oklch(54.6% 0.245 262.881);
   --color-secondary-bg: oklch(97.7% 0.017 320.058);
+  --color-primary-bright: white;
   --color-for-cards: oklch(93.2% 0.032 255.585);
   --color-primay-dark: oklch(20.5% 0 none);
 }
@@ -80,14 +81,40 @@ body {
 
 /* NAVBAR */
 #container-navbar {
-  padding: 18px 0;
+  padding: 18px 30px;
   border-radius: 8px;
+  align-items: center;
+  justify-content: center;
   background-color: var(--color-for-cards);
+}
+
+#container-navbar ul {
+  align-items: center;
 }
 
 #container-navbar ul li {
   font-weight: bold;
   cursor: pointer;
+}
+
+#hero-navbar h1 {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+#button-profil {
+  align-items: center;
+}
+
+#button-profil div {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  background-color: red;
+}
+
+#button-profil h1 {
+  font-weight: bold;
 }
 
 /* SIDEBAR STYLING */
@@ -101,10 +128,14 @@ body {
   font-weight: bold;
 }
 
+#Sidebar-services {
+  padding-top: 10px;
+}
+
 #Sidebar-services button {
   width: 200px;
   padding: 0 20px;
-  height: 50px;
+  height: 40px;
   border-radius: 10px;
   background-color: var(--color-primary);
   color: white;
@@ -124,19 +155,50 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
+  transition: all 0.3s ease;
   cursor: pointer;
 }
+
+#fiture div button:hover {
+  background-color: var(--color-secondary-bg);
+  color: black;
+  border: 2px solid black;
+}
 /* DASHBOARD STYLING */
-/* #Container-dashboard {
-  border: 2px solid red;
-} */
 
 #dashboard {
   padding: 20px;
   background-color: var(--color-secondary-bg);
 }
 
-#dashboard-card {
+/* #dashboard-card {
   background-color: var(--color-for-cards);
   border-radius: 10px;
+  gap: 20px;
+  display: flex;
+} */
+
+#dashboard-card div {
+  border-radius: 14px;
+  background-color: var(--color-primary-bright);
+  padding: 10px;
 }
+
+#dashboard-card div div h1,
+#dashboard-card div h1,
+#dashboard-card div ul li {
+  font-size: 20px;
+  color: black;
+}
+
+#dashboard-card div ul li {
+  display: flex;
+}
+
+#dashboard-card div div ul li {
+  display: flex;
+  align-items: center;
+}
+/* #dashboard-card div h1 {
+  font-weight: bold;
+} */

@@ -6,6 +6,7 @@ import Register from "./page/register";
 import { Navigate } from "react-router-dom";
 import ExpeditionPage from "./api/api_expedition";
 import Dashboard from "./page/dashboard";
+import Pengiriman from "./page/pengiriman";
 function App() {
   return (
     <>
@@ -18,6 +19,7 @@ function App() {
         {/* BAGIAN PAGE PAGE FITUR APP */}
         <Route path="/" element={<ExpeditionPage />}>
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="pengiriman" element={<Pengiriman />} />
         </Route>
       </Routes>
     </>

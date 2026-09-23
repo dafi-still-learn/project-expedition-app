@@ -95,6 +95,11 @@ body {
 #container-navbar ul li {
   font-weight: bold;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#container-navbar ul li:hover {
+  color: var(--color-primary);
 }
 
 #hero-navbar h1 {
@@ -166,7 +171,8 @@ body {
 }
 /* DASHBOARD STYLING */
 
-#dashboard {
+#dashboard,
+#pengiriman {
   padding: 20px;
   background-color: var(--color-secondary-bg);
 }
@@ -178,7 +184,8 @@ body {
   display: flex;
 } */
 
-#dashboard-card div {
+#dashboard-card div,
+#pengiriman-card div {
   border-radius: 14px;
   background-color: var(--color-primary-bright);
   padding: 10px;
@@ -199,6 +206,32 @@ body {
   display: flex;
   align-items: center;
 }
+
+#pendapatan-card ul li {
+  display: flex;
+  flex-direction: column;
+}
 /* #dashboard-card div h1 {
   font-weight: bold;
 } */
+
+/* * PENGIRIMAN STYLING */
+
+#list-pengiriman ul li button {
+  display: flex;
+  gap: 30px;
+  padding: 10px 20px;
+  background-color: var(--color-primary);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+#list-pengiriman ul li button {
+  color: white;
+}
+
+#list-pengiriman ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

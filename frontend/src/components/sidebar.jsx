@@ -23,6 +23,35 @@ function Sidebar() {
   function handlePengiriman() {
     navigate("/pengiriman");
   }
+
+  function handleBuatPengiriman() {
+    navigate("/buat_pengiriman");
+  }
+
+  function handleLacakPaket() {
+    navigate("/lacak_paket");
+  }
+
+  function handlePelanggan() {
+    navigate("/pelanggan");
+  }
+
+  function handleKurir() {
+    navigate("/kurir");
+  }
+
+  function handleLokasi() {
+    navigate("/lokasi");
+  }
+
+  function handlePembayaran() {
+    navigate("/pembayaran");
+  }
+
+  function handleLaporan() {
+    navigate("/laporan");
+  }
+
   return (
     <>
       <div
@@ -48,43 +77,43 @@ function Sidebar() {
               </button>
             </div>
             <div>
-              <button>
+              <button onClick={handleBuatPengiriman}>
                 <PlusCircle />
                 Buat pengiriman
               </button>
             </div>
             <div>
-              <button>
+              <button onClick={handleLacakPaket}>
                 <Timeline />
                 lacak paket
               </button>
             </div>
             <div>
-              <button>
+              <button onClick={handlePelanggan}>
                 <Community />
                 Pelanggan
               </button>
             </div>
             <div>
-              <button>
+              <button onClick={handleKurir}>
                 <Truck />
                 Kurir
               </button>
             </div>
             <div>
-              <button>
+              <button onClick={handleLokasi}>
                 <Location />
                 Lokasi
               </button>
             </div>
             <div>
-              <button>
+              <button onClick={handlePembayaran}>
                 <WalletNote />
                 Pembayaran
               </button>
             </div>
             <div>
-              <button>
+              <button onClick={handleLaporan}>
                 <Report />
                 Laporan
               </button>

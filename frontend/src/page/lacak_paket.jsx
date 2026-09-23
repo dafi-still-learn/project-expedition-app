@@ -1,5 +1,5 @@
 import Sidebar from "../components/sidebar";
-function Pengiriman() {
+function Lacak_paket() {
   return (
     <>
       <section
@@ -89,4 +89,4 @@ function Pengiriman() {
   );
 }
 
-export default Pengiriman;
+export default Lacak_paket;

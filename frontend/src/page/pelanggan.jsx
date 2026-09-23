@@ -1,5 +1,5 @@
 import Sidebar from "../components/sidebar";
-function Pengiriman() {
+function Pelanggan() {
   return (
     <>
       <section
@@ -89,4 +89,4 @@ function Pengiriman() {
   );
 }
 
-export default Pengiriman;
+export default Pelanggan;

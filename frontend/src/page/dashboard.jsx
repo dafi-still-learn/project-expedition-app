@@ -33,11 +33,11 @@ function Dashboard() {
                 <h1>61</h1>
               </div>
             </div>
-            <div className="shadow-lg">
+            <div className="shadow-lg" id="pendapatan-card">
               <h1>pendapatan</h1>
               <ul>
                 <li>
-                  <h1>dana tersedia:</h1>
+                  <h1>dana sekarang:</h1>
                   <h1>Rp.123.000.000.00</h1>
                 </li>
                 <li>
@@ -96,7 +96,7 @@ function Dashboard() {
               </div>
             </div>
             <div className="shadow-lg">
-              <h1>costumer yang berhasil:</h1>
+              <h1>proses pengiriman:</h1>
               <ul>
                 <li>
                   <UserCheck />

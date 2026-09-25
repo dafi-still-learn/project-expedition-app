@@ -13,7 +13,7 @@ import {
 } from "@boxicons/react";
 import { useNavigate } from "react-router-dom";
 
-function Sidebar() {
+function Sidebar({ openSetting }) {
   const navigate = useNavigate();
 
   function handleDashboard() {
@@ -52,6 +52,11 @@ function Sidebar() {
     navigate("/laporan");
   }
 
+  function handleLogOut() {
+    navigate("/login");
+  }
+
+  console.log(openSetting);
   return (
     <>
       <div
@@ -125,13 +130,13 @@ function Sidebar() {
           className="row-span-2 flex flex-col gap-10 border-t border-gray-300"
         >
           <div>
-            <button>
+            <button onClick={openSetting}>
               <Cog />
               Pengaturan
             </button>
           </div>
           <div>
-            <button>
+            <button onClick={handleLogOut}>
               <DoorOpenAlt />
               Logout
             </button>

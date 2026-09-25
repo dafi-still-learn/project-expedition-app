@@ -47,8 +47,7 @@ body {
   background-color: var(--color-secondary-bg);
 }
 
-#Form-login label input:active,
-#Form-login label input:hover,
+#Form-login label input:focus,
 #Form-register label input:active,
 #Form-register label input:hover {
   border: 2px solid black;
@@ -115,7 +114,6 @@ body {
   border-radius: 50%;
   width: 40px;
   height: 40px;
-  background-color: red;
 }
 
 #button-profil h1 {
@@ -234,4 +232,10 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+/* * SETTING STYLING */
+#container-setting {
+  width: 600px;
+  height: 700px;
 }

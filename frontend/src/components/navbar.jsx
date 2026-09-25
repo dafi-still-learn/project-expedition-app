@@ -11,11 +11,11 @@ function Navbar() {
         <div id="container-navbar" className="col-span-4">
           <div className="grid grid-cols-9">
             <button
-              className="col-span-2 cursor-pointer flex justify-between w-full h-full"
+              className="col-span-2 cursor-pointer flex gap-2 w-full h-full"
               id="button-profil"
             >
               <UserCircle />
-              <h1>Nur Fauzan Muhammad Khadafi</h1>
+              <h1>Dafi</h1>
             </button>
             <ul className="flex col-span-7 justify-evenly">
               <li>profil</li>

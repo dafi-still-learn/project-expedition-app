@@ -10,24 +10,32 @@ function Login() {
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
-  function handleLogin() {
-    navigate("/login");
-  }
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    const result = await sendRegister(email, username, password);
+    if (email == "" || username == "" || password == "") {
+      alert("isi dengan benar");
+    } else {
+      const result = await sendRegister(email, username, password);
 
-    console.log("EMAIL USER REGISTER", email);
-    console.log("USERNAME USER REGISTER", username);
-    console.log("PASSWORD USER REGISTER", password);
+      console.log("EMAIL USER REGISTER", email);
+      console.log("USERNAME USER REGISTER", username);
+      console.log("PASSWORD USER REGISTER", password);
 
-    if (result) {
-      navigate("/login");
+      console.log("hasil dari register database", result);
+      if (result === true) {
+        navigate("/login");
+      }
+      if (result === false) {
+        alert("gmail atau username ini sudah digunakan");
+      }
     }
   };
 
+  function handleLogin() {
+    navigate("/login");
+  }
   return (
     <>
       <div id="Container-register" className="w-screen h-screen">
@@ -63,6 +71,7 @@ function Login() {
             />
           </label>
           <button type="submit">daftar</button>
+
           <div className="flex place-content-center gap-20">
             <button onClick={handleLogin}>sudah punya akun</button>
           </div>

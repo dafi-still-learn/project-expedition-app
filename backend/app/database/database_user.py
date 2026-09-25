@@ -1,4 +1,5 @@
 import psycopg2 as ps
+import pandas as pd
 
 
 def membuat_database_user():
@@ -40,7 +41,9 @@ def tampilkan_tabel_user():
 
         data = cursor.fetchall()
 
-        print(data)
+        df = pd.DataFrame(
+            data, columns=['id', 'email', 'username', 'password'])
+        print(df)
 
     except ps.Error as e:
         print(e)
@@ -97,9 +100,9 @@ def validate_akun_register(email, username):
         user = cursor.fetchone()
 
         if user is not None:
-            return True
+            return False
 
-        return False
+        return True
     except ps.Error as e:
         print(e)
         conn.rollback()
@@ -118,17 +121,18 @@ def validate_akun_login(username, password):
         cursor = conn.cursor()
 
         cursor.execute("""
-        SELECT username
+        SELECT id, username, password
         FROM akun
         WHERE username = %s
         """, (username,))
 
         user = cursor.fetchone()
 
+        print("data username validasi", user)
         if user is None:
             return False
 
-        if user[1] != password:
+        if user[2] != password:
             return False
 
         conn.commit()
@@ -167,3 +171,22 @@ def lupa_password_user(email):
 
     finally:
         conn.close()
+
+
+def tampilkan_akun():
+    conn = ps.connect(dbname="account_user", user="postgres",
+                      password="Jakgeyye123!@#", host="localhost", port="5432")
+
+    try:
+        cursor = conn.cursor()
+
+        cursor.execute("""
+        SELECT * FROM akun
+        """)
+
+        data = cursor.fetchall()
+
+        print("data dari database akun", data)
+
+    except Exception as e:
+        print(e)

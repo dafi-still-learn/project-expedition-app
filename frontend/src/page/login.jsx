@@ -9,25 +9,29 @@ function Login() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    if (username == "" || password == "") {
+      alert("isi dengan benar");
+    } else {
+      const result = await sendLogin(username, password);
+
+      console.log("USERNAME USER", username);
+      console.log("PASSWORD USER", password);
+
+      if (result.success === true) {
+        navigate("/dashboard");
+      }
+    }
+  };
+
   function handleRegister() {
     navigate("/register");
   }
   function handleForget() {
     navigate("/lupa_password");
   }
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-
-    const result = await sendLogin(username, password);
-
-    console.log("USERNAME USER", username);
-    console.log("PASSWORD USER", password);
-
-    if (result === true) {
-      navigate("/dashboard");
-    }
-  };
 
   return (
     <>

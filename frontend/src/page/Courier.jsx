@@ -1,12 +1,7 @@
-import Sidebar from "../components/sidebar";
-function Lacak_paket() {
+function Kurir() {
   return (
     <>
-      <section
-        className="grid grid-cols-20 w-screen h-screen"
-        id="Container-pengiriman"
-      >
-        <Sidebar></Sidebar>
+      <section className="col-span-17" id="Container-pengiriman">
         <div
           className="col-span-17 flex flex-col gap-5 bg-indigo-400"
           id="pengiriman"
@@ -89,4 +84,4 @@ function Lacak_paket() {
   );
 }
 
-export default Lacak_paket;
+export default Kurir;

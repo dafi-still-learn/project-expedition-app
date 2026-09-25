@@ -1,19 +1,20 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
-import Login from "./page/login";
-import LupaPassword from "./page/lupa_password";
-import Register from "./page/register";
+import Login from "./page/Login";
+import LupaPassword from "./page/ResetPassword";
+import Register from "./page/Register";
 import { Navigate } from "react-router-dom";
-import ExpeditionPage from "./api/api_expedition";
-import Dashboard from "./page/dashboard";
-import Pengiriman from "./page/pengiriman";
-import Buat_pengiriman from "./page/buat_pengiriman";
-import Lacak_paket from "./page/lacak_paket";
-import Pelanggan from "./page/pelanggan";
-import Kurir from "./page/kurir";
-import Lokasi from "./page/lokasi";
-import Pembayaran from "./page/pembayaran";
-import Laporan from "./page/laporan";
+import ExpeditionPage from "./api/ApiExpedition";
+import Dashboard from "./page/Dashboard";
+import Pengiriman from "./page/Delivery";
+import Buat_pengiriman from "./page/MakeDelivery";
+import Lacak_paket from "./page/PacketTrack";
+import Pelanggan from "./page/Customers";
+import Kurir from "./page/Courier";
+import Lokasi from "./page/Location";
+import Pembayaran from "./page/Payment";
+import Laporan from "./page/Report";
+
 function App() {
   return (
     <>

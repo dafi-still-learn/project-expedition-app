@@ -1,10 +1,14 @@
+function handleList() {
+  console.log("TES INI BTN LIST");
+}
+
 function ListDelivery() {
   return (
     <>
       <div id="list-pengiriman">
         <ul>
           <li>
-            <button>
+            <button onClick={handleList}>
               <h1>paket 1</h1>
               <h1>23 september 2025</h1>
               <h1>Rp.350.000.00</h1>

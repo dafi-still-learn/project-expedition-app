@@ -170,7 +170,8 @@ body {
 /* DASHBOARD STYLING */
 
 #dashboard,
-#pengiriman {
+#pengiriman,
+#make-delivery {
   padding: 20px;
   background-color: var(--color-secondary-bg);
 }
@@ -183,7 +184,8 @@ body {
 } */
 
 #dashboard-card div,
-#pengiriman-card div {
+#pengiriman-card div,
+#make-delivery-card div {
   border-radius: 14px;
   background-color: var(--color-primary-bright);
   padding: 10px;
@@ -250,6 +252,27 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* * FORM PACKET STYLING*/
+#form-packet {
+  background-color: var(--color-secondary-bg);
+}
+
+#form-packet button {
+  background-color: var(--color-primary);
+  width: 200px;
+  height: 50px;
+  color: white;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+#form-packet button:hover {
+  color: black;
+  border: 1px solid black;
+  background-color: var(--color-secondary-bg);
 }
 
 /* * SETTING STYLING */

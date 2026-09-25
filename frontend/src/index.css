@@ -216,6 +216,10 @@ body {
 /* * PENGIRIMAN STYLING */
 
 #list-pengiriman ul li button {
+  width: full;
+}
+
+#list-pengiriman ul li button {
   display: flex;
   gap: 30px;
   padding: 10px 20px;
@@ -234,8 +238,58 @@ body {
   gap: 10px;
 }
 
+#grup-filter {
+  align-items: center;
+}
+#grup-filter h1 {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#grup-filter div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* * SETTING STYLING */
 #container-setting {
-  width: 600px;
-  height: 700px;
+  width: 700px;
+  height: 600px;
+  background-color: var(--color-primary-bright);
+  border-radius: 20px;
+  padding: 10px;
+}
+
+#container-setting div ul {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  gap: 5px;
+  background-color: var(--color-secondary-bg);
+}
+
+#container-setting div button {
+  font-size: 18px;
+  cursor: pointer;
+  width: 215px;
+}
+
+#btn-setting {
+  border-radius: 10px;
+  background-color: var(--color-primary);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+#btn-setting:hover {
+  background-color: var(--color-primary-bright);
+  color: black;
+  border: 1px solid black;
+}
+
+#setting-detail {
+  padding: 10px;
+  border-radius: 10px;
+  background-color: var(--color-secondary-bg);
 }

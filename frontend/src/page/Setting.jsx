@@ -4,29 +4,41 @@ function Setting({ onClose }) {
   return (
     <>
       <div className="fixed inset-0 bg-black/50 items-center justify-center flex">
-        <div className="flex bg-amber-300" id="container-setting">
-          <div className="grid grid-cols-1 place-content-center">
-            <ul>
+        <div
+          className="grid grid-cols-3 gap-3 bg-amber-300"
+          id="container-setting"
+        >
+          <div className="grid grid-cols-1 gap-3 grid-rows-13 col-span-1 justify-between">
+            <ul className="row-span-12 shadow-lg">
               <li>
-                <button>btn 1</button>
+                <button>Profil</button>
               </li>
               <li>
-                <button>btn 1</button>
+                <button>Privacy</button>
               </li>
               <li>
-                <button>btn 1</button>
+                <button>Data</button>
               </li>
               <li>
-                <button>btn 1</button>
+                <button>Penampilan</button>
               </li>
               <li>
-                <button>btn 1</button>
+                <button>Source</button>
               </li>
               <li>
-                <button>btn 1</button>
+                <button>Diagram</button>
               </li>
             </ul>
-            <button onClick={onClose}>simpan</button>
+            <button
+              onClick={onClose}
+              className="row-span-1 cursor-pointer"
+              id="btn-setting"
+            >
+              simpan
+            </button>
+          </div>
+          <div className="col-span-2 shadow-lg" id="setting-detail">
+            <h1>detail Pengaturan</h1>
           </div>
         </div>
       </div>

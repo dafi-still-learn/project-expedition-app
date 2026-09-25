@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import Setting from "../page/Setting";
 import Sidebar from "../components/Sidebar";
-
 function ExpeditionPage() {
   const location = useLocation();
   //   const [profil, setProfil] = useState(null);

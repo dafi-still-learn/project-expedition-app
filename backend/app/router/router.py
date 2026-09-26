@@ -1,12 +1,14 @@
 from app.database.database_user import membuat_database_user, input_tabel_user, validate_akun_login, validate_akun_register, lupa_password_user, tampilkan_akun
+from app.database.database_packet import membuat_database_paket, input_database_paket, tampilkan_database_paket
 from fastapi import APIRouter
 
-from app.schemas.schemas import login, register, lupa_password
+from app.schemas.schemas import login, register, lupa_password, data_pengiriman
 
 router = APIRouter()
 
 
 membuat_database_user()
+membuat_database_paket()
 
 
 @router.post("/login")
@@ -54,3 +56,13 @@ def lupa_akun_user(data: lupa_password):
         return True
 
     return True
+
+
+@router.post("/data_pengiriman")
+def data_pengiriman_user(data: data_pengiriman):
+    data = input_database_paket(data.nama_paket, data.jenis_paket, data.jumlah_paket,
+                                data.asal_paket, data.tujuan_paket, data.berat_paket, data.mitra_pengiriman)
+
+    tampilkan_database_paket()
+
+    return data

@@ -1,28 +1,59 @@
 import { useState } from "react";
+import { sendDataPengiriman } from "../services/dataPengiriman";
 
-function FormDelivery({ setData }) {
+function FormDelivery() {
   const [name, setName] = useState("");
-  const [jumlah, setJumlah] = useState("");
   const [jenis, setJenis] = useState("");
+  const [jumlah, setJumlah] = useState("");
   const [asal, setAsal] = useState("");
   const [tujuan, setTujuan] = useState("");
   const [berat, setBerat] = useState("");
   const [mitra, setMitra] = useState("");
 
-  const getData = () => {
-    const data = [
-      {
-        name: name,
-        jumlah: jumlah,
-        jenis: jenis,
-        asal: asal,
-        tujuan: tujuan,
-        berat: berat,
-        mitra: mitra,
-      },
-    ];
+  // const getData = () => {
+  //   const data = [
+  //     {
+  //       name: name,
+  //       jumlah: jumlah,
+  //       jenis: jenis,
+  //       asal: asal,
+  //       tujuan: tujuan,
+  //       berat: berat,
+  //       mitra: mitra,
+  //     },
+  //   ];
+  // };
 
-    setData(data);
+  const handleDataPengiriman = async (e) => {
+    e.preventDefault();
+
+    if (
+      name == "" ||
+      jenis == "" ||
+      jumlah == "" ||
+      asal == "" ||
+      tujuan == "" ||
+      berat == "" ||
+      mitra == ""
+    ) {
+      console.log("ISI FORM DATA PENGIRIMAN DENGAN BENAR");
+    } else {
+      const result = await sendDataPengiriman(
+        name,
+        jenis,
+        jumlah,
+        asal,
+        tujuan,
+        berat,
+        mitra,
+      );
+
+      if (result === true) {
+        console.log("data anda berhasil dikirim");
+      } else {
+        console.log("data anda gagal dikirim");
+      }
+    }
   };
 
   return (
@@ -32,6 +63,7 @@ function FormDelivery({ setData }) {
           action=""
           className="grid grid-rows-13 gap-2 w-full h-full"
           id="form-packet"
+          onSubmit={handleDataPengiriman}
         >
           <div className="row-span-11 flex flex-col gap-3">
             <label htmlFor="packet-name">
@@ -111,7 +143,7 @@ function FormDelivery({ setData }) {
               <h1>Rp.530.000.00</h1>
             </label>
           </div>
-          <button onClick={getData} className="row-span-1">
+          <button type="submit" className="row-span-1">
             pay
           </button>
         </form>

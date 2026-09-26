@@ -236,8 +236,8 @@ body {
 
 #list-pengiriman ul {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  gap: 100px !important;
+  border: 2px solid black;
 }
 
 #grup-filter {
@@ -275,6 +275,15 @@ body {
   background-color: var(--color-secondary-bg);
 }
 
+#container-form-packet form div label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+#container-form-packet form div label input {
+  padding: 10px 20px;
+}
 /* * SETTING STYLING */
 #container-setting {
   width: 700px;

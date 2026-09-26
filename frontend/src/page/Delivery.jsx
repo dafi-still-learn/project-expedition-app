@@ -1,7 +1,14 @@
+import { useState } from "react";
 import { Filter } from "@boxicons/react";
 import ListDelivery from "../components/ListDelivery";
 import DetailDelivery from "../components/DetailDelivery";
+
 function Pengiriman() {
+  const [name, setName] = useState("");
+  const [date, setDate] = useState("");
+  const [price, setPrice] = useState("");
+  const [custumer, setCustumer] = useState("");
+  const [quantity, setQuantity] = useState("");
   return (
     <>
       <section className="col-span-17" id="">
@@ -22,9 +29,21 @@ function Pengiriman() {
                   </button>
                 </div>
               </div>
-              <ListDelivery />
+              <ListDelivery
+                setName={setName}
+                setDate={setDate}
+                setPrice={setPrice}
+                setCustumer={setCustumer}
+                setQuantity={setQuantity}
+              />
             </div>
-            <DetailDelivery />
+            <DetailDelivery
+              name={name}
+              date={date}
+              price={price}
+              custumer={custumer}
+              quantity={quantity}
+            />
           </div>
         </div>
       </section>

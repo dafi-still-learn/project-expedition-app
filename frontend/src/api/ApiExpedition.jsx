@@ -8,7 +8,6 @@ function ExpeditionPage() {
   const location = useLocation();
   //   const [profil, setProfil] = useState(null);
   const [openSetting, setOpenSetting] = useState(false);
-
   return (
     <>
       <div

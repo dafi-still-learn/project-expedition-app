@@ -1,4 +1,30 @@
-function FormDelivery() {
+import { useState } from "react";
+
+function FormDelivery({ setData }) {
+  const [name, setName] = useState("");
+  const [jumlah, setJumlah] = useState("");
+  const [jenis, setJenis] = useState("");
+  const [asal, setAsal] = useState("");
+  const [tujuan, setTujuan] = useState("");
+  const [berat, setBerat] = useState("");
+  const [mitra, setMitra] = useState("");
+
+  const getData = () => {
+    const data = [
+      {
+        name: name,
+        jumlah: jumlah,
+        jenis: jenis,
+        asal: asal,
+        tujuan: tujuan,
+        berat: berat,
+        mitra: mitra,
+      },
+    ];
+
+    setData(data);
+  };
+
   return (
     <>
       <div id="container-form-packet" className="row-span-12">
@@ -7,7 +33,7 @@ function FormDelivery() {
           className="grid grid-rows-13 gap-2 w-full h-full"
           id="form-packet"
         >
-          <div className="row-span-9 flex flex-col gap-3">
+          <div className="row-span-11 flex flex-col gap-3">
             <label htmlFor="packet-name">
               nama paket
               <input
@@ -15,6 +41,7 @@ function FormDelivery() {
                 name="packet-name"
                 id=""
                 placeholder="enter name packet"
+                onChange={(e) => setName(e.target.value)}
               />
             </label>
             <label htmlFor="packet-jumlah">
@@ -24,6 +51,7 @@ function FormDelivery() {
                 name="packet-jumlah"
                 id=""
                 placeholder="enter berat packet"
+                onChange={(e) => setJumlah(e.target.value)}
               />
             </label>
             <label htmlFor="packet-jenis">
@@ -33,6 +61,7 @@ function FormDelivery() {
                 name="packet-jenis"
                 id=""
                 placeholder="enter jenis packet"
+                onChange={(e) => setJenis(e.target.value)}
               />
             </label>
             <label htmlFor="packet-asal">
@@ -42,6 +71,7 @@ function FormDelivery() {
                 name="packet-asal"
                 id=""
                 placeholder="enter asal packet"
+                onChange={(e) => setAsal(e.target.value)}
               />
             </label>
             <label htmlFor="packet-tujuan">
@@ -51,6 +81,7 @@ function FormDelivery() {
                 name="packet-tujuan"
                 id=""
                 placeholder="enter tujuan packet"
+                onChange={(e) => setTujuan(e.target.value)}
               />
             </label>
             <label htmlFor="packet-berat">
@@ -60,29 +91,27 @@ function FormDelivery() {
                 name="packet-berat"
                 id=""
                 placeholder="enter name packet"
+                onChange={(e) => setBerat(e.target.value)}
               />
             </label>
-            <label htmlFor="packet-name">
-              packet name
+            <label htmlFor="packet-berat">
+              mitra pengiriman
               <input
                 type="text"
-                name="packet-name"
+                name="packet-pengiriman"
                 id=""
-                placeholder="enter name packet"
+                placeholder="enter name pengiriman"
+                onChange={(e) => setMitra(e.target.value)}
               />
             </label>
           </div>
-          <div className="row-span-3">
+          <div className="row-span-2">
             <label htmlFor="price">
-              price
-              <input type="text" name="price" />
-            </label>
-            <label htmlFor="metode">
-              metode payment
-              <input type="text" name="methode" />
+              price:
+              <h1>Rp.530.000.00</h1>
             </label>
           </div>
-          <button type="submit" className="row-span-1">
+          <button onClick={getData} className="row-span-1">
             pay
           </button>
         </form>

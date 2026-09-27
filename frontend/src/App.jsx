@@ -1,4 +1,3 @@
-import "./App.css";
 import "./index.css";
 import { Routes, Route } from "react-router-dom";
 import Login from "./page/Login";
@@ -6,7 +5,6 @@ import LupaPassword from "./page/ResetPassword";
 import Register from "./page/Register";
 import { Navigate } from "react-router-dom";
 import ExpeditionPage from "./api/ApiExpedition";
-import Dashboard from "./page/Dashboard";
 import Pengiriman from "./page/Delivery";
 import Buat_pengiriman from "./page/MakeDelivery";
 import Lacak_paket from "./page/PacketTrack";
@@ -15,7 +13,7 @@ import Kurir from "./page/Courier";
 import Lokasi from "./page/Location";
 import Pembayaran from "./page/Payment";
 import Laporan from "./page/Report";
-
+import Dashboard from "./page/dashboard";
 function App() {
   return (
     <>

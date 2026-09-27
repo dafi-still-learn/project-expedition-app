@@ -1,26 +1,27 @@
 import Navbar from "../components/Navbar";
 import { UserCheck, CheckCircle } from "@boxicons/react";
-import ApexMaps from "apexmaps";
+// import ApexMaps from "apexmaps";
+import LeafletMap from "../services/openStreetMap";
 
 function Dashboard() {
-  async function renderGlobe() {
-    const map = new ApexMaps(document.querySelector("#map"), {
-      geo: { map: "world/countries@110m" },
-      series: [
-        {
-          name: "Unemployment rate",
-          joinBy: ["iso_a3", "code"],
-          data: [
-            { code: "FRA", value: 7.3 },
-            { code: "DEU", value: 5.7 },
-          ],
-        },
-      ],
-    });
-    return await map.render();
-  }
+  // async function renderGlobe() {
+  //   const map = new ApexMaps(document.querySelector("#map"), {
+  //     geo: { map: "world/countries@110m" },
+  //     series: [
+  //       {
+  //         name: "Unemployment rate",
+  //         joinBy: ["iso_a3", "code"],
+  //         data: [
+  //           { code: "FRA", value: 7.3 },
+  //           { code: "DEU", value: 5.7 },
+  //         ],
+  //       },
+  //     ],
+  //   });
+  //   return await map.render();
+  // }
 
-  renderGlobe();
+  // renderGlobe();
   return (
     <>
       <section className="col-span-17" id="Container-dashboard">
@@ -129,8 +130,8 @@ function Dashboard() {
               </ul>
             </div>
             <div className="shadow-lg">
-              <h1>peta pengiriman</h1>
-              <div id="map"></div>
+              <LeafletMap />
+              {/* <div id="map"></div> */}
             </div>
             <div className="shadow-lg">
               <h1>laporan pengiriman</h1>

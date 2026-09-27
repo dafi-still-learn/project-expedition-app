@@ -1,7 +1,15 @@
 import { useState } from "react";
 import { sendDataPengiriman } from "../services/dataPengiriman";
 
-function FormDelivery() {
+function FormDelivery({
+  setNameD,
+  setJenisD,
+  setJumlahD,
+  setAsalD,
+  setTujuanD,
+  setBeratD,
+  setMitraD,
+}) {
   const [name, setName] = useState("");
   const [jenis, setJenis] = useState("");
   const [jumlah, setJumlah] = useState("");
@@ -10,19 +18,17 @@ function FormDelivery() {
   const [berat, setBerat] = useState("");
   const [mitra, setMitra] = useState("");
 
-  // const getData = () => {
-  //   const data = [
-  //     {
-  //       name: name,
-  //       jumlah: jumlah,
-  //       jenis: jenis,
-  //       asal: asal,
-  //       tujuan: tujuan,
-  //       berat: berat,
-  //       mitra: mitra,
-  //     },
-  //   ];
-  // };
+  const getData = () => {
+    setNameD(name);
+    setJumlahD(jumlah);
+    setJenisD(jenis);
+    setAsalD(asal);
+    setTujuanD(tujuan);
+    setBeratD(berat);
+    setMitraD(mitra);
+  };
+
+  getData();
 
   const handleDataPengiriman = async (e) => {
     e.preventDefault();
@@ -76,16 +82,6 @@ function FormDelivery() {
                 onChange={(e) => setName(e.target.value)}
               />
             </label>
-            <label htmlFor="packet-jumlah">
-              jumlah paket
-              <input
-                type="text"
-                name="packet-jumlah"
-                id=""
-                placeholder="enter berat packet"
-                onChange={(e) => setJumlah(e.target.value)}
-              />
-            </label>
             <label htmlFor="packet-jenis">
               jenis paket
               <input
@@ -95,6 +91,16 @@ function FormDelivery() {
                 placeholder="enter jenis packet"
                 onChange={(e) => setJenis(e.target.value)}
               />
+              <label htmlFor="packet-jumlah">
+                jumlah paket
+                <input
+                  type="text"
+                  name="packet-jumlah"
+                  id=""
+                  placeholder="enter berat packet"
+                  onChange={(e) => setJumlah(e.target.value)}
+                />
+              </label>
             </label>
             <label htmlFor="packet-asal">
               asal paket

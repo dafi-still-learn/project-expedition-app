@@ -1,3 +1,4 @@
+import LeafletMap from "../services/openStreetMap";
 function Lacak_paket() {
   return (
     <>
@@ -9,7 +10,7 @@ function Lacak_paket() {
           >
             <div className="grid row-span-4">
               <div id="list-pengiriman">
-                <h1>berisi peta</h1>
+                <LeafletMap />
               </div>
             </div>
             <div className="row-span-1">

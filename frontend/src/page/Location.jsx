@@ -1,3 +1,4 @@
+import LeafletMap from "../services/openStreetMap";
 function Lokasi() {
   return (
     <>
@@ -11,7 +12,7 @@ function Lokasi() {
               <div id="list-pengiriman">berisi filter lokasi</div>
             </div>
             <div className="row-span-3">
-              <h1>berisi peta pengiriman</h1>
+              <LeafletMap />
             </div>
           </div>
         </div>

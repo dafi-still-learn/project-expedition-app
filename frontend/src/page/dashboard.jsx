@@ -1,9 +1,72 @@
 import Navbar from "../components/Navbar";
-import { UserCheck, CheckCircle } from "@boxicons/react";
+import { CheckCircle } from "@boxicons/react";
 // import ApexMaps from "apexmaps";
 import LeafletMap from "../services/openStreetMap";
+import DiagramFinansial from "../components/DiagramPieFinansial";
+import DiagramFinansialBar from "../components/DiagramBarPacket";
+import DiagramMultiLinePacket from "../components/DiagramMultiLinePacket";
+import DiagramMultiLineFinansial from "../components/DiagramMultiLinFinansial";
+// import PieChartDefaultIndex from "../services/DiagramPie";
 
 function Dashboard() {
+  const listCustomer = [
+    {
+      id: 1,
+      name: "paket 1",
+      date: "23 september 2025",
+      price: "Rp.350.000.00",
+      custumer: "andrea setyawan",
+      quantity: "2 Qty",
+    },
+    {
+      id: 2,
+      name: "paket 2",
+      date: "23 september 2025",
+      price: "Rp.500.000.00",
+      custumer: "iqbal fauzan",
+      quantity: "4 Qty",
+    },
+    {
+      id: 3,
+      name: "paket 3",
+      date: "23 september 2025",
+      price: "Rp.300.000.00",
+      custumer: "dinda pangestu",
+      quantity: "2 Qty",
+    },
+    {
+      id: 4,
+      name: "paket 4",
+      date: "23 september 2025",
+      price: "Rp.600.000.00",
+      custumer: "tikia ardiasyah",
+      quantity: "5 Qty",
+    },
+    {
+      id: 5,
+      name: "paket 5",
+      date: "23 september 2025",
+      price: "Rp, 550.000.00",
+      custumer: "Kelvin hutapeaw",
+      quantity: "5 Qty",
+    },
+    {
+      id: 6,
+      name: "paket 6",
+      date: "23 september 2025",
+      price: "Rp.480.000.00",
+      custumer: "jennie sihombing",
+      quantity: "4 Qty",
+    },
+    {
+      id: 6,
+      name: "paket 6",
+      date: "23 september 2025",
+      price: "Rp.480.000.00",
+      custumer: "jennie sihombing",
+      quantity: "4 Qty",
+    },
+  ];
   // async function renderGlobe() {
   //   const map = new ApexMaps(document.querySelector("#map"), {
   //     geo: { map: "world/countries@110m" },
@@ -20,11 +83,13 @@ function Dashboard() {
   //   });
   //   return await map.render();
   // }
+  const item_data = [123, 25, 13];
+  const item_data_packet = [99, 32, 61];
 
   // renderGlobe();
   return (
     <>
-      <section className="col-span-17" id="Container-dashboard">
+      <section className="col-span-17 ml-3" id="Container-dashboard">
         <div className="flex flex-col gap-5 bg-indigo-400" id="dashboard">
           <Navbar></Navbar>
           <div
@@ -33,35 +98,10 @@ function Dashboard() {
           >
             {/* BERISI CARD UNTUK SETIAP FITUR YANG PENTING */}
             <div className="shadow-lg">
-              <div>
-                <h1>total paket:</h1>
-                <h1>99</h1>
-              </div>
-              <div>
-                <h1>paket baru:</h1>
-                <h1>32</h1>
-              </div>
-              <div>
-                <h1>paket lama:</h1>
-                <h1>61</h1>
-              </div>
+              <DiagramFinansialBar item_data={item_data_packet} />
             </div>
             <div className="shadow-lg" id="pendapatan-card">
-              <h1>pendapatan</h1>
-              <ul>
-                <li>
-                  <h1>dana sekarang:</h1>
-                  <h1>Rp.123.000.000.00</h1>
-                </li>
-                <li>
-                  <h1>dana pendapatan:</h1>
-                  <h1>Rp.25.000.000.00</h1>
-                </li>
-                <li>
-                  <h1>dana pengeluaran:</h1>
-                  <h1>Rp.13.000.000.00</h1>
-                </li>
-              </ul>
+              <DiagramFinansial item_data={item_data} />
             </div>
             <div className="shadow-lg">
               <h1>hasil pengiriman</h1>
@@ -108,33 +148,35 @@ function Dashboard() {
                 </ul>
               </div>
             </div>
-            <div className="shadow-lg">
+            <div className="shadow-lg grid grid-cols-1 gap-2 w-full h-full overflow-hidden">
               <h1>proses pengiriman:</h1>
-              <ul>
-                <li>
-                  <UserCheck />
-                  <h1>andrea setyawan</h1>
-                </li>
-                <li>
-                  <UserCheck />
-                  <h1>tikia ardiasyah</h1>
-                </li>
-                <li>
-                  <UserCheck />
-                  <h1>iqbal fauzan</h1>
-                </li>
-                <li>
-                  <UserCheck />
-                  <h1>dinda pangestu</h1>
-                </li>
-              </ul>
+              {listCustomer.map((item) => {
+                return (
+                  <>
+                    <ul className="grid gap-5 w-ful h-full">
+                      <li className="grid gap-4">
+                        <button className="flex">
+                          <h1>{item.name}</h1>
+                          <h1>{item.date}</h1>
+                          <h1>{item.price}</h1>
+                          <h1>{item.custumer}</h1>
+                          <h1>{item.quantity}</h1>
+                        </button>
+                      </li>
+                    </ul>
+                  </>
+                );
+              })}
             </div>
             <div className="shadow-lg">
               <LeafletMap />
-              {/* <div id="map"></div> */}
             </div>
-            <div className="shadow-lg">
-              <h1>laporan pengiriman</h1>
+            <div
+              className="shadow-lg grid grid-rows-2 w-full h-full
+            "
+            >
+              <DiagramMultiLineFinansial />
+              <DiagramMultiLinePacket />
             </div>
           </div>
         </div>

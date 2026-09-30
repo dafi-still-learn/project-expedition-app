@@ -1,25 +1,44 @@
-// import { Pie, PieChart, Tooltip } from 'recharts';
-// import { RechartsDevtools } from '@recharts/devtools';
+import Chart from "chart.js/auto";
+import { useRef, useEffect } from "react";
 
-// function PieChartDefaultIndex({ isAnimationActive = true }: { isAnimationActive?: boolean }) {
-//   return (
-//     <PieChart width={400} height={400}>
-//       <Pie
-//         activeShape={{
-//           fill: 'red',
-//         }}
-//         data={[
-//           { name: 'Page A', uv: 590 },
-//           { name: 'Page B', uv: 590 },
-//           { name: 'Page C', uv: 868 },
-//         ]}
-//         dataKey="uv"
-//         isAnimationActive={isAnimationActive}
-//       />
-//       <Tooltip defaultIndex={2} />
-//       <RechartsDevtools />
-//     </PieChart>
-//   );
-// }
+function DiagramFinansial({ item_data }) {
+  const canvasRef = useRef(null);
 
-// export default PieChartDefaultIndex
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const data = {
+      labels: ["sisa saldo", "pemasukkan", "pengeluaran"],
+      datasets: [
+        {
+          label: "Diagram Expedition",
+          data: item_data,
+          backgroundColor: [
+            "rgb(255, 99, 132)",
+            "rgb(54, 162, 235)",
+            "rgb(255, 205, 86)",
+          ],
+          hoverOffset: 4,
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+          },
+        },
+      ],
+    };
+    const chart = new Chart(canvas, {
+      type: "doughnut",
+      data: data,
+    });
+
+    return () => chart.destroy();
+  }, [item_data]);
+  return (
+    <canvas
+      ref={canvasRef}
+      className="h-full w-full"
+      id="diagram_pie_finansial"
+    ></canvas>
+  );
+}
+
+export default DiagramFinansial;

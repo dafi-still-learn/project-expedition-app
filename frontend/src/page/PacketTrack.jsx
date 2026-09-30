@@ -13,15 +13,23 @@ function Lacak_paket() {
                 <LeafletMap />
               </div>
             </div>
-            <div className="row-span-1">
-              <h1>detail</h1>
-              <form action="">
-                <label htmlFor="enter_id">
+            <div className="row-span-1 grid grid-cols-2 gap-2" id="form-paket">
+              <form
+                action=""
+                className="border-r-black grid gap-2"
+                id="form-paketan"
+              >
+                <label htmlFor="enter_id" className="flex flex-col gap-2">
                   masukkan nomor paket
                   <input type="text" name="enter_id" />
                 </label>
-                <button type="submit">kirim</button>
+                <button type="submit" id="btn-paket">
+                  kirim
+                </button>
               </form>
+              <div>
+                <h1>hasil pencarian</h1>
+              </div>
             </div>
           </div>
         </div>

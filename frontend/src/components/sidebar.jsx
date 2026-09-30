@@ -60,7 +60,7 @@ function Sidebar({ openSetting }) {
   return (
     <>
       <div
-        className="col-span-3 grid grid-cols-1 grid-rows-12 justify-between bg-amber-300 border-r border-gray-300"
+        className="col-span-3 grid grid-cols-1 grid-rows-12 h-full justify-between bg-amber-300 border-r border-gray-300"
         id="Container-sidebar"
       >
         <div className="row-span-10 grid grid-rows-7" id="Sidebar-Fiture">

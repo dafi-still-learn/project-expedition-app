@@ -167,7 +167,7 @@ body {
   color: black;
   border: 2px solid black;
 }
-/* DASHBOARD STYLING */
+/* *DASHBOARD STYLING */
 
 #dashboard,
 #pengiriman,
@@ -211,6 +211,7 @@ body {
   display: flex;
   flex-direction: column;
 }
+
 /* #dashboard-card div h1 {
   font-weight: bold;
 } */
@@ -237,7 +238,6 @@ body {
 #list-pengiriman ul {
   display: flex;
   gap: 100px !important;
-  border: 2px solid black;
 }
 
 #grup-filter {
@@ -254,7 +254,42 @@ body {
   justify-content: center;
 }
 
+/* * PACKET TRACKING STYLING */
+#form-paket {
+  padding: 10px;
+}
+
+#form-paket label {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+#form-packet form label input {
+  padding: 10px;
+}
+
+#form-packet form label input:focus {
+  border: 2px solid black;
+}
+
+#btn-paket {
+  padding: 10px;
+  background-color: var(--color-primary);
+  width: 100px;
+  cursor: pointer;
+  color: white;
+  transition: all 0.3s ease;
+  border-radius: 10px;
+}
+
+#btn-paket:hover {
+  background-color: var(--color-primary-bright);
+  color: black;
+  border: 1px solid black;
+}
+
 /* * FORM PACKET STYLING*/
+
 #form-packet {
   background-color: var(--color-secondary-bg);
 }
@@ -284,6 +319,17 @@ body {
 #container-form-packet form div label input {
   padding: 10px 20px;
 }
+
+/* * MITRA STYLING */
+#container-mitra div {
+  background-color: var(--color-secondary-bg);
+}
+
+#container-mitra div img {
+  width: 120px;
+  height: 120px;
+}
+
 /* * SETTING STYLING */
 #container-setting {
   width: 700px;

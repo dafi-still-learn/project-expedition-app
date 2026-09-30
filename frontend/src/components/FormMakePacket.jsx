@@ -132,15 +132,24 @@ function FormDelivery({
                 onChange={(e) => setBerat(e.target.value)}
               />
             </label>
-            <label htmlFor="packet-berat">
+            <label htmlFor="packet-mitra">
               mitra pengiriman
-              <input
-                type="text"
-                name="packet-pengiriman"
+              <select
+                name="packet-mitra"
                 id=""
-                placeholder="enter name pengiriman"
                 onChange={(e) => setMitra(e.target.value)}
-              />
+              >
+                <option value="JNE Express">JNE Express</option>
+                <option value="J&T Ekspress">J$T Ekspress</option>
+                <option value="SiCepat Ekspress">SiCepat Ekspres</option>
+                <option value="Pos Indonesia">Pos Indonesia</option>
+                <option value="TIKI (TITIPAN KILAT)">
+                  TIKI "TITIPAN KILAT"
+                </option>
+                <option value="Lion Parcel">Lion Parcel</option>
+                <option value="SAPX Ekspress">SAPX Ekspress</option>
+                <option value="Anteraja">Anteraja</option>
+              </select>
             </label>
           </div>
           <div className="row-span-2">

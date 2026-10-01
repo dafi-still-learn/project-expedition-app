@@ -16,25 +16,25 @@ function Laporan() {
               <div id="list-pengiriman">berisi laporan</div>
             </div>
             <div
-              className="row-span-4 grid grid-cols-2 gap-2 overflow-auto"
+              className="row-span-4 grid grid-cols-2 gap-4 overflow-auto"
               id="list-report"
             >
-              <div>
+              <div className="shadow-lg">
                 <DiagramMultiLineFinansial />
               </div>
-              <div>
+              <div className="shadow-lg">
                 <DiagramMultiLineFinansial />
               </div>
-              <div>
+              <div className="shadow-lg">
                 <DiagramMultiLineFinansial />
               </div>
-              <div>
+              <div className="shadow-lg">
                 <DiagramMultiLineFinansial />
               </div>
-              <div>
+              <div className="shadow-lg">
                 <DiagramMultiLineFinansial />
               </div>
-              <div>
+              <div className="shadow-lg">
                 <DiagramMultiLineFinansial />
               </div>
             </div>

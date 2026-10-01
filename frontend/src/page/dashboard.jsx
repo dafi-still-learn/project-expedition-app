@@ -67,30 +67,15 @@ function Dashboard() {
       quantity: "4 Qty",
     },
   ];
-  // async function renderGlobe() {
-  //   const map = new ApexMaps(document.querySelector("#map"), {
-  //     geo: { map: "world/countries@110m" },
-  //     series: [
-  //       {
-  //         name: "Unemployment rate",
-  //         joinBy: ["iso_a3", "code"],
-  //         data: [
-  //           { code: "FRA", value: 7.3 },
-  //           { code: "DEU", value: 5.7 },
-  //         ],
-  //       },
-  //     ],
-  //   });
-  //   return await map.render();
+
   // }
   const item_data = [123, 25, 13];
   const item_data_packet = [99, 32, 61];
 
-  // renderGlobe();
   return (
     <>
-      <section className="col-span-17 ml-3" id="Container-dashboard">
-        <div className="flex flex-col gap-5 bg-indigo-400" id="dashboard">
+      <section className="col-span-17 ml-3 " id="Container-dashboard">
+        <div className="flex flex-col gap-5 " id="dashboard">
           <Navbar></Navbar>
           <div
             className="grid gap-6 grid-cols-3 grid-rows-2 w-full h-full"
@@ -122,7 +107,7 @@ function Dashboard() {
                   </li>
                   <li>
                     <CheckCircle />
-                    <h1>paket 1</h1>
+                    <h1>pat 1</h1>
                   </li>
                 </ul>
               </div>

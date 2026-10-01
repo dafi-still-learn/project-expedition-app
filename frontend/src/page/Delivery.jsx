@@ -11,8 +11,8 @@ function Pengiriman() {
   const [quantity, setQuantity] = useState("");
   return (
     <>
-      <section className="col-span-17" id="">
-        <div className="w-full h-full" id="pengiriman">
+      <section className="w-screen h-screen" id="Container-delivery">
+        <div className="w-full h-full" id="delivery">
           <div
             className="grid gap-6 grid-cols-5 w-full h-full"
             id="pengiriman-card"

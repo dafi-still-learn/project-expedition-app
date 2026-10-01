@@ -17,7 +17,7 @@ function DiagramFinansial({ item_data }) {
             "rgb(54, 162, 235)",
             "rgb(255, 205, 86)",
           ],
-          hoverOffset: 4,
+          hoverOffset: 6,
           options: {
             responsive: true,
             maintainAspectRatio: false,

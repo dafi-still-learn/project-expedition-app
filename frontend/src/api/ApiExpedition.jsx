@@ -6,14 +6,10 @@ import Setting from "../page/Setting";
 import Sidebar from "../components/Sidebar";
 function ExpeditionPage() {
   const location = useLocation();
-  //   const [profil, setProfil] = useState(null);
   const [openSetting, setOpenSetting] = useState(false);
   return (
     <>
-      <div
-        className="grid grid-cols-20 w-screen h-screen"
-        id="container-expedition"
-      >
+      <div className="flex w-screen h-screen" id="container-expedition">
         <Sidebar openSetting={() => setOpenSetting(true)} />
 
         <Outlet context={{ location, openSetting }} />

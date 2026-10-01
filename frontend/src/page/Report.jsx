@@ -1,17 +1,22 @@
 function Laporan() {
   return (
     <>
-      <section className="col-span-17" id="Container-pengiriman">
-        <div className="w-full h-full" id="pengiriman">
+      <section className="w-screen h-screen" id="Container-report">
+        <div className="w-full h-full" id="report">
           <div
             className="grid gap-6 grid-rows-5 w-full h-full"
             id="pengiriman-card"
           >
             <div className="row-span-2">
-              <div id="list-pengiriman">berisi filter laporan</div>
+              <div id="list-pengiriman">berisi laporan</div>
             </div>
-            <div className="row-span-3">
-              <h1>berisi grafik dan penjelasan dari kinerja</h1>
+            <div className="row-span-3 grid grid-cols-2">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
             </div>
           </div>
         </div>

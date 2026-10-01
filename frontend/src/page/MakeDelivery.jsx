@@ -11,10 +11,10 @@ function Buat_pengiriman() {
 
   return (
     <>
-      <section className="col-span-17 grid" id="Container-make-delivery">
+      <section className="w-screen h-screen" id="Container-make-delivery">
         <div className="" id="make-delivery">
           <div
-            className="grid gap-6 grid-cols-5 w-full h-full"
+            className="grid grid-cols-5 gap-6 w-full h-full"
             id="make-delivery-card"
           >
             <div className="col-span-3 grid">

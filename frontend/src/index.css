@@ -84,7 +84,7 @@ body {
   border-radius: 8px;
   align-items: center;
   justify-content: center;
-  background-color: var(--color-for-cards);
+  background-color: var(--color-primary-bright);
 }
 
 #container-navbar ul {
@@ -169,19 +169,39 @@ body {
 }
 /* *DASHBOARD STYLING */
 
-#dashboard,
-#pengiriman,
-#make-delivery {
-  padding: 20px;
-  background-color: var(--color-secondary-bg);
+#Container-dashboard,
+#Container-make-delivery,
+#Container-track-packet,
+#Container-payment,
+#Container-location,
+#Container-delivery,
+#Container-customer,
+#Container-report,
+#Container-courir {
+  margin: 10px 50px 10px 300px;
+  overflow: auto;
+  background-color: var(--color-for-cards);
+}
+#container-expedition,
+#dashboard {
+  background-color: var(--color-for-cards);
+  overflow: hidden;
 }
 
-/* #dashboard-card {
-  background-color: var(--color-for-cards);
-  border-radius: 10px;
-  gap: 20px;
+#make-delivery,
+#track-packet,
+#payment,
+#location,
+#delivery,
+#customer,
+#report,
+#courir {
   display: flex;
-} */
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 20px;
+}
 
 #dashboard-card div,
 #pengiriman-card div,

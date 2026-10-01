@@ -1,8 +1,8 @@
 function Kurir() {
   return (
     <>
-      <section className="col-span-17" id="Container-pengiriman">
-        <div className="w-full h-full" id="pengiriman">
+      <section className="w-screen h-screen" id="Container-courir">
+        <div className="w-full h-full" id="courir">
           <div
             className="grid gap-6 grid-rows-5 w-full h-full"
             id="pengiriman-card"

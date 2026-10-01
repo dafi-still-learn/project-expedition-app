@@ -218,6 +218,10 @@ body {
   color: black;
 }
 
+#list_pengiriman_dashboard {
+  overflow-x: auto;
+}
+
 #dashboard-card div ul li {
   display: flex;
 }
@@ -232,9 +236,15 @@ body {
   flex-direction: column;
 }
 
-/* #dashboard-card div h1 {
-  font-weight: bold;
-} */
+#list_item_dashboard li button {
+  background-color: var(--color-primary);
+  padding: 5px;
+}
+
+#list_item_dashboard li button h1 {
+  border-right: 1px solid white;
+  color: white;
+}
 
 /* * PENGIRIMAN STYLING */
 
@@ -255,9 +265,12 @@ body {
   color: white;
 }
 
+#list-pengiriman ul li button h1 {
+  border-right: 1px solid white;
+}
+
 #list-pengiriman ul {
   display: flex;
-  gap: 100px !important;
 }
 
 #grup-filter {
@@ -339,8 +352,61 @@ body {
 #container-form-packet form div label input {
   padding: 10px 20px;
 }
+/* * CUSTOMERS STYLING */
 
-/* * MITRA STYLING */
+#filter-customers div {
+  border: 2px solid red;
+}
+
+#list-customers div {
+  border: 2px solid red;
+}
+
+/* * PAYMENT STYLING */
+/* #list_item_paymnet li {
+  height: 50px;
+  overflow-y: auto;
+  color: white;
+} */
+
+#filter-payment {
+  padding: 20px;
+  background-color: var(--color-primary-bright);
+}
+
+#payment-item {
+  background-color: var(--color-primary-bright);
+  padding: 20px;
+}
+
+#payment-item ul {
+  background-color: var(--color-primary);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+#payment-item ul li {
+  border-right: 1px solid white;
+  color: white;
+}
+
+/* *COURIR STYLING */
+
+#list-courir ul {
+  padding: 5px;
+  background-color: var(--color-primary);
+  border-radius: 10px;
+}
+
+#list-courir li {
+  border-right: 1px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+/* * MITRA STYLING
 #container-mitra div {
   background-color: var(--color-secondary-bg);
 }
@@ -348,6 +414,11 @@ body {
 #container-mitra div img {
   width: 120px;
   height: 120px;
+} */
+
+/* * REPORT STYLING */
+#list-report div {
+  border: 2px solid red;
 }
 
 /* * SETTING STYLING */

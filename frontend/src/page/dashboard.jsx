@@ -50,22 +50,22 @@ function Dashboard() {
       custumer: "Kelvin hutapeaw",
       quantity: "5 Qty",
     },
-    {
-      id: 6,
-      name: "paket 6",
-      date: "23 september 2025",
-      price: "Rp.480.000.00",
-      custumer: "jennie sihombing",
-      quantity: "4 Qty",
-    },
-    {
-      id: 6,
-      name: "paket 6",
-      date: "23 september 2025",
-      price: "Rp.480.000.00",
-      custumer: "jennie sihombing",
-      quantity: "4 Qty",
-    },
+    // {
+    //   id: 6,
+    //   name: "paket 6",
+    //   date: "23 september 2025",
+    //   price: "Rp.480.000.00",
+    //   custumer: "jennie sihombing",
+    //   quantity: "4 Qty",
+    // },
+    // {
+    //   id: 6,
+    //   name: "paket 6",
+    //   date: "23 september 2025",
+    //   price: "Rp.480.000.00",
+    //   custumer: "jennie sihombing",
+    //   quantity: "4 Qty",
+    // },
   ];
 
   // }
@@ -74,15 +74,16 @@ function Dashboard() {
 
   return (
     <>
-      <section className="col-span-17 ml-3 " id="Container-dashboard">
+      <section className="w-screen h-screen" id="Container-dashboard">
         <div className="flex flex-col gap-5 " id="dashboard">
           <Navbar></Navbar>
           <div
-            className="grid gap-6 grid-cols-3 grid-rows-2 w-full h-full"
+            className="grid gap-6 grid-cols-3 grid-rows-2 w-full h-full
+            overflow-hidden "
             id="dashboard-card"
           >
             {/* BERISI CARD UNTUK SETIAP FITUR YANG PENTING */}
-            <div className="shadow-lg">
+            <div className="shadow-lg flex">
               <DiagramFinansialBar item_data={item_data_packet} />
             </div>
             <div className="shadow-lg" id="pendapatan-card">
@@ -128,24 +129,28 @@ function Dashboard() {
                   </li>
                   <li>
                     <CheckCircle />
-                    <h1>paket 2</h1>
+                    <h1>pa 2</h1>
                   </li>
                 </ul>
               </div>
             </div>
-            <div className="shadow-lg grid grid-cols-1 gap-2 w-full h-full overflow-hidden">
-              <h1>proses pengiriman:</h1>
+            <div
+              className="shadow-lg grid grid-cols-1 gap-2 w-full"
+              id="list_pengiriman_dashboard"
+            >
               {listCustomer.map((item) => {
                 return (
                   <>
-                    <ul className="grid gap-5 w-ful h-full">
+                    <ul
+                      className="grid gap-5 w-ful h-full"
+                      id="list_item_dashboard"
+                    >
                       <li className="grid gap-4">
-                        <button className="flex">
-                          <h1>{item.name}</h1>
-                          <h1>{item.date}</h1>
-                          <h1>{item.price}</h1>
-                          <h1>{item.custumer}</h1>
-                          <h1>{item.quantity}</h1>
+                        <button className="grid grid-cols-12">
+                          <h1 className="col-span-2">{item.name}</h1>
+                          <h1 className="col-span-4">{item.date}</h1>
+                          <h1 className="col-span-3">{item.price}</h1>
+                          <h1 className="col-span-3">{item.custumer}</h1>
                         </button>
                       </li>
                     </ul>

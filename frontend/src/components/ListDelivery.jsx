@@ -66,7 +66,7 @@ function ListDelivery({
 
   return (
     <>
-      <div id="list-pengiriman">
+      <div id="list-pengiriman" className="grid gap-2">
         {listCustomer.map((item) => {
           return (
             <>
@@ -80,12 +80,13 @@ function ListDelivery({
                       setCustumer(item.custumer);
                       setQuantity(item.quantity);
                     }}
+                    className="grid grid-cols-15"
                   >
-                    <h1>{item.name}</h1>
-                    <h1>{item.date}</h1>
-                    <h1>{item.price}</h1>
-                    <h1>{item.custumer}</h1>
-                    <h1>{item.quantity}</h1>
+                    <h1 className="col-span-3">{item.name}</h1>
+                    <h1 className="col-span-3">{item.date}</h1>
+                    <h1 className="col-span-3">{item.price}</h1>
+                    <h1 className="col-span-3">{item.custumer}</h1>
+                    <h1 className="col-span-3">{item.quantity}</h1>
                   </button>
                 </li>
               </ul>

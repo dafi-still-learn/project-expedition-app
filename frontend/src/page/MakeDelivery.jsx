@@ -7,7 +7,7 @@ function Buat_pengiriman() {
   const [asal, setAsalD] = useState("");
   const [tujuan, setTujuanD] = useState("");
   const [berat, setBeratD] = useState("");
-  const [mitra, setMitraD] = useState("");
+  const [jalur, setJalurD] = useState("");
 
   return (
     <>
@@ -27,7 +27,7 @@ function Buat_pengiriman() {
                   setAsalD={setAsalD}
                   setTujuanD={setTujuanD}
                   setBeratD={setBeratD}
-                  setMitraD={setMitraD}
+                  setJalurD={setJalurD}
                 />
               </div>
             </div>
@@ -60,7 +60,7 @@ function Buat_pengiriman() {
                 </li>
                 <li>
                   <h1>MITRA PENGIRIMAN:</h1>
-                  <h1>{mitra}</h1>
+                  <h1>{jalur}</h1>
                 </li>
               </ul>
             </div>

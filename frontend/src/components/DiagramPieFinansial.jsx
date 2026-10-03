@@ -22,11 +22,12 @@ function DiagramFinansial({ item_data }) {
             responsive: true,
             maintainAspectRatio: false,
           },
+          BorderWidth: "100px",
         },
       ],
     };
     const chart = new Chart(canvas, {
-      type: "doughnut",
+      type: "pie",
       data: data,
     });
 

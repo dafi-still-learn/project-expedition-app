@@ -68,7 +68,6 @@ function Dashboard() {
     // },
   ];
 
-  // }
   const item_data = [123, 25, 13];
   const item_data_packet = [99, 32, 61];
 
@@ -135,26 +134,18 @@ function Dashboard() {
               </div>
             </div>
             <div
-              className="shadow-lg grid grid-cols-1 gap-2 w-full"
+              className="shadow-lg grid gap-1 grid-cols-1 grid-rows-6  w-full"
               id="list_pengiriman_dashboard"
             >
               {listCustomer.map((item) => {
                 return (
-                  <>
-                    <ul
-                      className="grid gap-5 w-ful h-full"
-                      id="list_item_dashboard"
-                    >
-                      <li className="grid gap-4">
-                        <button className="grid grid-cols-12">
-                          <h1 className="col-span-2">{item.name}</h1>
-                          <h1 className="col-span-4">{item.date}</h1>
-                          <h1 className="col-span-3">{item.price}</h1>
-                          <h1 className="col-span-3">{item.custumer}</h1>
-                        </button>
-                      </li>
-                    </ul>
-                  </>
+                  <ul className="grid gap-1 w-full h-full" id="ul-pengiriman">
+                    <li className="row-span-1 grid grid-cols-9">
+                      <h1 className="col-span-2">{item.name}</h1>
+                      <h1 className="col-span-4">{item.date}</h1>
+                      <h1 className="col-span-3">{item.custumer}</h1>
+                    </li>
+                  </ul>
                 );
               })}
             </div>

@@ -1,0 +1,57 @@
+#Container-login,
+#Container-register {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#Form-login,
+#Form-register {
+  padding: 20px;
+  background-color: var(--color-for-cards);
+  width: 520px;
+  height: 480px;
+}
+
+#Form-login h1,
+#Form-register h1 {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+#Form-login label input,
+#Form-register label input {
+  padding: 15px;
+  background-color: var(--color-secondary-bg);
+}
+
+#Form-login label input:focus,
+#Form-register label input:active,
+#Form-register label input:hover {
+  border: 2px solid black;
+}
+
+#Form-login button,
+#Form-register {
+  width: 100px;
+}
+
+#Form-login div button {
+  width: 300px;
+}
+
+#Form-login div button,
+#Form-login button,
+#Form-register div button,
+#Form-register button {
+  background-color: var(--color-primary);
+  padding: 10px 20px;
+  border-radius: 6px;
+  color: white;
+}
+
+/* REGSITER STYLING */
+#Form-register {
+  width: 650px;
+  height: 600px;
+}

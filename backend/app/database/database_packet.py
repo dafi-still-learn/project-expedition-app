@@ -3,7 +3,7 @@ import pandas as pd
 
 
 def membuat_database_paket():
-    conn = ps.connect(dbname="paket", user="postgres",
+    conn = ps.connect(dbname="packet", user="postgres",
                       password="Jakgeyye123!@#", host="localhost", port="5432")
     try:
         cursor = conn.cursor()
@@ -17,7 +17,7 @@ def membuat_database_paket():
             asal_paket VARCHAR(255),
             tujuan_paket VARCHAR(255),
             berat_paket VARCHAR(255),
-            mitra_pengiriman VARCHAR(255)
+            jalur_pengiriman VARCHAR(255)
         )
         """)
 
@@ -32,17 +32,17 @@ def membuat_database_paket():
         conn.close()
 
 
-def input_database_paket(nama_paket, jenis_paket, jumlah_paket, asal_paket, tujuan_paket, berat_paket, mitra_pengiriman):
-    conn = ps.connect(dbname="paket", user="postgres",
+def input_database_paket(nama_paket, jenis_paket, jumlah_paket, asal_paket, tujuan_paket, berat_paket, jalur_pengiriman):
+    conn = ps.connect(dbname="packet", user="postgres",
                       password="Jakgeyye123!@#", host="localhost", port="5432")
 
     try:
         cursor = conn.cursor()
 
         cursor.execute("""
-        INSERT INTO paket(nama_paket, jenis_paket, jumlah_paket, asal_paket, tujuan_paket, berat_paket, mitra_pengiriman)
+        INSERT INTO paket(nama_paket, jenis_paket, jumlah_paket, asal_paket, tujuan_paket, berat_paket, jalur_pengiriman)
         VALUES(%s, %s, %s, %s, %s, %s, %s) 
-        """, (nama_paket, jenis_paket, jumlah_paket, asal_paket, tujuan_paket, berat_paket, mitra_pengiriman))
+        """, (nama_paket, jenis_paket, jumlah_paket, asal_paket, tujuan_paket, berat_paket, jalur_pengiriman))
 
         conn.commit()
 
@@ -57,7 +57,7 @@ def input_database_paket(nama_paket, jenis_paket, jumlah_paket, asal_paket, tuju
 
 
 def tampilkan_database_paket():
-    conn = ps.connect(dbname="paket", user="postgres",
+    conn = ps.connect(dbname="packet", user="postgres",
                       password="Jakgeyye123!@#", host="localhost", port="5432")
 
     try:
@@ -70,7 +70,7 @@ def tampilkan_database_paket():
         data = cursor.fetchall()
 
         df = pd.DataFrame(
-            data, columns=["id", "nama_paket", "jenis_paket", "jumlah_paket", "asal_paket", "tujuan_paket", "berat_paket", "mitra_pengiriman"])
+            data, columns=["id", "nama_paket", "jenis_paket", "jumlah_paket", "asal_paket", "tujuan_paket", "berat_paket", "jalur_pengiriman"])
 
         print(df)
 

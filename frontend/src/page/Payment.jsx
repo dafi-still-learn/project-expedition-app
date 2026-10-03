@@ -48,30 +48,6 @@ function Pembayaran() {
       custumer: "jennie sihombing",
       quantity: "4 Qty",
     },
-    {
-      id: 6,
-      name: "paket 6",
-      date: "23 september 2025",
-      price: "Rp.480.000.00",
-      custumer: "jennie sihombing",
-      quantity: "4 Qty",
-    },
-    {
-      id: 6,
-      name: "paket 6",
-      date: "23 september 2025",
-      price: "Rp.480.000.00",
-      custumer: "jennie sihombing",
-      quantity: "4 Qty",
-    },
-    {
-      id: 6,
-      name: "paket 6",
-      date: "23 september 2025",
-      price: "Rp.480.000.00",
-      custumer: "jennie sihombing",
-      quantity: "4 Qty",
-    },
   ];
   return (
     <>
@@ -85,12 +61,12 @@ function Pembayaran() {
               <div>berisi filter payment</div>
             </div>
             <div
-              className="row-span-4 grid gap-2 overflow-y-auto"
+              className="row-span-4 grid gap-1 grid-rows-12 overflow-y-auto"
               id="payment-item"
             >
               {listCustomer.map((item) => {
                 return (
-                  <ul className="grid grid-cols-12 gap-2">
+                  <ul className="grid grid-cols-12 gap-2 row-span-1">
                     <li className="col-span-1">{item.name}</li>
                     <li className="col-span-3">{item.date}</li>
                     <li className="col-span-4">{item.price}</li>

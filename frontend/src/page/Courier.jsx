@@ -63,10 +63,13 @@ function Kurir() {
                 berisi filter kurir darat/laut/udara
               </div>
             </div>
-            <div className="row-span-4 grid gap-2" id="list-courir">
+            <div
+              className="row-span-4 grid gap-1 grid-rows-12"
+              id="list-courir"
+            >
               {courir_standby.map((item) => {
                 return (
-                  <ul className="grid grid-cols-12">
+                  <ul className="row-span-1 grid grid-cols-12">
                     <li className="col-span-3">{item.nama}</li>
                     <li className="col-span-3">{item.jalur}</li>
                     <li className="col-span-3">{item.domisili_sekarang}</li>

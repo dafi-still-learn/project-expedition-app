@@ -17,7 +17,7 @@ function Lacak_paket() {
               <form
                 action=""
                 className="border-r-black grid gap-2"
-                id="form-packet"
+                id="form-packetan"
               >
                 <label htmlFor="enter_id" className="flex flex-col gap-2">
                   masukkan nomor paket

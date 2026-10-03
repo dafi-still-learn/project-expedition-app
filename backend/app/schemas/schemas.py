@@ -33,4 +33,4 @@ class data_pengiriman(BaseModel):
     asal_paket: str
     tujuan_paket: str
     berat_paket: str
-    mitra_pengiriman: str
+    jalur_pengiriman: str

@@ -8,7 +8,7 @@ function FormDelivery({
   setAsalD,
   setTujuanD,
   setBeratD,
-  setMitraD,
+  setJalurD,
 }) {
   const [name, setName] = useState("");
   const [jenis, setJenis] = useState("");
@@ -16,7 +16,7 @@ function FormDelivery({
   const [asal, setAsal] = useState("");
   const [tujuan, setTujuan] = useState("");
   const [berat, setBerat] = useState("");
-  const [mitra, setMitra] = useState("");
+  const [jalur, setJalur] = useState("");
 
   const getData = () => {
     setNameD(name);
@@ -25,7 +25,7 @@ function FormDelivery({
     setAsalD(asal);
     setTujuanD(tujuan);
     setBeratD(berat);
-    setMitraD(mitra);
+    setJalurD(jalur);
   };
 
   getData();
@@ -40,7 +40,7 @@ function FormDelivery({
       asal == "" ||
       tujuan == "" ||
       berat == "" ||
-      mitra == ""
+      jalur == ""
     ) {
       console.log("ISI FORM DATA PENGIRIMAN DENGAN BENAR");
     } else {
@@ -51,11 +51,15 @@ function FormDelivery({
         asal,
         tujuan,
         berat,
-        mitra,
+        jalur,
       );
 
       if (result === true) {
         console.log("data anda berhasil dikirim");
+        console.log(
+          "harga paket dari barang yang akan dikirim",
+          result["data_harga"],
+        );
       } else {
         console.log("data anda gagal dikirim");
       }
@@ -133,29 +137,22 @@ function FormDelivery({
               />
             </label>
             <label htmlFor="packet-mitra">
-              mitra pengiriman
+              jalur pengiriman
               <select
                 name="packet-mitra"
                 id=""
-                onChange={(e) => setMitra(e.target.value)}
+                onChange={(e) => setJalur(e.target.value)}
               >
-                <option value="JNE Express">JNE Express</option>
-                <option value="J&T Ekspress">J$T Ekspress</option>
-                <option value="SiCepat Ekspress">SiCepat Ekspres</option>
-                <option value="Pos Indonesia">Pos Indonesia</option>
-                <option value="TIKI (TITIPAN KILAT)">
-                  TIKI "TITIPAN KILAT"
-                </option>
-                <option value="Lion Parcel">Lion Parcel</option>
-                <option value="SAPX Ekspress">SAPX Ekspress</option>
-                <option value="Anteraja">Anteraja</option>
+                <option value="darat">Darat</option>
+                <option value="laut">Laut</option>
+                <option value="udara">Udara</option>
               </select>
             </label>
           </div>
           <div className="row-span-2">
             <label htmlFor="price">
               price:
-              <h1>Rp.530.000.00</h1>
+              <h1>{}</h1>
             </label>
           </div>
           <button type="submit" className="row-span-1">

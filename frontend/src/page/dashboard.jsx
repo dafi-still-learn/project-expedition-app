@@ -50,22 +50,6 @@ function Dashboard() {
       custumer: "Kelvin hutapeaw",
       quantity: "5 Qty",
     },
-    // {
-    //   id: 6,
-    //   name: "paket 6",
-    //   date: "23 september 2025",
-    //   price: "Rp.480.000.00",
-    //   custumer: "jennie sihombing",
-    //   quantity: "4 Qty",
-    // },
-    // {
-    //   id: 6,
-    //   name: "paket 6",
-    //   date: "23 september 2025",
-    //   price: "Rp.480.000.00",
-    //   custumer: "jennie sihombing",
-    //   quantity: "4 Qty",
-    // },
   ];
 
   const item_data = [123, 25, 13];

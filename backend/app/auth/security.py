@@ -5,7 +5,7 @@ from time import time
 
 ph = PasswordHasher()
 
-
+# pasangang key jangan di otak atik
 def make_access_token(private_key, user_id):
     payload = {
         'sub': user_id,
@@ -43,9 +43,10 @@ def make_refresh_token(private_key, user_id):
 def hash_password(password: str):
     return ph.hash(password)
 
-
+# fungsi ini mengecek apakah password yang dimasukkan sama dengan password yang di hash dari database
 def verify_password(password: str, hashed_password: str):
     try:
         return ph.verify(hashed_password, password)
-    finally:
+    except Exception as e: 
+        print(f"Password verification failed: {e}")
         return False

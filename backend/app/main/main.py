@@ -2,7 +2,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.router.router import router
 from fastapi import FastAPI
 
-app = FastAPI()
+app = FastAPI(lifespan="on")
 
 app.include_router(router)
 

@@ -5,8 +5,8 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-PRIVATE_KEY_PATH = BASE_DIR / "keys" / "private_key.pem"
-PUBLIC_KEY_PATH = BASE_DIR / "keys" / "public_key.pem"
+PRIVATE_KEY_PATH = BASE_DIR / "auth" / "keys" / "private_key.pem"
+PUBLIC_KEY_PATH = BASE_DIR / "auth" / "keys" / "public_key.pem"
 
 
 def load_private_key():
@@ -22,3 +22,6 @@ def load_public_key():
         return serialization.load_pem_public_key(
             f.read(),
         )
+
+private_key = load_private_key()
+public_key = load_public_key()

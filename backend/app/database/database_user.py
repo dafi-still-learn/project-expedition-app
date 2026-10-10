@@ -1,6 +1,8 @@
 import psycopg2 as ps
 import pandas as pd
 
+role = 'admin'
+
 
 def membuat_database_user():
     conn = ps.connect(dbname="account_user", user="postgres",
@@ -14,7 +16,8 @@ def membuat_database_user():
         id SERIAL PRIMARY KEY,
         email VARCHAR(255),
         username VARCHAR(255),
-        password VARCHAR(255))
+        password VARCHAR(255),
+        role VARCHAR(255))
         """)
 
         print("database berhasil di buat")
@@ -66,9 +69,9 @@ def input_tabel_user(email, username, password):
             return False
 
         cursor.execute("""
-        INSERT INTO akun(email, username, password)
-        VALUES(%s, %s, %s)               
-        """, (email, username, password))
+        INSERT INTO akun(email, username, password. role)
+        VALUES(%s, %s, %s, %s)               
+        """, (email, username, password, role))
 
         print("data bershasil di tambahkan")
 

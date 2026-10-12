@@ -1,4 +1,4 @@
-import Navbar from "../components/Navbar";
+import Navbar from "../components/navbar";
 import { CheckCircle } from "@boxicons/react";
 // import ApexMaps from "apexmaps";
 import LeafletMap from "../services/openStreetMap";

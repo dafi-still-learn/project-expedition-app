@@ -5,7 +5,7 @@ role = 'admin'
 
 
 def membuat_database_user():
-    conn = ps.connect(dbname="account_user", user="postgres",
+    conn = ps.connect(dbname="expedition_db", user="expedition_app",
                       password="Jakgeyye123!@#", host="localhost", port="5432")
 
     try:
@@ -32,8 +32,8 @@ def membuat_database_user():
 
 
 def tampilkan_tabel_user():
-    conn = ps.connect(dbname="account_user", user="postgres",
-                      password="Jakgeyye123!@#", host="localhost", port="5432")
+    conn = ps.connect(dbname="expedition_db", user="expedition_app",
+                          password="Jakgeyye123!@#", host="localhost", port="5432")
 
     try:
         cursor = conn.cursor()
@@ -58,8 +58,8 @@ def tampilkan_tabel_user():
 
 # DITAMBAHKAN ATAU DIGUNKAN PADA FORM REGISTER KHUSUS NYA PADA BUTTON NYA, AKAN MEMBERI PENGINGAT JIKA KOSONG
 def input_tabel_user(email, username, password):
-    conn = ps.connect(dbname="account_user", user="postgres",
-                      password="Jakgeyye123!@#", host="localhost", port="5432")
+    conn = ps.connect(dbname="expedition_db", user="expedition_app",
+                          password="Jakgeyye123!@#", host="localhost", port="5432")
 
     try:
         cursor = conn.cursor()
@@ -88,8 +88,8 @@ def input_tabel_user(email, username, password):
 
 # DITAMBAHKAN PADA FORM LOGIN, MEMVALIDASI DATA JIKA SAAT INGIN DIMASUKKAN PADA LOGIN DAN PEMATIKANYA PADA BUTTON FORM LOGIN
 def validate_akun_register(email, username):
-    conn = ps.connect(dbname="account_user", user="postgres",
-                      password="Jakgeyye123!@#", host="localhost", port="5432")
+    conn = ps.connect(dbname="expedition_db", user="expedition_app",
+                          password="Jakgeyye123!@#", host="localhost", port="5432")
 
     try:
         cursor = conn.cursor()
@@ -117,9 +117,8 @@ def validate_akun_register(email, username):
 
 
 def validate_akun_login(username, password):
-    conn = ps.connect(dbname="account_user", user="postgres",
-                      password="Jakgeyye123!@#", host="localhost", port="5432")
-
+    conn = ps.connect(dbname="expedition_db", user="expedition_app",
+                          password="Jakgeyye123!@#", host="localhost", port="5432")
     try:
         cursor = conn.cursor()
 
@@ -152,8 +151,8 @@ def validate_akun_login(username, password):
 
 
 def lupa_password_user(email):
-    conn = ps.connect(dbname="account_user", user="postgres",
-                      password="Jakgeyye123!@#", host="localhost", port="5432")
+    conn = ps.connect(dbname="expedition_db", user="expedition_app",
+                          password="Jakgeyye123!@#", host="localhost", port="5432")
     try:
         cursor = conn.cursor()
 
@@ -177,8 +176,8 @@ def lupa_password_user(email):
 
 
 def tampilkan_akun():
-    conn = ps.connect(dbname="account_user", user="postgres",
-                      password="Jakgeyye123!@#", host="localhost", port="5432")
+    conn = ps.connect(dbname="expedition_db", user="expedition_app",
+                          password="Jakgeyye123!@#", host="localhost", port="5432")
 
     try:
         cursor = conn.cursor()

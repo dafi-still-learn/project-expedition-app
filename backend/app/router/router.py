@@ -1,77 +1,77 @@
-from app.database.database_user import membuat_database_user, input_tabel_user, validate_akun_login, validate_akun_register, lupa_password_user, tampilkan_akun
-from app.database.database_packet import membuat_database_paket, input_database_paket, tampilkan_database_paket
-from fastapi import APIRouter
-from app.service import logical_transaksi
-from app.schemas.schemas import login, register, lupa_password, data_pengiriman
+# from app.database.database_user import membuat_database_user, input_tabel_user, validate_akun_login, validate_akun_register, lupa_password_user, tampilkan_akun
+# from app.database.database_packet import membuat_database_paket, input_database_paket, tampilkan_database_paket
+# from fastapi import APIRouter
+# from app.service import logical_transaksi
+# from app.schemas.schemas import login, register, lupa_password, data_pengiriman
 
-router = APIRouter()
-
-
-membuat_database_user()
-membuat_database_paket()
+# router = APIRouter()
 
 
-@router.post("/login")
-def login_user(data: login):
-    result_login = validate_akun_login(data.username, data.password)
-
-    tampilkan_akun()
-    print("hasil dari result login", result_login)
-    if result_login['success']:
-        print("LOGIN SUKSES")
-
-        return {
-            "user_id": result_login['user_id'],
-            "success": result_login['success']
-        }
-    else:
-        return False
+# membuat_database_user()
+# membuat_database_paket()
 
 
-@router.post("/register")
-def register_user(data: register):
-    result_register = validate_akun_register(
-        data.email, data.username)
+# @router.post("/login")
+# def login_user(data: login):
+#     result_login = validate_akun_login(data.username, data.password)
 
-    tampilkan_akun()
-    print("hasil dari register database", result_register)
-    if result_register == True:
-        input_tabel_user(data.email, data.username, data.password)
+#     tampilkan_akun()
+#     print("hasil dari result login", result_login)
+#     if result_login['success']:
+#         print("LOGIN SUKSES")
 
-        print("validasi berhasil")
-
-        return True
-
-    else:
-        return False
-
-
-@router.post("/email")
-def lupa_akun_user(data: lupa_password):
-    data = lupa_password_user(data.email)
-
-    if data == False:
-        print("EMAIL YANG DIMASUKKAN TIDAK TERSEDIA")
-
-        return True
-
-    return True
+#         return {
+#             "user_id": result_login['user_id'],
+#             "success": result_login['success']
+#         }
+#     else:
+#         return False
 
 
-@router.post("/data_pengiriman")
-def data_pengiriman_user(data: data_pengiriman):
+# @router.post("/register")
+# def register_user(data: register):
+#     result_register = validate_akun_register(
+#         data.email, data.username)
 
-    jarak_paket = data.tujuan_paket - data.asal_paket
+#     tampilkan_akun()
+#     print("hasil dari register database", result_register)
+#     if result_register == True:
+#         input_tabel_user(data.email, data.username, data.password)
 
-    data_harga = logical_transaksi(
-        data.berat_paket, jarak_paket, data.jalur, data.jenis_paket)
+#         print("validasi berhasil")
 
-    data = input_database_paket(data.nama_paket, data.jenis_paket, data.jumlah_paket,
-                                data.asal_paket, data.tujuan_paket, data.berat_paket, data.jalur_pengiriman)
+#         return True
 
-    tampilkan_database_paket()
+#     else:
+#         return False
 
-    return {
-        'data_paket': data,
-        'data_harga': data_harga
-    }
+
+# @router.post("/email")
+# def lupa_akun_user(data: lupa_password):
+#     data = lupa_password_user(data.email)
+
+#     if data == False:
+#         print("EMAIL YANG DIMASUKKAN TIDAK TERSEDIA")
+
+#         return True
+
+#     return True
+
+
+# @router.post("/data_pengiriman")
+# def data_pengiriman_user(data: data_pengiriman):
+
+#     jarak_paket = data.tujuan_paket - data.asal_paket
+
+#     data_harga = logical_transaksi(
+#         data.berat_paket, jarak_paket, data.jalur, data.jenis_paket)
+
+#     data = input_database_paket(data.nama_paket, data.jenis_paket, data.jumlah_paket,
+#                                 data.asal_paket, data.tujuan_paket, data.berat_paket, data.jalur_pengiriman)
+
+#     tampilkan_database_paket()
+
+#     return {
+#         'data_paket': data,
+#         'data_harga': data_harga
+#     }

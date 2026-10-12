@@ -33,6 +33,9 @@ def save_key_to_file(private_key, public_key):
             encoding=serialization.Encoding.PEM,
             format=serialization.PublicFormat.SubjectPublicKeyInfo
         ))
-        
-data_key = generate_key()
-save_key_to_file(data_key['private_key'], data_key['public_key'])
+def main():
+    data_key = generate_key()
+    save_key_to_file(data_key['private_key'], data_key['public_key'])
+    
+if __name__ == "__main__":
+    main()

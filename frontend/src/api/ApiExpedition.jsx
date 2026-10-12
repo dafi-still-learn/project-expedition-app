@@ -3,16 +3,18 @@ import { Outlet } from "react-router-dom";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import Setting from "../page/Setting";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../components/sidebar";
+
 function ExpeditionPage() {
   const location = useLocation();
   const [openSetting, setOpenSetting] = useState(false);
+  const [token, setToken] = useState(localStorage.getItem("token") || null);
   return (
     <>
       <div className="flex w-screen h-screen" id="container-expedition">
         <Sidebar openSetting={() => setOpenSetting(true)} />
 
-        <Outlet context={{ location, openSetting }} />
+        <Outlet context={{ location, openSetting, token, setToken }} />
 
         {openSetting && <Setting onClose={() => setOpenSetting(false)} />}
       </div>

@@ -1,8 +1,18 @@
 from fastapi.middleware.cors import CORSMiddleware
-from app.router.router import router
+from app.auth.route import router
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
-app = FastAPI(lifespan="on")
+
+@asynccontextmanager
+async def lifespan(app:lifespan):
+    print("server sedang dimulai")
+    
+    yield
+    
+    print("server sedang dihentikan")
+    
+app = FastAPI(lifespan=lifespan)
 
 app.include_router(router)
 

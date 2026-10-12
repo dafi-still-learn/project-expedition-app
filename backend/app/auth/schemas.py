@@ -1,3 +1,5 @@
+# MEMASTIKAN DATA YANG DITERIMA OLEH ROUTER PADA ENDPOINT YANG BERISI AUTH
+
 from pydantic import BaseModel, EmailStr
 from enum import Enum
 

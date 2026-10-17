@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { RegisterOperator } from "../api/AuthApi";
 
-function Login() {
+function Register() {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -24,10 +24,10 @@ function Login() {
       console.log("PASSWORD USER REGISTER", password);
 
       console.log("hasil dari register database", result);
-      if (result === true) {
+      if (result.data === true) {
         navigate("/login");
       }
-      if (result === false) {
+      if (result.data === false || result.data == null) {
         alert("gmail atau username ini sudah digunakan");
       }
     }
@@ -81,4 +81,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;

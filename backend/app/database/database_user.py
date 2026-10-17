@@ -103,9 +103,9 @@ def validate_akun_register(email, username):
         user = cursor.fetchone()
 
         if user is not None:
-            return True
+            return False
 
-        return False
+        return True
     except ps.Error as e:
         print(e)
         conn.rollback()

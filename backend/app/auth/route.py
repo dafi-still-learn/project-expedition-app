@@ -2,7 +2,7 @@
 # MELAKUKAN ENDPOINT DARI FRONTEND DAN MENGEMBALIKAN NILAI BERDASARKAN DATA YANG DITERIMA DAN DIPROSES
 from fastapi import APIRouter
 from app.auth.schemas import requestLogin, requestRegister, roleUser
-from app.database.database_user import membuat_database_user, input_tabel_user, validate_akun_login, tampilkan_akun
+from app.database.database_user import membuat_database_user, input_tabel_user, validate_akun_login, tampilkan_akun, validate_akun_register
 from app.auth.security import make_access_token, make_refresh_token, hash_password, verify_password
 from app.auth.keys import private_key, public_key
 from app.auth.service import check_refresh_token
@@ -21,18 +21,19 @@ membuat_database_user()
 def login(data: requestLogin):
     password_database_akun = check_hash_password(data.username)
     
-    data_verifikasi_hashing = ph.verify(password_database_akun, data.password)
+    data_verifikasi_hashing = verify_password(password_database_akun, data.password)
+    # data_verifikasi_hashing = ph.verify(password_database_akun, data.password)
         
-    print("hasil validasi data", data_verifikasi_hashing)
+    print("hasil validasi data", password_database_akun)
 
     if data_verifikasi_hashing == True:
         data_authentication = check_credential_user(data.username)
     
         print("hasil authentication",data_authentication)
-        if data_authentication.success == True:
+        if data_authentication['success'] == True:
             data_token = {
-                    "access_token": make_access_token(private_key, data_verifikasi_hashing["user_id"]),
-                    "refresh_token": make_refresh_token(private_key, data_verifikasi_hashing["user_id"])
+                    "access_token": make_access_token(private_key, data_authentication["user_id"]),
+                    "refresh_token": make_refresh_token(private_key, data_authentication["user_id"])
             }
    
             return {
@@ -48,12 +49,16 @@ def register(data: requestRegister):
     hashed_password = hash_password(data.password)
     tampilkan_akun()
     
+    hasil_validasi_register = validate_akun_register(data.email, data.username)
     print("ini register dari database")
-    data_register = input_tabel_user(
-        data.email, data.username, hashed_password, roleUser.OPERATOR)
+    
+    if hasil_validasi_register == True:
+        data_register = input_tabel_user(
+            data.email, data.username, hashed_password, roleUser.OPERATOR)
 
-    return data_register
-
+        return data_register
+    else:
+        print("salah")
 @router.get("/refresh_token")
 def refresh_token(refresh_token: str):
     data_token = check_refresh_token(refresh_token, public_key)

@@ -1,19 +1,19 @@
 # FILE TEMPAT MENENTUKAN FITUR APA SAJA YANG DIBERIKAN JIKA ROLE TERSEBUT ADMIN ATAU USER
 import psycopg2 as ps
-
+from psycopg2.extras import RealDictCursor
 # MEMERIKASI DATA DARI DATBASE BERDASARKAN DARI LOGIN SEBELUM MEMBUAT TOKEN
 def check_credential_user(username):
     conn = ps.connect(dbname="expedition_db", user="expedition_app",
                               password="Jakgeyye123!@#", host="localhost", port="5432")
 
     try:
-        cursor = conn.cursor()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
         
         cursor.execute("""
         SELECT id, username, email, password
         FROM akun
         WHERE username = %s
-        """, (username))
+        """, (username,))
         
         data = cursor.fetchone()
         
@@ -30,27 +30,29 @@ def check_credential_user(username):
         conn.rollback()        
 
     finally:
-        conn.close
+        conn.close()
         
 def check_hash_password(username):
     conn = ps.connect(dbname="expedition_db", user="expedition_app",
                               password="Jakgeyye123!@#", host="localhost", port="5432")
     
     try:
-        cursor = conn.cursor()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
         
         cursor.execute("""
-        SELECT password
+        SELECT id, email, username, password
         FROM akun
-        WHERE username= %s
-        """, (username))
+        WHERE username = %s
+        """, (username,))
         
         data_password = cursor.fetchone()
         
-        print("ini hashing password", data_password)
-        
-        return data_password
-    
+        print("ini hashing password", data_password['password'])
+        if data_password is None:
+            return None
+                
+
+        return data_password["password"]
     except Exception as e:
         print("terjadi error", e)
         conn.rollback()
@@ -59,4 +61,4 @@ def check_hash_password(username):
         conn.close()           
 
 
-
+print(check_hash_password("dafi2"))

@@ -13,7 +13,6 @@ def make_access_token(private_key, user_id):
         'iat': time(),
         'exp': time() + 900
     }
-
     access_token = jwt.encode(
         payload,
         private_key,
@@ -44,7 +43,7 @@ def hash_password(password: str):
     return ph.hash(password)
 
 # fungsi ini mengecek apakah password yang dimasukkan sama dengan password yang di hash dari database
-def verify_password(password: str, hashed_password: str):
+def verify_password(hashed_password: str, password: str):
     try:
         return ph.verify(hashed_password, password)
     except Exception as e: 

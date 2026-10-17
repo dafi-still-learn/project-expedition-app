@@ -1,9 +1,9 @@
 // TEMPAT MELAKUKAN ROUTE SESUAI ROLE
 import { Navigate, Outlet } from "react-router-dom";
-import authContext from "../auth/AuthContext";
+import { UseAuth } from "../auth/AuthContext";
 
 export default function RoleRoute({ allowedRoles }) {
-  const { role, loading } = authContext();
+  const { role, loading } = UseAuth();
 
   if (loading) {
     return <div>Loading...</div>;

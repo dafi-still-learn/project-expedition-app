@@ -2,8 +2,8 @@
 import "../index.css";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import protectedRoute from "../auth/ProctedRoute";
-import { getDataAccessTokenLogin } from "../api/AuthApi";
+// import protectedRoute from "../auth/ProctedRoute";
+import { LoginOperator } from "../api/AuthApi";
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -16,15 +16,18 @@ function Login() {
     if (username == "" || password == "") {
       alert("isi dengan benar");
     } else {
-      const result = await getDataAccessTokenLogin(username, password);
+      const result = await LoginOperator(username, password);
 
       console.log("USERNAME USER", username);
       console.log("PASSWORD USER", password);
       console.log("RESULT LOGIN", result);
 
       // AKAN MENGEMBALIKAN TOKEN DAN MEMANGGIL FUNGSI PROTECTED ROUTE UNTUK MENGARAHKAN KE HALAMAN DASHBOARD JIKA ADA TOKEN YANG VALID
-      localStorage.setItem("token", result.data.token);
-      protectedRoute(result.data.token);
+      console.log(result);
+
+      // console.log("hasil dari tokenisasi users", result.data_token);
+      // localStorage.setItem("token", result.data_token);
+      // protectedRoute(result.data_token);
     }
   };
 

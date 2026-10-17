@@ -2,7 +2,7 @@
 import "../index.css";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { sendRegister } from "../services/sendRegister";
+import { RegisterOperator } from "../api/AuthApi";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -17,7 +17,7 @@ function Login() {
     if (email == "" || username == "" || password == "") {
       alert("isi dengan benar");
     } else {
-      const result = await sendRegister(email, username, password);
+      const result = await RegisterOperator(email, username, password);
 
       console.log("EMAIL USER REGISTER", email);
       console.log("USERNAME USER REGISTER", username);

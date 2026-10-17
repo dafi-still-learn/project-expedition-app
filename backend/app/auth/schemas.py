@@ -5,8 +5,8 @@ from enum import Enum
 
 
 class roleUser(str, Enum):
-    ADMIN = 'admin',
-    OPERATOR = 'operator',
+    ADMIN = "ADMIN"
+    OPERATOR = "OPERATOR"
 
 
 class requestLogin(BaseModel):

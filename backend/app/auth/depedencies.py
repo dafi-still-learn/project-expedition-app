@@ -10,7 +10,7 @@ def check_credential_user(username):
         cursor = conn.cursor()
         
         cursor.execute("""
-        SELECT id, username, gmail, password
+        SELECT id, username, email, password
         FROM akun
         WHERE username = %s
         """, (username))
@@ -18,7 +18,10 @@ def check_credential_user(username):
         data = cursor.fetchone()
         
         if(data):
-            return True
+            return {
+                "user_id": data['id'],
+                "success": True
+            }
         
         return False
     
@@ -29,7 +32,31 @@ def check_credential_user(username):
     finally:
         conn.close
         
-        
+def check_hash_password(username):
+    conn = ps.connect(dbname="expedition_db", user="expedition_app",
+                              password="Jakgeyye123!@#", host="localhost", port="5432")
     
+    try:
+        cursor = conn.cursor()
+        
+        cursor.execute("""
+        SELECT password
+        FROM akun
+        WHERE username= %s
+        """, (username))
+        
+        data_password = cursor.fetchone()
+        
+        print("ini hashing password", data_password)
+        
+        return data_password
+    
+    except Exception as e:
+        print("terjadi error", e)
+        conn.rollback()
+        
+    finally:
+        conn.close()           
+
 
 

@@ -2,10 +2,10 @@
 // VALIDASI TOKEN DAN ROLE UNTUK MENGAKSES HALAMAN DASHBOARD
 import { Navigate, Outlet } from "react-router-dom";
 
-import { useAuth } from "./AuthContext";
+import { UseAuth } from "./AuthContext";
 
 function IsAuther() {
-  const { loading, isAuthenticated } = useAuth();
+  const { loading, isAuthenticated } = UseAuth();
 
   if (loading) {
     return <div>Loading...</div>;

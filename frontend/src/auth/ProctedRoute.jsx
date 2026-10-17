@@ -1,9 +1,9 @@
 // TEMPAT MELKAKUKAN PERLINDUNGNA ROUTER DARI MANIPULASI
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "./AuthContext";
+import { UseAuth } from "./AuthContext";
 
 export default function ProtectedRoute() {
-  const { isAuthenticated, Loading } = useAuth();
+  const { isAuthenticated, Loading } = UseAuth();
 
   if (Loading) {
     return <p>Memeriksa Authentikasi...</p>;

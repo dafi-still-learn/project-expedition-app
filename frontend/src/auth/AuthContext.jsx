@@ -1,7 +1,8 @@
 // MENGIRIM DATA YANG SESUAI DENGAN ROLE
-import { useState, createContext, useContext, useEffect } from "react";
-import validateRole from "../api/AuthApi";
-const authContext = createContext(null);
+import { useState, createContext, useEffect, useContext } from "react";
+import { validateRole } from "../api/AuthApi";
+
+const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [role, setRole] = useState(null);
@@ -53,10 +54,9 @@ export function AuthProvider({ children }) {
     refreshRole,
   };
 
-  return <authContext.Provider value={value}>{children}</authContext.Provider>;
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
-export function useAuth() {
-  return useContext(authContext);
+export function UseAuth() {
+  return useContext(AuthContext);
 }

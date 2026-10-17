@@ -57,7 +57,7 @@ def tampilkan_tabel_user():
 
 
 # DITAMBAHKAN ATAU DIGUNKAN PADA FORM REGISTER KHUSUS NYA PADA BUTTON NYA, AKAN MEMBERI PENGINGAT JIKA KOSONG
-def input_tabel_user(email, username, password):
+def input_tabel_user(email, username, password, role):
     conn = ps.connect(dbname="expedition_db", user="expedition_app",
                           password="Jakgeyye123!@#", host="localhost", port="5432")
 
@@ -69,7 +69,7 @@ def input_tabel_user(email, username, password):
             return False
 
         cursor.execute("""
-        INSERT INTO akun(email, username, password. role)
+        INSERT INTO akun(email, username, password, role)
         VALUES(%s, %s, %s, %s)               
         """, (email, username, password, role))
 
@@ -103,9 +103,9 @@ def validate_akun_register(email, username):
         user = cursor.fetchone()
 
         if user is not None:
-            return False
+            return True
 
-        return True
+        return False
     except ps.Error as e:
         print(e)
         conn.rollback()
@@ -132,9 +132,11 @@ def validate_akun_login(username, password):
 
         print("data username validasi", user)
         if user is None:
+            print("data user tidak ditemukan")
             return False
 
         if user[2] != password:
+            print("data user tidak ditemukan")
             return False
 
         conn.commit()
@@ -192,3 +194,7 @@ def tampilkan_akun():
 
     except Exception as e:
         print(e)
+
+ 
+    
+        

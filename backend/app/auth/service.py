@@ -88,7 +88,7 @@ def check_role_user_token(access_token, public_key):
             SELECT role
             FROM akun
             WHERE id = %s
-            """, (data_token['sub']))
+            """, (data_token['sub'],))
    
             user = cursor.fetchall()
    

@@ -3,10 +3,10 @@ import "../index.css";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { LoginOperator } from "../api/AuthApi";
-import { UseAuth } from "../auth/AuthContext";
+import { useAuth } from "../auth/AuthContext";
 
 function Login() {
-  const { setToken } = UseAuth();
+  const { setToken } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -25,8 +25,12 @@ function Login() {
       console.log("RESULT LOGIN", result);
 
       // UDAH INI SUDAH BENAR UNTUK MENGHASILKAN DAN MENAMPILAKNA TOKEN DARI BACKEND
-      console.log("hasil dari tokenisasi users", result.data["access_token"]);
-      setToken(result.data["access_token"]);
+      if (result.data["success"] === true) {
+        console.log("hasil dari tokenisasi users", result.data["access_token"]);
+        setToken(result.data["access_token"]);
+
+        navigate("/dashboard");
+      }
     }
   };
 

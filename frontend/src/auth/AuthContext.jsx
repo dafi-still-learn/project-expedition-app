@@ -15,15 +15,16 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(null);
 
-  print("INI DARI AUTH CONTEXT");
+  console.log("INI DARI AUTH CONTEXT");
+  console.log("ISI TOKEN", token);
   const refreshRole = useCallback(async () => {
     if (!token) {
       setRole(null);
+      setLoading(false);
+      return;
     }
-
     try {
       const RoleResponse = await validateRole(token);
-      console.log("ini role response", RoleResponse);
       if (RoleResponse.data.role === "ADMIN") {
         setRole("ADMIN");
         return;
@@ -42,7 +43,7 @@ export function AuthProvider({ children }) {
   }, [token]);
 
   useEffect(() => {
-    refreshRole;
+    refreshRole();
   }, [refreshRole]);
 
   const login = (newRole) => {
@@ -61,7 +62,6 @@ export function AuthProvider({ children }) {
     isauthenticated,
     login,
     logout,
-    refreshRole,
     setToken,
     token,
   };
@@ -69,7 +69,7 @@ export function AuthProvider({ children }) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-export function UseAuth() {
+export function useAuth() {
   const ctx = useContext(AuthContext);
   if (ctx === null) {
     throw new Error("user auth sebaik berisi atau dekat dengan AuthProvider");

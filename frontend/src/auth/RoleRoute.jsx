@@ -1,9 +1,9 @@
 // TEMPAT MELAKUKAN ROUTE SESUAI ROLE
 import { Navigate, Outlet } from "react-router-dom";
-import { UseAuth } from "../auth/AuthContext";
+import { useAuth } from "../auth/AuthContext";
 
 export default function RoleRoute({ allowedRoles }) {
-  const { role, loading } = UseAuth();
+  const { role, loading } = useAuth();
 
   console.log("Ini dari role router");
 

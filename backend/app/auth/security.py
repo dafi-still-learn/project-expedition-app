@@ -8,7 +8,7 @@ ph = PasswordHasher()
 # pasangang key jangan di otak atik
 def make_access_token(private_key, user_id):
     payload = {
-        'sub': user_id,
+        'sub': str(user_id),
         'type': 'access',
         'iat': time(),
         'exp': time() + 900
@@ -24,7 +24,7 @@ def make_access_token(private_key, user_id):
 
 def make_refresh_token(private_key, user_id):
     payload = {
-        'sub': user_id,
+        'sub': str(user_id),
         'type': 'refresh',
         'iat': time(),
         'exp': time() + 60 * 60 * 24 * 30

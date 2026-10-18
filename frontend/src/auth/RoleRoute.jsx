@@ -5,6 +5,8 @@ import { UseAuth } from "../auth/AuthContext";
 export default function RoleRoute({ allowedRoles }) {
   const { role, loading } = UseAuth();
 
+  console.log("Ini dari role router");
+
   if (loading) {
     return <div>Loading...</div>;
   }

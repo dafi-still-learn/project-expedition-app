@@ -1,8 +1,6 @@
 import psycopg2 as ps
 import pandas as pd
 
-role = 'admin'
-
 
 def membuat_database_user():
     conn = ps.connect(dbname="expedition_db", user="expedition_app",

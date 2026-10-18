@@ -2,9 +2,11 @@
 import "../index.css";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-// import protectedRoute from "../auth/ProctedRoute";
 import { LoginOperator } from "../api/AuthApi";
+import { UseAuth } from "../auth/AuthContext";
+
 function Login() {
+  const { setToken } = UseAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -22,12 +24,9 @@ function Login() {
       console.log("PASSWORD USER", password);
       console.log("RESULT LOGIN", result);
 
-      // AKAN MENGEMBALIKAN TOKEN DAN MEMANGGIL FUNGSI PROTECTED ROUTE UNTUK MENGARAHKAN KE HALAMAN DASHBOARD JIKA ADA TOKEN YANG VALID
-      console.log(result);
-
-      // console.log("hasil dari tokenisasi users", result.data_token);
-      // localStorage.setItem("token", result.data_token);
-      // protectedRoute(result.data_token);
+      // UDAH INI SUDAH BENAR UNTUK MENGHASILKAN DAN MENAMPILAKNA TOKEN DARI BACKEND
+      console.log("hasil dari tokenisasi users", result.data["access_token"]);
+      setToken(result.data["access_token"]);
     }
   };
 

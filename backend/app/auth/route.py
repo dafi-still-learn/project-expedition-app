@@ -1,11 +1,11 @@
 # TEMPAT MELAKUKAN VALIDASI DARI DATA YANG DIGUNAKAN MENGGUNAKAN PYDANTIC
 # MELAKUKAN ENDPOINT DARI FRONTEND DAN MENGEMBALIKAN NILAI BERDASARKAN DATA YANG DITERIMA DAN DIPROSES
-from fastapi import APIRouter
-from app.auth.schemas import requestLogin, requestRegister, roleUser
-from app.database.database_user import membuat_database_user, input_tabel_user, validate_akun_login, tampilkan_akun, validate_akun_register
+from fastapi import APIRouter, Response, Request, HTTPException
+from app.auth.schemas import requestLogin, requestRegister, roleUser, requestVerifyRole
+from app.database.database_user import membuat_database_user, input_tabel_user, tampilkan_akun, validate_akun_register
 from app.auth.security import make_access_token, make_refresh_token, hash_password, verify_password
 from app.auth.keys import private_key, public_key
-from app.auth.service import check_refresh_token
+from app.auth.service import check_refresh_token, check_role_user_token
 from app.auth.depedencies import check_credential_user, check_hash_password
 from argon2 import PasswordHasher
 
@@ -18,7 +18,7 @@ membuat_database_user()
 
 # setelah mempelajari http-only cookie, baru akan mengirim data refresh token ke sana
 @router.post("/login")
-def login(data: requestLogin):
+async def login(data: requestLogin, response: Response):
     password_database_akun = check_hash_password(data.username)
     
     data_verifikasi_hashing = verify_password(password_database_akun, data.password)
@@ -35,7 +35,18 @@ def login(data: requestLogin):
                     "access_token": make_access_token(private_key, data_authentication["user_id"]),
                     "refresh_token": make_refresh_token(private_key, data_authentication["user_id"])
             }
-   
+            
+            response.set_cookie(
+                key = "refresh_token",
+                value = data_token["refresh_token"],
+                httponly = True,
+                secure = False,
+                samesite="lax",
+                max_age= 60 * 60 * 24 * 30,
+                path="/"
+            )
+            
+            check_role_user_token(data_token['access_token'], public_key)
             return {
                     "access_token": data_token['access_token'],
                     "success": True
@@ -45,7 +56,7 @@ def login(data: requestLogin):
         return False
 
 @router.post("/register")
-def register(data: requestRegister):
+async def register(data: requestRegister):
     hashed_password = hash_password(data.password)
     tampilkan_akun()
     
@@ -59,25 +70,27 @@ def register(data: requestRegister):
         return data_register
     else:
         print("salah")
-@router.get("/refresh_token")
-def refresh_token(refresh_token: str):
-    data_token = check_refresh_token(refresh_token, public_key)
+        
+# INI DIJALANKAN KALAU TOKEN AKSES SUDAH KADARLUARSA
+@router.post("/refresh_token")
+async def refresh_token(requests: Request):
 
+    # BERISI DATA DARI REFRESH TOKEN
+    data_cookie_refresh = requests.cookies.get("refresh_token")
+    
+    if data_cookie_refresh is None:
+        raise HTTPException(status_code="401", detail="refresh_token tidak ditemukan")
+        
+    data_token = check_refresh_token(data_cookie_refresh, public_key)
+    
     if data_token:
         new_access_token = make_access_token(private_key, data_token['sub'])
         return {"access_token": new_access_token}
     else:
         return {"error": "Invalid refresh token"}
     
-# @router.get("/verify_role")
-# def verify_role(role: roleUser):
-#     if check_role(role):
-#         return {
-#             "message": "Role admin verified successfully",
-#             "success": True
-#         }
-#     else:
-#         return {
-#             "error": "Role admin verification failed",
-#             "success": False
-#         }
+@router.post("/verify_role")
+async def verify_role(data: requestVerifyRole):
+    role_token = check_role_user_token(data.token, public_key)
+    
+    return role_token

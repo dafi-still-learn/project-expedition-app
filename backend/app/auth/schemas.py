@@ -19,3 +19,6 @@ class requestRegister(BaseModel):
     username: str
     password: str
     role: roleUser
+    
+class requestVerifyRole(BaseModel):
+    token: str

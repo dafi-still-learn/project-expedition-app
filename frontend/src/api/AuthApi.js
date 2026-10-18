@@ -40,16 +40,19 @@ export const RegisterOperator = async (email, username, password) => {
 };
 
 export const validateRole = async (token) => {
-  const response = await baseURL
-    .get("/auth/verify_role", {
-      params: {
+  try {
+    const response = await baseURL.post(
+      "/auth/verify_role",
+      {
         token,
       },
-      withCredentials: true,
-    })
-    .then((response) => console.log(response))
-    .catch((e) => console.log(e))
-    .finally(() => console.log("berhasil di proses"));
+      {
+        withCredentials: true,
+      },
+    );
 
-  return response;
+    return response;
+  } catch (err) {
+    console.log("terjadi error pada pengiriman axios validateRole", err);
+  }
 };

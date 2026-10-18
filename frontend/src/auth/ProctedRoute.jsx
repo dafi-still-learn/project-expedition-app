@@ -3,6 +3,8 @@ import { Navigate, Outlet } from "react-router-dom";
 import { UseAuth } from "./AuthContext";
 
 export default function ProtectedRoute() {
+  console.log("ini dari proctedRouter");
+
   const { isAuthenticated, Loading } = UseAuth();
 
   if (Loading) {

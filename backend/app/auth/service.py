@@ -74,3 +74,31 @@ def verify_access_token(access_token, public_key):
             conn.rollback()
         finally:
             conn.close()
+            
+def check_role_user_token(access_token, public_key):
+    data_token = jwt.decode(access_token, public_key, algorithms=["RS256"])
+    
+    if data_token:
+        conn = ps.connect(dbname="expedition_db", user="expedition_app",
+                                 password="Jakgeyye123!@#", host="localhost", port="5432")
+        try:
+            cursor = conn.cursor()
+   
+            cursor.execute("""
+            SELECT role
+            FROM akun
+            WHERE id = %s
+            """, (data_token['sub']))
+   
+            user = cursor.fetchall()
+   
+            if user:
+                print("ini isi data token", user)
+                return user
+            else:
+                   print("data tidak ditemukan")
+        except ps.Error as e:
+               print(e)
+               conn.rollback()
+        finally:
+               conn.close()

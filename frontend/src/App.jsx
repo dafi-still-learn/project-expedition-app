@@ -32,7 +32,7 @@ function App() {
           <Route
             element={
               <ProtectedRoute>
-                <RoleRoute allowedRoles={["admin"]} />
+                <RoleRoute allowedRoles={["ADMIN"]} />
               </ProtectedRoute>
             }
           >
@@ -51,7 +51,7 @@ function App() {
           <Route
             element={
               <ProtectedRoute>
-                <RoleRoute allowedRoles={["admin", "operator"]} />
+                <RoleRoute allowedRoles={["ADMIN", "OPERATOR"]} />
               </ProtectedRoute>
             }
           >
@@ -62,7 +62,7 @@ function App() {
           <Route
             element={
               <ProtectedRoute>
-                <RoleRoute allowedRoles={["operator"]} />
+                <RoleRoute allowedRoles={["OPERATOR"]} />
               </ProtectedRoute>
             }
           >

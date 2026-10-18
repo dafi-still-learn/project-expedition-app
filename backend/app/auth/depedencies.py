@@ -59,6 +59,3 @@ def check_hash_password(username):
         
     finally:
         conn.close()           
-
-
-print(check_hash_password("dafi2"))

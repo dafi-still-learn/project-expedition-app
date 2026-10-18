@@ -5,6 +5,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { UseAuth } from "./AuthContext";
 
 function IsAuther() {
+  console.log("ini dari is Auther");
   const { loading, isAuthenticated } = UseAuth();
 
   if (loading) {

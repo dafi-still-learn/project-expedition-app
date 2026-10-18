@@ -2,9 +2,9 @@
 import {
   useState,
   createContext,
-  useEffect,
   useContext,
   useCallback,
+  useEffect,
 } from "react";
 import { validateRole } from "../api/AuthApi";
 
@@ -44,7 +44,9 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     refreshRole();
-  }, [refreshRole]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
 
   const login = (newRole) => {
     setRole(newRole);
@@ -54,12 +56,12 @@ export function AuthProvider({ children }) {
     setRole(null);
   };
 
-  const isauthenticated = Boolean(role);
+  const isAuthenticated = Boolean(role);
 
   const value = {
     role,
     loading,
-    isauthenticated,
+    isAuthenticated,
     login,
     logout,
     setToken,

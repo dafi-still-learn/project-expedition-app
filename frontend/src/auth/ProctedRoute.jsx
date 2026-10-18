@@ -5,9 +5,9 @@ import { useAuth } from "./AuthContext";
 export default function ProtectedRoute() {
   console.log("ini dari proctedRouter");
 
-  const { isAuthenticated, Loading } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
 
-  if (Loading) {
+  if (loading) {
     return <p>Memeriksa Authentikasi...</p>;
   }
 

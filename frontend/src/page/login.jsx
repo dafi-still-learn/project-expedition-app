@@ -1,23 +1,33 @@
 // import { useState } from "react";
 import "../index.css";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { LoginOperator } from "../api/AuthApi";
 import { useAuth } from "../auth/AuthContext";
 
 function Login() {
-  const { setToken } = useAuth();
+  const { setToken, token } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
+  const hasNavigate = useRef(false);
+
+  useEffect(() => {
+    if (token && !hasNavigate.current) {
+      hasNavigate.current = true;
+      navigate("/dashboard", { replace: true });
+    }
+  }, [token, navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     if (username == "" || password == "") {
       alert("isi dengan benar");
-    } else {
+      return;
+    }
+    try {
       const result = await LoginOperator(username, password);
 
       console.log("USERNAME USER", username);
@@ -25,12 +35,13 @@ function Login() {
       console.log("RESULT LOGIN", result);
 
       // UDAH INI SUDAH BENAR UNTUK MENGHASILKAN DAN MENAMPILAKNA TOKEN DARI BACKEND
-      if (result.data["success"] === true) {
+      if (result.status === 200) {
+        navigate("/dashboard");
         console.log("hasil dari tokenisasi users", result.data["access_token"]);
         setToken(result.data["access_token"]);
-
-        navigate("/dashboard");
       }
+    } catch (err) {
+      console.log("terjadi error", err);
     }
   };
 

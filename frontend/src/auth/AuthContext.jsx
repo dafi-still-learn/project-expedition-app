@@ -17,23 +17,27 @@ export function AuthProvider({ children }) {
 
   console.log("INI DARI AUTH CONTEXT");
   console.log("ISI TOKEN", token);
+  console.log("ISI DARI ROLE", role);
+
   const refreshRole = useCallback(async () => {
     if (!token) {
-      setRole(null);
-      setLoading(false);
       return;
     }
+
     try {
       const RoleResponse = await validateRole(token);
-      if (RoleResponse.data.role === "ADMIN") {
+      setRole((prev) => (prev === RoleResponse ? prev : RoleResponse));
+      const data_bersih_role = RoleResponse.data.role_user[0][0];
+      console.log("ini isi role response", data_bersih_role);
+
+      if (data_bersih_role === "ADMIN") {
         setRole("ADMIN");
         return;
       }
-      if (RoleResponse.data.role === "OPERATOR") {
+      if (data_bersih_role == "OPERATOR") {
         setRole("OPERATOR");
         return;
       }
-      setRole(null);
     } catch (err) {
       setRole(null);
       console.log("terjadi error saat pengiriman data user ke frontend", err);
@@ -44,19 +48,17 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     refreshRole();
+  }, [refreshRole]);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]);
+  const login = useCallback((role) => {
+    setRole(role);
+  }, []);
 
-  const login = (newRole) => {
-    setRole(newRole);
-  };
-
-  const logout = () => {
+  const logout = useCallback(() => {
     setRole(null);
-  };
+  }, []);
 
-  const isAuthenticated = Boolean(role);
+  const isAuthenticated = Boolean(role && token);
 
   const value = {
     role,

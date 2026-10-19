@@ -15,7 +15,7 @@ export default function RoleRoute({ allowedRoles }) {
     return <Navigate to="/login" replace />;
   }
 
-  if (allowedRoles.includes(role)) {
+  if (!allowedRoles.includes(role)) {
     return <Navigate to="/dashboard" replace />;
   }
 

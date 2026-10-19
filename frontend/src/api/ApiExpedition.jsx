@@ -8,13 +8,12 @@ import Sidebar from "../components/sidebar";
 function ExpeditionPage() {
   const location = useLocation();
   const [openSetting, setOpenSetting] = useState(false);
-  const [token, setToken] = useState(localStorage.getItem("token") || null);
   return (
     <>
       <div className="flex w-screen h-screen" id="container-expedition">
         <Sidebar openSetting={() => setOpenSetting(true)} />
 
-        <Outlet context={{ location, openSetting, token, setToken }} />
+        <Outlet context={{ location, openSetting }} />
 
         {openSetting && <Setting onClose={() => setOpenSetting(false)} />}
       </div>

@@ -94,7 +94,9 @@ def check_role_user_token(access_token, public_key):
    
             if user:
                 print("ini isi data token", user)
-                return user
+                return {
+                    "role_user": user
+                }
             else:
                    print("data tidak ditemukan")
         except ps.Error as e:

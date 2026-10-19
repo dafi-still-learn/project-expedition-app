@@ -29,50 +29,38 @@ function App() {
         <Route path="/lupa_password" element={<LupaPassword />} />
         <Route path="/" element={<ExpeditionPage />}>
           {/* PAGE YANG BISA DIAKSES OLEH ADMIN */}
-          <Route
-            element={
-              <ProtectedRoute>
-                <RoleRoute allowedRoles={["ADMIN"]} />
-              </ProtectedRoute>
-            }
-          >
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="laporan" element={<Laporan />} />
-            <Route path="pengiriman" element={<Pengiriman />} />
-            <Route path="buat_pengiriman" element={<Buat_pengiriman />} />
-            <Route path="lacak_paket" element={<Lacak_paket />} />
-            <Route path="pelanggan" element={<Pelanggan />} />
-            <Route path="kurir" element={<Kurir />} />
-            <Route path="lokasi" element={<Lokasi />} />
-            <Route path="pembayaran" element={<Pembayaran />} />
+          <Route element={<ProtectedRoute />}>
+            <Route element={<RoleRoute allowedRoles={["ADMIN"]} />}>
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="laporan" element={<Laporan />} />
+              <Route path="pengiriman" element={<Pengiriman />} />
+              <Route path="buat_pengiriman" element={<Buat_pengiriman />} />
+              <Route path="lacak_paket" element={<Lacak_paket />} />
+              <Route path="pelanggan" element={<Pelanggan />} />
+              <Route path="kurir" element={<Kurir />} />
+              <Route path="lokasi" element={<Lokasi />} />
+              <Route path="pembayaran" element={<Pembayaran />} />
+            </Route>
           </Route>
 
           {/* PAGE YANG BISA DIAKSES OLEH ADMIN DAN OPERATOR */}
-          <Route
-            element={
-              <ProtectedRoute>
-                <RoleRoute allowedRoles={["ADMIN", "OPERATOR"]} />
-              </ProtectedRoute>
-            }
-          >
-            <Route path="dashboard" element={<Dashboard />} />
+          <Route element={<ProtectedRoute />}>
+            <Route element={<RoleRoute allowedRoles={["ADMIN", "OPERATOR"]} />}>
+              <Route path="dashboard" element={<Dashboard />} />
+            </Route>
           </Route>
 
           {/* PAGE YANG BISA DIAKSES OLEH OPERATOR */}
-          <Route
-            element={
-              <ProtectedRoute>
-                <RoleRoute allowedRoles={["OPERATOR"]} />
-              </ProtectedRoute>
-            }
-          >
-            <Route path="pengiriman" element={<Pengiriman />} />
-            <Route path="buat_pengiriman" element={<Buat_pengiriman />} />
-            <Route path="lacak_paket" element={<Lacak_paket />} />
-            <Route path="pelanggan" element={<Pelanggan />} />
-            <Route path="kurir" element={<Kurir />} />
-            <Route path="lokasi" element={<Lokasi />} />
-            <Route path="pembayaran" element={<Pembayaran />} />
+          <Route element={<ProtectedRoute />}>
+            <Route element={<RoleRoute allowedRoles={["OPERATOR"]} />}>
+              <Route path="pengiriman" element={<Pengiriman />} />
+              <Route path="buat_pengiriman" element={<Buat_pengiriman />} />
+              <Route path="lacak_paket" element={<Lacak_paket />} />
+              <Route path="pelanggan" element={<Pelanggan />} />
+              <Route path="kurir" element={<Kurir />} />
+              <Route path="lokasi" element={<Lokasi />} />
+              <Route path="pembayaran" element={<Pembayaran />} />
+            </Route>
           </Route>
         </Route>
         {/* BAGIAN PAGE PAGE FITUR APP */}

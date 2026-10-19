@@ -13,8 +13,12 @@ import {
 } from "@boxicons/react";
 import { useNavigate } from "react-router-dom";
 
+import { useAuth } from "../auth/AuthContext";
+
 function Sidebar({ openSetting }) {
   const navigate = useNavigate();
+
+  const { logout } = useAuth();
 
   function handleDashboard() {
     navigate("/dashboard");
@@ -53,10 +57,18 @@ function Sidebar({ openSetting }) {
   }
 
   function handleLogOut() {
+    console.log("TOMBOL LOGOUT SUDAH DITEKAN");
     navigate("/login");
+    logout();
   }
 
   console.log(openSetting);
+  // PEMBAGIAN ROUTER BERDASARKAN ROLE YANG DIGUNAKAN
+
+  // ROUTER BERDASARKAN ADMIN
+
+  // ROUTER BERDASARKAN OPERATOR
+
   return (
     <>
       <div

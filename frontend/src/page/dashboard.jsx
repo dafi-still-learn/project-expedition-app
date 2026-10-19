@@ -8,7 +8,11 @@ import DiagramMultiLinePacket from "../components/DiagramMultiLinePacket";
 import DiagramMultiLineFinansial from "../components/DiagramMultiLinFinansial";
 // import PieChartDefaultIndex from "../services/DiagramPie";
 
+import { useAuth } from "../auth/AuthContext";
+
 function Dashboard() {
+  const { token, role } = useAuth();
+
   const listCustomer = [
     {
       id: 1,
@@ -54,6 +58,9 @@ function Dashboard() {
 
   const item_data = [123, 25, 13];
   const item_data_packet = [99, 32, 61];
+
+  console.log("TOKEN YANG DIGUNAKAN", token);
+  console.log("ROLE YANG SEDANG DIGUNAKAN", role);
 
   return (
     <>

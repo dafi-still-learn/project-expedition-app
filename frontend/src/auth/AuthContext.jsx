@@ -52,6 +52,7 @@ export function AuthProvider({ children }) {
 
   const logout = useCallback(() => {
     setRole(null);
+    setToken(null);
   }, []);
 
   const isAuthenticated = Boolean(role && token);

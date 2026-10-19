@@ -8,11 +8,14 @@ function IsAuther() {
   console.log("ini dari is Auther");
   const { loading, isAuthenticated } = useAuth();
 
+  console.log("INI HASIL LOADING DARI PROCTEDROUTER", loading);
+  console.log("INI HASIL isAuthenticated DARI PROCTEDROUTER", isAuthenticated);
+
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (!isAuthenticated) {
+  if (isAuthenticated) {
     return <Navigate to="/dashboard" replace />;
   }
   return <Outlet />;

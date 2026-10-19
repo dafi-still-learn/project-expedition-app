@@ -7,6 +7,8 @@ export default function ProtectedRoute() {
 
   const { isAuthenticated, loading } = useAuth();
 
+  console.log("INI HASIL LOADING DARI PROCTEDROUTER", loading);
+  console.log("INI HASIL isAuthenticated DARI PROCTEDROUTER", isAuthenticated);
   if (loading) {
     return <p>Memeriksa Authentikasi...</p>;
   }

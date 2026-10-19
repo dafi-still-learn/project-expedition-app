@@ -15,10 +15,6 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(null);
 
-  console.log("INI DARI AUTH CONTEXT");
-  console.log("ISI TOKEN", token);
-  console.log("ISI DARI ROLE", role);
-
   const refreshRole = useCallback(async () => {
     if (!token) {
       return;

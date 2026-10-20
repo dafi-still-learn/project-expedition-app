@@ -4,6 +4,7 @@ import jwt
 from time import time
 
 # dijalankna ketika token access sudah expired, maka akan membuat token baru dengan menggunakan refresh token
+# INI BERFUNGSI SEBAGAI TEMPAT PENGECEKKAN ID, MELALUI PEMILHAN ID DARI DATA TOKEN REFRESH
 def check_refresh_token(refreh_token, public_key):
     data_token = jwt.decode(refreh_token, public_key, algorithms="RS256")
 
@@ -14,15 +15,18 @@ def check_refresh_token(refreh_token, public_key):
             cursor = conn.cursor()
 
             cursor.execute("""
-            SELECT user_id
+            SELECT id
             FROM akun
-            WHERE user_id = %s
+            WHERE id = %s
             """, (data_token['sub']))
 
             user = cursor.fetchall()
 
+            # ID DARI USER SUDAH DITEMUKAN, TAPI MASIH BELUM BISA DI AKSES
+            # INI AMAN DAN BERJALAN DENGAN BAIK
+            print("INI DATA ID DARI REFRESH TOKEN", user)
             if user:
-                return data_token
+                return user
             else:
                 print("data tidak ditemukan")
 
@@ -33,6 +37,18 @@ def check_refresh_token(refreh_token, public_key):
         finally:
             conn.close()
 
+
+def make_access_token_from_from_refresh(private_key, id_user):
+    payload = {
+        'sub': str(id_user),
+        'iat': time(),
+        'type': 'access',
+        'exp': time() + 900
+    }
+
+    access_token = jwt.encode(payload, private_key, algorithm="RS256")
+
+    return access_token
 
 def make_access_token(private_key):
     data_token = check_refresh_token
@@ -95,7 +111,7 @@ def check_role_user_token(access_token, public_key):
             if user:
                 print("ini isi data token", user)
                 return {
-                    "role_user": user
+                    "role_user": user[0][0]
                 }
             else:
                    print("data tidak ditemukan")

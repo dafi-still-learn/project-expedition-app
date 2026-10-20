@@ -56,3 +56,23 @@ export const validateRole = async (token) => {
     console.log("terjadi error pada pengiriman axios validateRole", err);
   }
 };
+
+export const getAccessTokenRefresh = async () => {
+  try {
+    const response = await baseURL.post("/auth/refresh_token", {
+      withCredentials: true,
+    });
+
+    console.log(
+      "ini isi dari response get access token refresh",
+      response.data.access_token,
+    );
+
+    return response.data.access_token;
+  } catch (err) {
+    console.log(
+      "terjadi error pada saat refresh halaman dan backend tidak dapat menyampaikan data ke frontend",
+      err,
+    );
+  }
+};

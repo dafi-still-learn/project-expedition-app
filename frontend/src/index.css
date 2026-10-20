@@ -148,7 +148,7 @@ body {
   cursor: pointer;
 }
 
-#fiture div button {
+#fiture .button_link {
   width: 200px;
   padding: 0 20px;
   height: 50px;
@@ -162,7 +162,7 @@ body {
   cursor: pointer;
 }
 
-#fiture div button:hover {
+#fiture .button_link:hover {
   background-color: var(--color-secondary-bg);
   color: black;
   border: 2px solid black;

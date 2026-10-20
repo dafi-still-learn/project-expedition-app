@@ -3,8 +3,9 @@ import pandas as pd
 
 
 def membuat_database_paket():
-    conn = ps.connect(dbname="packet", user="postgres",
-                      password="Jakgeyye123!@#", host="localhost", port="5432")
+    conn = ps.connect(dbname="expedition_db", user="expedition_app",
+                                     password="Jakgeyye123!@#", host="localhost", port="5432")
+            
     try:
         cursor = conn.cursor()
 

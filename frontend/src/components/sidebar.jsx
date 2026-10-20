@@ -12,49 +12,13 @@ import {
   DoorOpenAlt,
 } from "@boxicons/react";
 import { useNavigate } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 
 function Sidebar({ openSetting }) {
   const navigate = useNavigate();
 
-  const { logout } = useAuth();
-
-  function handleDashboard() {
-    navigate("/dashboard");
-  }
-
-  function handlePengiriman() {
-    navigate("/pengiriman");
-  }
-
-  function handleBuatPengiriman() {
-    navigate("/buat_pengiriman");
-  }
-
-  function handleLacakPaket() {
-    navigate("/lacak_paket");
-  }
-
-  function handlePelanggan() {
-    navigate("/pelanggan");
-  }
-
-  function handleKurir() {
-    navigate("/kurir");
-  }
-
-  function handleLokasi() {
-    navigate("/lokasi");
-  }
-
-  function handlePembayaran() {
-    navigate("/pembayaran");
-  }
-
-  function handleLaporan() {
-    navigate("/laporan");
-  }
+  const { logout, role } = useAuth();
 
   function handleLogOut() {
     console.log("TOMBOL LOGOUT SUDAH DITEKAN");
@@ -63,11 +27,6 @@ function Sidebar({ openSetting }) {
   }
 
   console.log(openSetting);
-  // PEMBAGIAN ROUTER BERDASARKAN ROLE YANG DIGUNAKAN
-
-  // ROUTER BERDASARKAN ADMIN
-
-  // ROUTER BERDASARKAN OPERATOR
 
   return (
     <>
@@ -81,60 +40,49 @@ function Sidebar({ openSetting }) {
             <h1>Logistra</h1>
           </div>
           <div className="grid grid-rows-10 h-full row-span-6" id="fiture">
-            <div>
-              <button onClick={handleDashboard}>
-                <Dashboard />
-                Dashboard
-              </button>
-            </div>
-            <div>
-              <button onClick={handlePengiriman}>
-                <PaperPlane />
-                Pengiriman
-              </button>
-            </div>
-            <div>
-              <button onClick={handleBuatPengiriman}>
-                <PlusCircle />
-                Buat pengiriman
-              </button>
-            </div>
-            <div>
-              <button onClick={handleLacakPaket}>
-                <Timeline />
-                lacak paket
-              </button>
-            </div>
-            <div>
-              <button onClick={handlePelanggan}>
-                <Community />
-                Pelanggan
-              </button>
-            </div>
-            <div>
-              <button onClick={handleKurir}>
-                <Truck />
-                Kurir
-              </button>
-            </div>
-            <div>
-              <button onClick={handleLokasi}>
-                <Location />
-                Lokasi
-              </button>
-            </div>
-            <div>
-              <button onClick={handlePembayaran}>
-                <WalletNote />
-                Pembayaran
-              </button>
-            </div>
-            <div>
-              <button onClick={handleLaporan}>
-                <Report />
-                Laporan
-              </button>
-            </div>
+            <Link to={"/dashboard"} className="button_link">
+              <Dashboard />
+              Dashboard
+            </Link>
+            <Link to={"/buat_pengiriman"} className="button_link">
+              <PlusCircle />
+              Buat Pengiriman
+            </Link>
+            <Link to={"/lacak_paket"} className="button_link">
+              <Timeline />
+              Lacak Paket
+            </Link>
+            <Link to={"/lokasi"} className="button_link">
+              <Location />
+              Lokasi
+            </Link>
+          </div>
+
+          <div className="grid grid-rows-10 h-full row-span-6" id="fiture">
+            {role == "admin" && (
+              <>
+                <Link to={"/laporan"} className="button_link">
+                  <Report />
+                  Laporan
+                </Link>
+                <Link to={"/pengiriman"} className="button_link">
+                  <PaperPlane />
+                  Pengiriman
+                </Link>
+                <Link to={"/pelanggan"} className="button_link">
+                  <Community />
+                  Pelanggan
+                </Link>
+                <Link to={"/kurir"} className="button_link">
+                  <Truck />
+                  Kurir
+                </Link>
+                <Link to={"/pembayaran"} className="button_link">
+                  <WalletNote />
+                  Pembayaran
+                </Link>
+              </>
+            )}
           </div>
         </div>
         <div

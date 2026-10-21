@@ -6,7 +6,7 @@ import { LoginOperator } from "../api/AuthApi";
 import { useAuth } from "../auth/AuthContext";
 
 function Login() {
-  const { setToken, token } = useAuth();
+  const { token, login } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -30,15 +30,11 @@ function Login() {
     try {
       const result = await LoginOperator(username, password);
 
-      console.log("USERNAME USER", username);
-      console.log("PASSWORD USER", password);
-      console.log("RESULT LOGIN", result);
-
       // UDAH INI SUDAH BENAR UNTUK MENGHASILKAN DAN MENAMPILAKNA TOKEN DARI BACKEND
       if (result.status === 200) {
+        login(result.data["access_token"]);
         navigate("/dashboard");
         console.log("hasil dari tokenisasi users", result.data["access_token"]);
-        setToken(result.data["access_token"]);
       }
     } catch (err) {
       console.log("terjadi error", err);

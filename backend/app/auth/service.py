@@ -2,6 +2,7 @@
 import psycopg2 as ps
 import jwt
 from time import time
+import re
 
 # dijalankna ketika token access sudah expired, maka akan membuat token baru dengan menggunakan refresh token
 # INI BERFUNGSI SEBAGAI TEMPAT PENGECEKKAN ID, MELALUI PEMILHAN ID DARI DATA TOKEN REFRESH
@@ -12,13 +13,23 @@ def check_refresh_token(refreh_token, public_key):
         conn = ps.connect(dbname="expedition_db", user="expedition_app",
                               password="Jakgeyye123!@#", host="localhost", port="5432")
         try:
+            print(data_token)
             cursor = conn.cursor()
 
+            sub_data = data_token['sub']
+            angka_saja = re.findall(r'\d+', str(sub_data))
+            
+            if not angka_saja:
+                print("gagal mengekstrak id sub token")
+                return None
+
+            user_angka_murni = int(angka_saja[0])
+            
             cursor.execute("""
             SELECT id
             FROM akun
             WHERE id = %s
-            """, (data_token['sub']))
+            """, (user_angka_murni,))
 
             user = cursor.fetchall()
 
@@ -39,8 +50,13 @@ def check_refresh_token(refreh_token, public_key):
 
 
 def make_access_token_from_from_refresh(private_key, id_user):
+    if isinstance(id_user, list) and len(id_user) > 0:
+        user_id_murni = id_user[0][0]
+    else:
+        user_id_murni = id_user
+        
     payload = {
-        'sub': str(id_user),
+        'sub': str(user_id_murni),
         'iat': time(),
         'type': 'access',
         'exp': time() + 900
@@ -111,7 +127,7 @@ def check_role_user_token(access_token, public_key):
             if user:
                 print("ini isi data token", user)
                 return {
-                    "role_user": user[0][0]
+                    "role_user": user
                 }
             else:
                    print("data tidak ditemukan")

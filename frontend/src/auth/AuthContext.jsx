@@ -17,6 +17,7 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(null);
   const [tokenFromLogin, setTokenFromLogin] = useState(null);
+  const [usernameUser, setUsernameUser] = useState(null);
 
   const isInisasi = useRef(false);
   // TO DO: TEMPAT MELAKUKAN PENGAMBILAN TOKEN DARI BACKEND DAN DISIMPAN KE STATE
@@ -25,32 +26,36 @@ export function AuthProvider({ children }) {
     try {
       // HARUS MENGEMBALIKKAN TOKEN BARU
 
-      // SUDAH MENGEMBALIKAN TOKEN ACCESS BARU YANG SEHARUSNYA
-      const response_token = await getAccessTokenRefresh();
+      if (usernameUser) {
+        const response_token = await getAccessTokenRefresh();
 
-      // REQUEST SUDAH BERHASIL DAN MENGEMBALIKAN TOKEN YANG DIINGINKAN JIKA TERJADI REFRESH
-      const access_token = response_token;
+        // REQUEST SUDAH BERHASIL DAN MENGEMBALIKAN TOKEN YANG DIINGINKAN JIKA TERJADI REFRESH
+        const access_token = response_token;
 
-      // INI JUGA SUDAH BERHASIL MENGHASILKAN TOKEN ACCESS NYA
-      console.log(
-        "ISI DARI REPSONSE GET ACCESS TOKEN DARI AUTH CONTEXTS === ",
-        response_token,
-      );
-      if (access_token) {
-        // INI JUGA SUDAH BERHASIL MENGEMBALIKAN ACCESS TOKEN DARI RESPON
+        // INI JUGA SUDAH BERHASIL MENGHASILKAN TOKEN ACCESS NYA
         console.log(
-          "INI DARI GET ACCESS TOKEN DARI BACKEND KETIKA MELAKUKAN REFRESH HALAMAN",
-          access_token,
+          "ISI DARI REPSONSE GET ACCESS TOKEN DARI AUTH CONTEXTS === ",
+          response_token,
         );
-        return access_token;
+        if (access_token) {
+          // INI JUGA SUDAH BERHASIL MENGEMBALIKAN ACCESS TOKEN DARI RESPON
+          console.log(
+            "INI DARI GET ACCESS TOKEN DARI BACKEND KETIKA MELAKUKAN REFRESH HALAMAN",
+            access_token,
+          );
+          return access_token;
+        }
+      } else {
+        console.log("login belum dilakukan dan username belum diset");
       }
+      // SUDAH MENGEMBALIKAN TOKEN ACCESS BARU YANG SEHARUSNYA
     } catch (err) {
       console.log(
         "terjadi error pada saat melukakan pengambilan access token ketika refresh halaman",
         err,
       );
     }
-  }, []);
+  }, [usernameUser]);
 
   // MENJADIKAN REFRESH ROLE SEBAGAI GERBANG UNTUK MELANJUTKAN KE PROSES SELANJUTNYA
   const refreshRole = useCallback(async (currentToken) => {
@@ -140,6 +145,12 @@ export function AuthProvider({ children }) {
   }, [refreshRole, tokenFromLogin]);
 
   const logout = useCallback(() => {
+    // HARUS MENGKOSONGKAN DATA DARI TOKEN DAN ROLE KEMUDIAN DAPAT DI SETEL ULANG
+    console.log("sudah menghapus role dan token");
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+
+    setUsernameUser(null);
     setRole(null);
     setToken(null);
     setLoading(false);
@@ -157,6 +168,7 @@ export function AuthProvider({ children }) {
       setToken,
       token,
       refreshRole,
+      setUsernameUser,
     }),
     [
       role,
@@ -167,6 +179,7 @@ export function AuthProvider({ children }) {
       setToken,
       token,
       refreshRole,
+      setUsernameUser,
     ],
   );
 

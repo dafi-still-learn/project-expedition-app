@@ -6,7 +6,7 @@ import { LoginOperator } from "../api/AuthApi";
 import { useAuth } from "../auth/AuthContext";
 
 function Login() {
-  const { token, login } = useAuth();
+  const { token, login, setUsernameUser } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -32,7 +32,9 @@ function Login() {
 
       // UDAH INI SUDAH BENAR UNTUK MENGHASILKAN DAN MENAMPILAKNA TOKEN DARI BACKEND
       if (result.status === 200) {
+        // DATA TOKEN DARI USER DIKIRIM KE AUTH CONTEXT UNTUK DI PROSES PADA TAHAP SELAJUTNYA DI AUTHENTICATION DAN AUDHOTIZATION
         login(result.data["access_token"]);
+        setUsernameUser(username);
         navigate("/dashboard");
         console.log("hasil dari tokenisasi users", result.data["access_token"]);
       }

@@ -22,3 +22,6 @@ class requestRegister(BaseModel):
     
 class requestVerifyRole(BaseModel):
     token: str
+
+class requestUsernameRefresh(BaseModel):
+    username: str

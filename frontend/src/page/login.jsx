@@ -33,8 +33,8 @@ function Login() {
       // UDAH INI SUDAH BENAR UNTUK MENGHASILKAN DAN MENAMPILAKNA TOKEN DARI BACKEND
       if (result.status === 200) {
         // DATA TOKEN DARI USER DIKIRIM KE AUTH CONTEXT UNTUK DI PROSES PADA TAHAP SELAJUTNYA DI AUTHENTICATION DAN AUDHOTIZATION
-        login(result.data["access_token"]);
         setUsernameUser(username);
+        login(result.data["access_token"]);
         navigate("/dashboard");
         console.log("hasil dari tokenisasi users", result.data["access_token"]);
       }

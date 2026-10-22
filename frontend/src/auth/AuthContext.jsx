@@ -27,6 +27,7 @@ export function AuthProvider({ children }) {
       // HARUS MENGEMBALIKKAN TOKEN BARU
 
       if (usernameUser) {
+        console.log("INI DARI USERNAME USER", usernameUser);
         const response_token = await getAccessTokenRefresh();
 
         // REQUEST SUDAH BERHASIL DAN MENGEMBALIKAN TOKEN YANG DIINGINKAN JIKA TERJADI REFRESH

@@ -1,35 +1,32 @@
-const VITE_API_BACKEND = import.meta.env.VITE_API_BACKEND;
+import baseURL from "../api/Axios";
 
-export async function sendDataPengiriman(
-  nama,
-  jenis,
-  jumlah,
-  asal,
-  tujuan,
-  berat,
-  mitra,
-) {
-  const response = await fetch(`${VITE_API_BACKEND}/data_pengiriman`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      nama_paket: nama,
-      jenis_paket: jenis,
-      jumlah_paket: jumlah,
-      asal_paket: asal,
-      tujuan_paket: tujuan,
-      berat_paket: berat,
-      mitra_pengiriman: mitra,
-    }),
-  });
-
-  const result = await response.json();
-
-  if (!result.ok) {
-    throw new Error("data gagal dikirim ke database paket");
+export const postDataPacket = async (
+  nama_paket,
+  jenis_paket,
+  jumlah_paket,
+  asal_paket,
+  tujuan_paket,
+  berat_paket,
+  jalur_pengiriman,
+) => {
+  try {
+    const response = await baseURL.post(
+      "/packet/input_packet",
+      {
+        nama_packet: nama_paket,
+        jenis_paket: jenis_paket,
+        jumlah_paket: jumlah_paket,
+        asal_paket: asal_paket,
+        tujuan_paket: tujuan_paket,
+        berat_paket: berat_paket,
+        jalur_pengiriman: jalur_pengiriman,
+      },
+      {
+        withCredentials: true,
+      },
+    );
+    return response;
+  } catch (err) {
+    console.log("TERJADI ERROR KETIKA MENGIRIM DATA PAKET KE BACKEND", err);
   }
-
-  return await result;
-}
+};

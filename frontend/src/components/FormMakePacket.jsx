@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { sendDataPengiriman } from "../services/dataPengiriman";
-
+import { postDataPacket } from "../services/dataPengiriman";
 function FormDelivery({
   setNameD,
   setJenisD,
@@ -44,7 +43,7 @@ function FormDelivery({
     ) {
       console.log("ISI FORM DATA PENGIRIMAN DENGAN BENAR");
     } else {
-      const result = await sendDataPengiriman(
+      const result = await postDataPacket(
         name,
         jenis,
         jumlah,

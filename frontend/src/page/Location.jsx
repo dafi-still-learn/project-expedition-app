@@ -1,4 +1,5 @@
-import LeafletMap from "../services/openStreetMap";
+import LeafletMap from "../services/PengirimanOpenStreetMap";
+
 function Lokasi() {
   return (
     <>

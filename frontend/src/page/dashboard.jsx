@@ -1,7 +1,7 @@
 import Navbar from "../components/navbar";
 import { CheckCircle } from "@boxicons/react";
 // import ApexMaps from "apexmaps";
-import LeafletMap from "../services/openStreetMap";
+import LeafletMap from "../services/PengirimanOpenStreetMap";
 import DiagramFinansial from "../components/DiagramPieFinansial";
 import DiagramFinansialBar from "../components/DiagramBarPacket";
 import DiagramMultiLinePacket from "../components/DiagramMultiLinePacket";

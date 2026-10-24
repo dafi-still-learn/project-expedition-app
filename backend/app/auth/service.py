@@ -127,7 +127,8 @@ def check_role_user_token(access_token, public_key):
             if user:
                 print("ini isi data token", user)
                 return {
-                    "role_user": user
+                    "role_user": user,
+                    "user_id": data_token['sub'] 
                 }
             else:
                    print("data tidak ditemukan")

@@ -11,11 +11,12 @@ def membuat_database_user():
 
         cursor.execute("""
         CREATE TABLE IF NOT EXISTS akun(
-        id SERIAL PRIMARY KEY,
-        email VARCHAR(255),
-        username VARCHAR(255),
-        password VARCHAR(255),
-        role VARCHAR(255),
+        id SERIAL PRIMARY KEY UNIQUE,
+        email VARCHAR(255) UNIQUE,
+        username VARCHAR(255) UNIQUE,
+        password VARCHAR(255) UNIQUE,
+        role VARCHAR(255) UNIQUE
+        )
         """)
 
         print("database berhasil di buat")
@@ -28,31 +29,7 @@ def membuat_database_user():
     finally:
         conn.close()
 
-
-def tampilkan_tabel_user():
-    conn = ps.connect(dbname="expedition_db", user="expedition_app",
-                          password="Jakgeyye123!@#", host="localhost", port="5432")
-
-    try:
-        cursor = conn.cursor()
-
-        cursor.execute("""
-        SELECT * FROM akun
-        """)
-
-        data = cursor.fetchall()
-
-        df = pd.DataFrame(
-            data, columns=['id', 'email', 'username', 'password'])
-        print(df)
-
-    except ps.Error as e:
-        print(e)
-        conn.rollback()
-
-    finally:
-        conn.close
-
+membuat_database_user()
 
 # DITAMBAHKAN ATAU DIGUNKAN PADA FORM REGISTER KHUSUS NYA PADA BUTTON NYA, AKAN MEMBERI PENGINGAT JIKA KOSONG
 def input_tabel_user(email, username, password, role):

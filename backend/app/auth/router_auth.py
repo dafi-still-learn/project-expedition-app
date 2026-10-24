@@ -11,13 +11,13 @@ from argon2 import PasswordHasher
 
 ph = PasswordHasher()
 
-router = APIRouter(prefix="/auth")
+router_auth = APIRouter(prefix="/auth")
 
 membuat_database_user()
 
 
 # setelah mempelajari http-only cookie, baru akan mengirim data refresh token ke sana
-@router.post("/login")
+@router_auth.post("/login")
 async def login(data: requestLogin, response: Response):
     password_database_akun = check_hash_password(data.username)
     
@@ -46,16 +46,19 @@ async def login(data: requestLogin, response: Response):
                 path="/"
             )
             
-            check_role_user_token(data_token['access_token'], public_key)
+            data_check_role = check_role_user_token(data_token['access_token'], public_key)
+            
+            print("ini adalah id dari user", data_check_role['user_id'])
             return {
                     "access_token": data_token['access_token'],
-                    "success": True
+                    "success": True,
+                    "user_id": data_check_role['user_id']
                 }
     else:
         print("data tidak ditemukan!")
         return False
 
-@router.post("/register")
+@router_auth.post("/register")
 async def register(data: requestRegister):
     hashed_password = hash_password(data.password)
     tampilkan_akun()
@@ -72,7 +75,7 @@ async def register(data: requestRegister):
         print("salah")
         
 # INI DIJALANKAN KALAU TOKEN AKSES SUDAH KADARLUARSA
-@router.post("/refresh_token")
+@router_auth.post("/refresh_token")
 async def refresh_token(requests: Request):
 
     # BERISI DATA DARI REFRESH TOKEN
@@ -97,7 +100,7 @@ async def refresh_token(requests: Request):
 
 
 # MENGEMBALIKKAN ROLE DARI TOKEN
-@router.post("/verify_role")
+@router_auth.post("/verify_role")
 async def verify_role(data: requestVerifyRole):
     role_token = check_role_user_token(data.token, public_key)
     

@@ -9,17 +9,19 @@ def membuat_tabel_profil():
 
         cursor.execute("""
         CREATE TABLE IF NOT EXISTS profil(
-            id INTEGAR PRIMARY,
-            user_id INTEGER UNIQUE REFERENCE akun(id)
-            email VARCHAR(50) UNIQUE REFERENCE akun(email),
+            id SERIAL PRIMARY KEY,
+            user_id INTEGER UNIQUE REFERENCES akun(id),
+            email VARCHAR(50) UNIQUE REFERENCES akun(email),
             nama_user VARCHAR(50) UNIQUE,
-            nama panggilan VARCHAR(50) UNIQUE,
-            tanggal_hari_user VARCHAR(50) UNIQUE,
+            nama_panggilan VARCHAR(50) UNIQUE,
+            tanggal_lahir_user VARCHAR(50) UNIQUE,
             nomor_hp_user VARCHAR(50) UNIQUE,
             alamat_sekarang VARCHAR(255) UNIQUE,
             penempatan VARCHAR(50) UNIQUE,
-            jabatan_sekarang VARCHAR(50) UNIQUE)
+            jabatan_sekarang VARCHAR(50) UNIQUE
+            )
         """)
+        print("database profil selesi di buat")
 
         conn.commit()
     except ps.Error as e:
@@ -28,6 +30,8 @@ def membuat_tabel_profil():
 
     finally:
         conn.close()
+
+membuat_tabel_profil()
 
 def input_user_profil(nama_user, nama_panggilan, tanggal_lahir_user, nomor_hp_user, alamat_sekarang, penempatan, jabatan_sekarang):
     conn = ps.connect(dbname="expedition_db", user="expedition_app", password="Jakgeyye123!@#", host="localhost", port="5432")
@@ -38,7 +42,7 @@ def input_user_profil(nama_user, nama_panggilan, tanggal_lahir_user, nomor_hp_us
         INSERT INTO profil(nama_user, nama_panggilan, tanggal_lahir_user, nomor_hp_user, alamat_sekarang, penempatan, jabatan_sekarang)
         VALUES(%s, %s, %s, %s, %s, %s, %s)
         """, (nama_user, nama_panggilan, tanggal_lahir_user, nomor_hp_user, alamat_sekarang, penempatan, jabatan_sekarang))
-        
+                
         conn.commit()
         
         return True
@@ -49,3 +53,30 @@ def input_user_profil(nama_user, nama_panggilan, tanggal_lahir_user, nomor_hp_us
     finally:
         conn.close()
     
+def check_data_profil(user_id):
+    conn = ps.connect(dbname="expedition_db", user="expedition_app", password="Jakgeyye123!@#", host="localhost", port="5432")
+    
+    try:
+        cursor = conn.cursor()
+        
+        cursor.execute("""
+        SELECT id, user_id, nama_user, nama_panggilan, tanggal_lahir_user, nomor_hp_user, alamat_sekarang, penempatan, jabatan_sekarang
+        FROM profil
+        WHERE user_id = %s
+        """, (user_id,))
+        
+        data_user = cursor.fetchone()
+        
+        
+        print("ini isi dari data user", data_user)
+        if data_user is None:
+            return False
+        
+        return True
+    
+    except ps.Error as e:
+        print("terjadi error pada saat pengecekkan", e)
+        
+    finally:
+        conn.close()
+        

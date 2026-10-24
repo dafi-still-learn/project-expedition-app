@@ -64,7 +64,7 @@ export default function PackageMap() {
 
     try {
       const res = await baseURL.post(
-        "/packages",
+        "/wilaya/check_wilayah",
         {
           origin: { lat: origin[0], lng: origin[1] },
           destination: { lat: destination[0], lng: destination[1] },

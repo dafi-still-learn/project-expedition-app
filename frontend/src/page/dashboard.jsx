@@ -7,11 +7,15 @@ import DiagramFinansialBar from "../components/DiagramBarPacket";
 import DiagramMultiLinePacket from "../components/DiagramMultiLinePacket";
 import DiagramMultiLineFinansial from "../components/DiagramMultiLinFinansial";
 // import PieChartDefaultIndex from "../services/DiagramPie";
+import Profil from "../components/Profil";
 
 import { useAuth } from "../auth/AuthContext";
+import { useLocation } from "react-router-dom";
 
 function Dashboard() {
+  const location = useLocation();
   const { token, role } = useAuth();
+  const profilComplate = location.state?.profilComplate;
 
   const listCustomer = [
     {
@@ -65,6 +69,8 @@ function Dashboard() {
   return (
     <>
       <section className="w-screen h-screen" id="Container-dashboard">
+        {profilComplate && <Profil></Profil>}
+
         <div className="flex flex-col gap-5 " id="dashboard">
           <Navbar></Navbar>
           <div

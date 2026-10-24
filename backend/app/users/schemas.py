@@ -8,3 +8,6 @@ class data_profil(BaseModel):
     alamat_sekarang: str
     penempatan: str
     jabatan_sekarang: str
+    
+class requestCheckProfil(BaseModel):
+    user_id: int

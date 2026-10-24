@@ -30,3 +30,20 @@ export const postDataProfil = async (
     console.log("terjadi error pada saat pengiriman profil", err);
   }
 };
+
+export const checkProfil = async (user_id) => {
+  try {
+    const response = await baseURL.post(
+      "/profil/check_profil",
+      {
+        user_id: user_id,
+      },
+      {
+        withCredentials: true,
+      },
+    );
+    return response;
+  } catch (err) {
+    console.log("terjadi error pada pengecekkan data profil", err);
+  }
+};

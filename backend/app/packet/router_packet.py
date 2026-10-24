@@ -1,13 +1,12 @@
 from fastapi import APIRouter
 from app.database.database_packet import membuat_database_paket, input_database_paket
-from app.schemas.schemas import data_pengiriman
+from app.packet.schemas import data_pengiriman
 from app.service.logical_transaksi import logika_harga
-from app.service.jarak_packet import jarak_paket
-router = APIRouter(prefix="/packet")
+router_packet = APIRouter(prefix="/packet")
 
 membuat_database_paket()
 
-@router.post("/input_packet")
+@router_packet.post("/input_packet")
 def input_packet_user(data: data_pengiriman):
     try:
         jarak_paket = jarak_paket(data.tujuan_paket, data.asal_paket)

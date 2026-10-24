@@ -1,2 +1,6 @@
 # key jwt
 app/auth/key/*.pem
+.venv/
+__pycache__/
+*.pyc
+.env

@@ -1,6 +1,6 @@
 import psycopg2 as ps
 import pandas as pd
-
+from app.auth.security import hash_password
 
 def membuat_database_user():
     conn = ps.connect(dbname="expedition_db", user="expedition_app",
@@ -59,7 +59,7 @@ def input_tabel_user(email, username, password, role):
 
     finally:
         conn.close()
-
+                
 
 # DITAMBAHKAN PADA FORM LOGIN, MEMVALIDASI DATA JIKA SAAT INGIN DIMASUKKAN PADA LOGIN DAN PEMATIKANYA PADA BUTTON FORM LOGIN
 def validate_akun_register(email, username):

@@ -39,28 +39,48 @@ function Sidebar({ openSetting }) {
             {/* LOGO ATAU NAMA */}
             <h1>Logistra</h1>
           </div>
-          <div className="grid grid-rows-10 h-full row-span-6" id="fiture">
-            <Link to={"/dashboard"} className="button_link">
-              <Dashboard />
-              Dashboard
-            </Link>
-            <Link to={"/buat_pengiriman"} className="button_link">
-              <PlusCircle />
-              Buat Pengiriman
-            </Link>
-            <Link to={"/lacak_paket"} className="button_link">
-              <Timeline />
-              Lacak Paket
-            </Link>
-            <Link to={"/lokasi"} className="button_link">
-              <Location />
-              Lokasi
-            </Link>
-          </div>
+          {role === "OPERATOR" && (
+            <>
+              <div className="grid grid-rows-10 h-full row-span-6" id="fiture">
+                <Link to={"/dashboard"} className="button_link">
+                  <Dashboard />
+                  Dashboard
+                </Link>
+                <Link to={"/buat_pengiriman"} className="button_link">
+                  <PlusCircle />
+                  Buat Pengiriman
+                </Link>
+                <Link to={"/lacak_paket"} className="button_link">
+                  <Timeline />
+                  Lacak Paket
+                </Link>
+                <Link to={"/lokasi"} className="button_link">
+                  <Location />
+                  Lokasi
+                </Link>
+              </div>
+            </>
+          )}
 
-          <div className="grid grid-rows-10 h-full row-span-6" id="fiture">
-            {role == "admin" && (
-              <>
+          {role == "ADMIN" && (
+            <>
+              <div className="grid grid-rows-10 h-full row-span-6" id="fiture">
+                <Link to={"/dashboard"} className="button_link">
+                  <Dashboard />
+                  Dashboard
+                </Link>
+                <Link to={"/buat_pengiriman"} className="button_link">
+                  <PlusCircle />
+                  Buat Pengiriman
+                </Link>
+                <Link to={"/lacak_paket"} className="button_link">
+                  <Timeline />
+                  Lacak Paket
+                </Link>
+                <Link to={"/lokasi"} className="button_link">
+                  <Location />
+                  Lokasi
+                </Link>
                 <Link to={"/laporan"} className="button_link">
                   <Report />
                   Laporan
@@ -81,9 +101,9 @@ function Sidebar({ openSetting }) {
                   <WalletNote />
                   Pembayaran
                 </Link>
-              </>
-            )}
-          </div>
+              </div>
+            </>
+          )}
         </div>
         <div
           id="Sidebar-services"

@@ -65,7 +65,8 @@ body {
 #Form-login div button,
 #Form-login button,
 #Form-register div button,
-#Form-register button {
+#Form-register button,
+#profil-container form {
   background-color: var(--color-primary);
   padding: 10px 20px;
   border-radius: 6px;

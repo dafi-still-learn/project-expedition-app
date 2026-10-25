@@ -33,48 +33,57 @@ function Login() {
 
       // UDAH INI SUDAH BENAR UNTUK MENGHASILKAN DAN MENAMPILAKNA TOKEN DARI BACKEND
       console.log("ini adalah user_id dari user", result.data["user_id"]);
-
       console.log("ini dari login", result);
-      if (result.status === 200) {
-        const checkDataProfil = await checkProfil(result.data["user_id"]);
+      console.log("ISI DARI ROLE", role);
 
-        console.log("ini isi dari check profil", checkDataProfil);
-        // DATA TOKEN DARI USER DIKIRIM KE AUTH CONTEXT UNTUK DI PROSES PADA TAHAP SELAJUTNYA DI AUTHENTICATION DAN AUDHOTIZATION
-        console.log("ISI DATA DARI RESULT CHECK PROFIL", checkDataProfil.data);
-        if (checkDataProfil.data === true) {
-          if (role === "OPERATOR") {
+      if (result.status === 200) {
+        // BAGIAN YANG MENJALANKAN FITUR KHUSU ADMIN
+
+        if (role === "ADMIN") {
+          setUsernameUser(username);
+          login(result.data["access_token"]);
+        } else {
+          const checkDataProfil = await checkProfil(result.data["user_id"]);
+
+          console.log("ini isi dari check profil", checkDataProfil);
+          // DATA TOKEN DARI USER DIKIRIM KE AUTH CONTEXT UNTUK DI PROSES PADA TAHAP SELAJUTNYA DI AUTHENTICATION DAN AUDHOTIZATION
+          console.log(
+            "ISI DATA DARI RESULT CHECK PROFIL",
+            checkDataProfil.data,
+          );
+          if (checkDataProfil.data === true) {
+            if (role === "OPERATOR") {
+              setUsernameUser(username);
+              login(result.data["access_token"]);
+
+              navigate("/dashboard");
+
+              console.log("user sudah memiliki profil");
+
+              console.log(
+                "hasil dari tokenisasi users",
+                result.data["access_token"],
+              );
+            }
+          }
+          if (checkDataProfil.data === false) {
             setUsernameUser(username);
             login(result.data["access_token"]);
 
-            navigate("/dashboard");
+            navigate("/dashboard", {
+              state: {
+                user_id: result.data["user_id"],
+                profilComplate: result.data.success,
+              },
+            });
 
-            console.log("user sudah memiliki profil");
+            console.log("user belum memiliki profil");
 
             console.log(
               "hasil dari tokenisasi users",
               result.data["access_token"],
             );
           }
-
-          return;
-        }
-        if (checkDataProfil.data === false) {
-          setUsernameUser(username);
-          login(result.data["access_token"]);
-
-          navigate("/dashboard", {
-            state: {
-              user_id: result.data["user_id"],
-              profilComplate: result.data.success,
-            },
-          });
-
-          console.log("user belum memiliki profil");
-
-          console.log(
-            "hasil dari tokenisasi users",
-            result.data["access_token"],
-          );
         }
       }
     } catch (err) {

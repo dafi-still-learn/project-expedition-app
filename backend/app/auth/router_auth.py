@@ -15,7 +15,6 @@ router_auth = APIRouter(prefix="/auth")
 
 membuat_database_user()
 
-
 # setelah mempelajari http-only cookie, baru akan mengirim data refresh token ke sana
 @router_auth.post("/login")
 async def login(data: requestLogin, response: Response):

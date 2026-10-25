@@ -1,5 +1,8 @@
+import "../css/Profil.css";
+import "../index.css";
 import { useState } from "react";
 import { postDataProfil } from "../services/dataProfil";
+
 function Profil() {
   const [nama, setNama] = useState("");
   const [panggilan, setPanggilan] = useState("");
@@ -32,7 +35,7 @@ function Profil() {
     <>
       <div id="profil-container">
         <h1>buat profil</h1>
-        <form onSubmit={handlerProfil}>
+        <form onSubmit={handlerProfil} className="gr">
           <label htmlFor="nama">
             masukkan nama
             <input

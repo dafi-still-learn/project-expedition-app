@@ -1,0 +1,13 @@
+#profil-container {
+  border: 2px solid red;
+  padding: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#profil-container form {
+  display: flex;
+  flex-direction: column;
+}

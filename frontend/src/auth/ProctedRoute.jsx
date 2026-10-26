@@ -3,14 +3,10 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 
 export default function ProtectedRoute() {
-  console.log("ini dari proctedRouter");
-
   const { isAuthenticated, loading } = useAuth();
-
-  console.log("INI HASIL LOADING DARI PROCTEDROUTER", loading);
-  console.log("INI HASIL isAuthenticated DARI PROCTEDROUTER", isAuthenticated);
+  console.count("ProtectedRoute di-render");
   if (loading) {
-    return <p>Memeriksa Authentikasi...</p>;
+    return <p>Memeriksa Authentikasi di procted router...</p>;
   }
 
   if (!isAuthenticated) {

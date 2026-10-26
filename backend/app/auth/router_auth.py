@@ -66,12 +66,12 @@ async def register(data: requestRegister):
     print("ini register dari database")
     
     if hasil_validasi_register == True:
-        data_register = input_tabel_user(
+        data_input = input_tabel_user(
             data.email, data.username, hashed_password, roleUser.OPERATOR)
 
-        return data_register
+        return data_input
     else:
-        print("salah")
+        return False
         
 # INI DIJALANKAN KALAU TOKEN AKSES SUDAH KADARLUARSA
 @router_auth.post("/refresh_token")

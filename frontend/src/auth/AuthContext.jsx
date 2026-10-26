@@ -17,7 +17,6 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(null);
   const [tokenFromLogin, setTokenFromLogin] = useState(null);
-  const [usernameUser, setUsernameUser] = useState(null);
 
   const isInisasi = useRef(false);
   // TO DO: TEMPAT MELAKUKAN PENGAMBILAN TOKEN DARI BACKEND DAN DISIMPAN KE STATE
@@ -25,9 +24,9 @@ export function AuthProvider({ children }) {
   const getTokenRefresh = useCallback(async () => {
     try {
       // HARUS MENGEMBALIKKAN TOKEN BARU
-
-      if (usernameUser) {
-        console.log("INI DARI USERNAME USER", usernameUser);
+      const data_username = localStorage.getItem("username");
+      if (data_username) {
+        console.log("INI DARI USERNAME USER", data_username);
         const response_token = await getAccessTokenRefresh();
 
         // REQUEST SUDAH BERHASIL DAN MENGEMBALIKAN TOKEN YANG DIINGINKAN JIKA TERJADI REFRESH
@@ -56,7 +55,7 @@ export function AuthProvider({ children }) {
         err,
       );
     }
-  }, [usernameUser]);
+  }, []);
 
   // MENJADIKAN REFRESH ROLE SEBAGAI GERBANG UNTUK MELANJUTKAN KE PROSES SELANJUTNYA
   const refreshRole = useCallback(async (currentToken) => {
@@ -148,13 +147,11 @@ export function AuthProvider({ children }) {
   const logout = useCallback(() => {
     // HARUS MENGKOSONGKAN DATA DARI TOKEN DAN ROLE KEMUDIAN DAPAT DI SETEL ULANG
     console.log("sudah menghapus role dan token");
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
+    localStorage.removeItem("username");
 
-    setUsernameUser(null);
     setRole(null);
     setToken(null);
-    setLoading(false);
+    setLoading(true);
   }, []);
 
   const isAuthenticated = Boolean(role && token);
@@ -168,20 +165,8 @@ export function AuthProvider({ children }) {
       logout,
       setToken,
       token,
-      refreshRole,
-      setUsernameUser,
     }),
-    [
-      role,
-      loading,
-      isAuthenticated,
-      login,
-      logout,
-      setToken,
-      token,
-      refreshRole,
-      setUsernameUser,
-    ],
+    [role, loading, isAuthenticated, token],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

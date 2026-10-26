@@ -26,8 +26,6 @@ function Sidebar({ openSetting }) {
     logout();
   }
 
-  console.log(openSetting);
-
   return (
     <>
       <div

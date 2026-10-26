@@ -7,7 +7,7 @@ import { useAuth } from "../auth/AuthContext";
 import { checkProfil } from "../services/dataProfil";
 
 function Login() {
-  const { token, login, setUsernameUser, role } = useAuth();
+  const { token, login, role } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -40,7 +40,7 @@ function Login() {
         // BAGIAN YANG MENJALANKAN FITUR KHUSU ADMIN
 
         if (role === "ADMIN") {
-          setUsernameUser(username);
+          localStorage.setItem("username", username);
           login(result.data["access_token"]);
         } else {
           const checkDataProfil = await checkProfil(result.data["user_id"]);
@@ -53,7 +53,7 @@ function Login() {
           );
           if (checkDataProfil.data === true) {
             if (role === "OPERATOR") {
-              setUsernameUser(username);
+              localStorage.setItem("username", username);
               login(result.data["access_token"]);
 
               navigate("/dashboard");
@@ -67,7 +67,7 @@ function Login() {
             }
           }
           if (checkDataProfil.data === false) {
-            setUsernameUser(username);
+            localStorage.setItem("username", username);
             login(result.data["access_token"]);
 
             navigate("/dashboard", {

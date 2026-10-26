@@ -15,7 +15,7 @@ def membuat_database_user():
         email VARCHAR(255) UNIQUE,
         username VARCHAR(255) UNIQUE,
         password VARCHAR(255) UNIQUE,
-        role VARCHAR(255) UNIQUE
+        role VARCHAR(255)
         )
         """)
 
@@ -42,24 +42,24 @@ def input_tabel_user(email, username, password, role):
         if email == "" or username == "" or password == "":
             print("ISI REGISTRASI DENGAN BENAR")
             return False
+        else:
+            cursor.execute("""
+            INSERT INTO akun(email, username, password, role)
+            VALUES(%s, %s, %s, %s)               
+            """, (email, username, password, role))
 
-        cursor.execute("""
-        INSERT INTO akun(email, username, password, role)
-        VALUES(%s, %s, %s, %s)               
-        """, (email, username, password, role))
+            print("data bershasil di tambahkan")
 
-        print("data bershasil di tambahkan")
+            conn.commit()
 
-        conn.commit()
-
-        return True
+            return True
     except ps.Error as e:
         print(e)
         conn.rollback()
 
     finally:
         conn.close()
-                
+            
 
 # DITAMBAHKAN PADA FORM LOGIN, MEMVALIDASI DATA JIKA SAAT INGIN DIMASUKKAN PADA LOGIN DAN PEMATIKANYA PADA BUTTON FORM LOGIN
 def validate_akun_register(email, username):

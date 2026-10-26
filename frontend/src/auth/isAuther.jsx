@@ -5,14 +5,10 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 
 function IsAuther() {
-  console.log("ini dari is Auther");
   const { loading, isAuthenticated } = useAuth();
-
-  console.log("INI HASIL LOADING DARI PROCTEDROUTER", loading);
-  console.log("INI HASIL isAuthenticated DARI PROCTEDROUTER", isAuthenticated);
-
+  console.count("isAuther di-render");
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>Loading is auther...</div>;
   }
 
   if (isAuthenticated) {

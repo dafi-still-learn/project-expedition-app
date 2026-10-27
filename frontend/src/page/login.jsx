@@ -1,5 +1,6 @@
 // import { useState } from "react";
 import "../index.css";
+import "../css/login.css";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { LoginOperator } from "../api/AuthApi";
@@ -7,7 +8,7 @@ import { useAuth } from "../auth/AuthContext";
 import { checkProfil } from "../services/dataProfil";
 
 function Login() {
-  const { token, login, role } = useAuth();
+  const { token, role, login } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -25,8 +26,7 @@ function Login() {
     e.preventDefault();
 
     if (username == "" || password == "") {
-      alert("isi dengan benar");
-      return;
+      console.log("isi dengan benar");
     }
     try {
       const result = await LoginOperator(username, password);
@@ -34,24 +34,21 @@ function Login() {
       // UDAH INI SUDAH BENAR UNTUK MENGHASILKAN DAN MENAMPILAKNA TOKEN DARI BACKEND
       console.log("ini adalah user_id dari user", result.data["user_id"]);
       console.log("ini dari login", result);
-      console.log("ISI DARI ROLE", role);
 
       if (result.status === 200) {
         // BAGIAN YANG MENJALANKAN FITUR KHUSU ADMIN
 
         if (role === "ADMIN") {
+          console.log("ISI DARI ROLE", role);
           localStorage.setItem("username", username);
+          console.log("INI DARI ADMIN DI PAGE LOGIN");
           login(result.data["access_token"]);
         } else {
           const checkDataProfil = await checkProfil(result.data["user_id"]);
 
-          console.log("ini isi dari check profil", checkDataProfil);
+          console.log("ini isi dari check profil login", checkDataProfil);
           // DATA TOKEN DARI USER DIKIRIM KE AUTH CONTEXT UNTUK DI PROSES PADA TAHAP SELAJUTNYA DI AUTHENTICATION DAN AUDHOTIZATION
-          console.log(
-            "ISI DATA DARI RESULT CHECK PROFIL",
-            checkDataProfil.data,
-          );
-          if (checkDataProfil.data === true) {
+          if (checkDataProfil === true) {
             if (role === "OPERATOR") {
               localStorage.setItem("username", username);
               login(result.data["access_token"]);
@@ -66,16 +63,17 @@ function Login() {
               );
             }
           }
-          if (checkDataProfil.data === false) {
+          if (checkDataProfil === false) {
             localStorage.setItem("username", username);
+            localStorage.setItem("profilComplete", "true");
+            localStorage.setItem("userId", result.data["user_id"]);
+            localStorage.setItem("emailUser", result.data["email_user"]);
             login(result.data["access_token"]);
 
-            navigate("/dashboard", {
-              state: {
-                user_id: result.data["user_id"],
-                profilComplate: result.data.success,
-              },
-            });
+            console.log("INI ISI EMAIL USER", result.data["email_user"]);
+            console.log("INI ISI DARI USER ID", result.data["user_id"]);
+
+            navigate("/dashboard");
 
             console.log("user belum memiliki profil");
 

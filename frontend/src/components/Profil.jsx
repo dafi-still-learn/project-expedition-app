@@ -12,19 +12,40 @@ function Profil() {
   const [penempatan, setPenempatan] = useState("");
   const [jabatan, setJabatan] = useState("");
 
-  const handlerProfil = async () => {
-    try {
-      const response = await postDataProfil(
-        nama,
-        panggilan,
-        tanggalLahir,
-        nomorHp,
-        alamat,
-        penempatan,
-        jabatan,
-      );
+  const user_id = localStorage.getItem("userId");
+  const email_user = localStorage.getItem("emailUser");
 
-      return response;
+  const handlerProfil = async (e) => {
+    e.preventDefault();
+
+    try {
+      if (
+        nama == "" ||
+        panggilan == "" ||
+        tanggalLahir == "" ||
+        nomorHp == "" ||
+        alamat == "" ||
+        penempatan == "" ||
+        jabatan == ""
+      ) {
+        alert("isi profil dengan benar");
+      } else {
+        const response = await postDataProfil(
+          user_id,
+          email_user,
+          nama,
+          panggilan,
+          tanggalLahir,
+          nomorHp,
+          alamat,
+          penempatan,
+          jabatan,
+        );
+        if (response && response.status == 200) {
+          localStorage.removeItem("profilComplete");
+        }
+        return response;
+      }
     } catch (err) {
       console.log("terjadi error pada pengiriman data profil", err);
     }
@@ -59,9 +80,10 @@ function Profil() {
           <label htmlFor="tanggalLahir">
             masukkan tanggal lahir
             <input
-              type="text"
+              type="date"
               name="tanggalLahir"
               id="tanggalLahir"
+              value={tanggalLahir}
               onChange={(e) => setTanggalLahir(e.target.value)}
             />
           </label>

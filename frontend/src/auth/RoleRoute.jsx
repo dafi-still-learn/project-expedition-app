@@ -13,10 +13,12 @@ export default function RoleRoute({ allowedRoles }) {
   }
 
   if (!role) {
+    console.log("INI DARI ROLE ROUTE");
     return <Navigate to="/login" replace />;
   }
 
   if (!allowedRoles.includes(role)) {
+    console.log("INI DARI PERIZINAN ROLE UNTUK ROUTER");
     return <Navigate to="/dashboard" replace />;
   }
 

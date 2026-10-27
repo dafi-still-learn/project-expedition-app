@@ -21,8 +21,7 @@ async def login(data: requestLogin, response: Response):
     password_database_akun = check_hash_password(data.username)
     
     data_verifikasi_hashing = verify_password(password_database_akun, data.password)
-    # data_verifikasi_hashing = ph.verify(password_database_akun, data.password)
-        
+
     print("hasil validasi data", password_database_akun)
 
     if data_verifikasi_hashing == True:
@@ -46,12 +45,13 @@ async def login(data: requestLogin, response: Response):
             )
             
             data_check_role = check_role_user_token(data_token['access_token'], public_key)
-            
             print("ini adalah id dari user", data_check_role['user_id'])
+            print("ini adalah email dari user", data_authentication['email_user'])
             return {
                     "access_token": data_token['access_token'],
                     "success": True,
-                    "user_id": data_check_role['user_id']
+                    "user_id": data_check_role['user_id'],
+                    "email_user": data_authentication["email_user"]
                 }
     else:
         print("data tidak ditemukan!")

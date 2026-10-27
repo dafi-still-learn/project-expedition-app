@@ -25,10 +25,19 @@
   background-color: var(--color-secondary-bg);
 }
 
-#Form-login label input:focus,
-#Form-register label input:active,
-#Form-register label input:hover {
+#Form-login label input,
+#Form-register label input,
+#Form-register label input {
   border: 2px solid black;
+}
+
+#Form-login label input:active,
+#Form-register label input:active,
+#Form-register label input:active,
+#Form-login label input:focus,
+#Form-register label input:focus,
+#Form-register label input:focus {
+  border: none;
 }
 
 #Form-login button,

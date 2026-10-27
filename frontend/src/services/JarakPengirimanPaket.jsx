@@ -57,7 +57,7 @@ export default function PackageMap() {
 
   const handleSave = async () => {
     if (!origin || !destination) {
-      alert("tentuka daerah asal dan tujuan terlebih dahulu");
+      console.log("tentuka daerah asal dan tujuan terlebih dahulu");
       return;
     }
     setSaving(true);

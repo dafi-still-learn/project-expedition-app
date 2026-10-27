@@ -9,14 +9,8 @@ import DiagramMultiLineFinansial from "../components/DiagramMultiLinFinansial";
 // import PieChartDefaultIndex from "../services/DiagramPie";
 import Profil from "../components/Profil";
 
-import { useAuth } from "../auth/AuthContext";
-import { useLocation } from "react-router-dom";
-
 function Dashboard() {
-  const location = useLocation();
-  const { token, role } = useAuth();
-  const profilComplate = location.state?.profilComplate;
-
+  const openProfil = localStorage.getItem("profilComplete");
   const listCustomer = [
     {
       id: 1,
@@ -63,14 +57,11 @@ function Dashboard() {
   const item_data = [123, 25, 13];
   const item_data_packet = [99, 32, 61];
 
-  console.log("TOKEN YANG DIGUNAKAN", token);
-  console.log("ROLE YANG SEDANG DIGUNAKAN", role);
-
   return (
     <>
       <section className="w-screen h-screen" id="Container-dashboard">
-        {profilComplate && <Profil></Profil>}
-
+        {openProfil && <Profil></Profil>}
+        {/* <Profil></Profil> */}
         <div className="flex flex-col gap-5 " id="dashboard">
           <Navbar></Navbar>
           <div

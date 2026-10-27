@@ -1,6 +1,8 @@
 import baseURL from "../api/Axios";
 
 export const postDataProfil = async (
+  user_id,
+  email_user,
   nama_user,
   nama_panggilan,
   tanggal_lahir_user,
@@ -13,6 +15,8 @@ export const postDataProfil = async (
     const response = await baseURL.post(
       "/profil/input_profil",
       {
+        user_id: user_id,
+        email_user: email_user,
         nama_user: nama_user,
         nama_panggilan: nama_panggilan,
         tanggal_lahir_user: tanggal_lahir_user,
@@ -25,6 +29,8 @@ export const postDataProfil = async (
         withCredentials: true,
       },
     );
+
+    console.log("INI HASIL RESPONSE DARI PROFIL", response);
     return response;
   } catch (err) {
     console.log("terjadi error pada saat pengiriman profil", err);
@@ -42,7 +48,9 @@ export const checkProfil = async (user_id) => {
         withCredentials: true,
       },
     );
-    return response;
+
+    console.log("ini isi response profil", response.data);
+    return response.data;
   } catch (err) {
     console.log("terjadi error pada pengecekkan data profil", err);
   }

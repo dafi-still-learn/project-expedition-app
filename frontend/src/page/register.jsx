@@ -1,5 +1,6 @@
 // import { useState } from "react";
 import "../index.css";
+import "../css/login.css";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { RegisterOperator } from "../api/AuthApi";
@@ -15,7 +16,7 @@ function Register() {
     e.preventDefault();
 
     if (email == "" || username == "" || password == "") {
-      alert("isi dengan benar");
+      console.log("isi dengan benar");
     } else {
       const result = await RegisterOperator(email, username, password);
 
@@ -28,7 +29,7 @@ function Register() {
         navigate("/login");
       }
       if (result.data === false || result.data == null) {
-        alert("gmail atau username ini sudah digunakan");
+        console.log("gmail atau username ini sudah digunakan");
       }
     }
   };

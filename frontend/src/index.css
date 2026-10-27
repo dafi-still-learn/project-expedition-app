@@ -136,7 +136,8 @@ body {
   padding-top: 10px;
 }
 
-#Sidebar-services button {
+#Sidebar-services button,
+#profil-container form button {
   width: 200px;
   padding: 0 20px;
   height: 40px;
@@ -163,7 +164,8 @@ body {
   cursor: pointer;
 }
 
-#fiture .button_link:hover {
+#fiture .button_link:hover,
+#profil-container form button:hover {
   background-color: var(--color-secondary-bg);
   color: black;
   border: 2px solid black;
@@ -468,4 +470,17 @@ body {
   padding: 10px;
   border-radius: 10px;
   background-color: var(--color-secondary-bg);
+}
+
+/* BAGIAN STYLING PRFOFIL */
+#profil-container {
+  background-color: var(--color-for-cards);
+}
+
+#profil-container form {
+  background-color: var(--color-primary-bright);
+}
+
+#profil-container form button {
+  width: 100px;
 }

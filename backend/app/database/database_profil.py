@@ -14,7 +14,7 @@ def membuat_tabel_profil():
             email VARCHAR(50) UNIQUE REFERENCES akun(email),
             nama_user VARCHAR(50) UNIQUE,
             nama_panggilan VARCHAR(50) UNIQUE,
-            tanggal_lahir_user VARCHAR(50) UNIQUE,
+            tanggal_lahir_user DATE UNIQUE,
             nomor_hp_user VARCHAR(50) UNIQUE,
             alamat_sekarang VARCHAR(255) UNIQUE,
             penempatan VARCHAR(50) UNIQUE,
@@ -33,15 +33,15 @@ def membuat_tabel_profil():
 
 membuat_tabel_profil()
 
-def input_user_profil(nama_user, nama_panggilan, tanggal_lahir_user, nomor_hp_user, alamat_sekarang, penempatan, jabatan_sekarang):
+def input_user_profil(user_id, email_user, nama_user, nama_panggilan, tanggal_lahir_user, nomor_hp_user, alamat_sekarang, penempatan, jabatan_sekarang):
     conn = ps.connect(dbname="expedition_db", user="expedition_app", password="Jakgeyye123!@#", host="localhost", port="5432")
     try:
         cursor = conn.cursor()
         
         cursor.execute("""
-        INSERT INTO profil(nama_user, nama_panggilan, tanggal_lahir_user, nomor_hp_user, alamat_sekarang, penempatan, jabatan_sekarang)
-        VALUES(%s, %s, %s, %s, %s, %s, %s)
-        """, (nama_user, nama_panggilan, tanggal_lahir_user, nomor_hp_user, alamat_sekarang, penempatan, jabatan_sekarang))
+        INSERT INTO profil(user_id, email_user, nama_user, nama_panggilan, tanggal_lahir_user, nomor_hp_user, alamat_sekarang, penempatan, jabatan_sekarang)
+        VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s )
+        """, (user_id, email_user, nama_user, nama_panggilan, tanggal_lahir_user, nomor_hp_user, alamat_sekarang, penempatan, jabatan_sekarang))
                 
         conn.commit()
         
@@ -67,9 +67,8 @@ def check_data_profil(user_id):
         
         data_user = cursor.fetchone()
         
-        
-        print("ini isi dari data user", data_user)
         if data_user is None:
+            print("INI ISI DARI DATA USER PROFIL", data_user)
             return False
         
         return True

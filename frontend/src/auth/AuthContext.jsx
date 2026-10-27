@@ -26,23 +26,14 @@ export function AuthProvider({ children }) {
       // HARUS MENGEMBALIKKAN TOKEN BARU
       const data_username = localStorage.getItem("username");
       if (data_username) {
-        console.log("INI DARI USERNAME USER", data_username);
         const response_token = await getAccessTokenRefresh();
 
         // REQUEST SUDAH BERHASIL DAN MENGEMBALIKAN TOKEN YANG DIINGINKAN JIKA TERJADI REFRESH
         const access_token = response_token;
 
         // INI JUGA SUDAH BERHASIL MENGHASILKAN TOKEN ACCESS NYA
-        console.log(
-          "ISI DARI REPSONSE GET ACCESS TOKEN DARI AUTH CONTEXTS === ",
-          response_token,
-        );
         if (access_token) {
           // INI JUGA SUDAH BERHASIL MENGEMBALIKAN ACCESS TOKEN DARI RESPON
-          console.log(
-            "INI DARI GET ACCESS TOKEN DARI BACKEND KETIKA MELAKUKAN REFRESH HALAMAN",
-            access_token,
-          );
           return access_token;
         }
       } else {
@@ -59,14 +50,12 @@ export function AuthProvider({ children }) {
 
   // MENJADIKAN REFRESH ROLE SEBAGAI GERBANG UNTUK MELANJUTKAN KE PROSES SELANJUTNYA
   const refreshRole = useCallback(async (currentToken) => {
-    console.log("INI DARI REFRESH ROLE");
     if (!currentToken) {
       setLoading(false);
       return;
     }
 
     setToken(currentToken);
-    console.log("ini isi role response", currentToken);
     try {
       const RoleResponse = await validateRole(currentToken);
 
@@ -77,8 +66,6 @@ export function AuthProvider({ children }) {
         setToken(null);
         setRole(null);
       }
-
-      console.log("isi dari data bersih role dari backend", data_bersih_role);
       if (data_bersih_role === "ADMIN") {
         setRole("ADMIN");
       }
@@ -146,7 +133,6 @@ export function AuthProvider({ children }) {
 
   const logout = useCallback(() => {
     // HARUS MENGKOSONGKAN DATA DARI TOKEN DAN ROLE KEMUDIAN DAPAT DI SETEL ULANG
-    console.log("sudah menghapus role dan token");
     localStorage.removeItem("username");
 
     setRole(null);
@@ -163,7 +149,6 @@ export function AuthProvider({ children }) {
       isAuthenticated,
       login,
       logout,
-      setToken,
       token,
     }),
     [role, loading, isAuthenticated, token],

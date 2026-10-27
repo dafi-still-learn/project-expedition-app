@@ -20,7 +20,8 @@ def check_credential_user(username):
         if(data):
             return {
                 "user_id": data['id'],
-                "success": True
+                "success": True,
+                "email_user": data['email']
             }
         
         return False

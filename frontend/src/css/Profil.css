@@ -1,13 +1,35 @@
+@import "tailwindcss";
+
 #profil-container {
-  border: 2px solid red;
-  padding: 20px;
+  width: 700px;
+  min-height: 600px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  border-radius: 20px;
+  z-index: 99999;
 }
 
 #profil-container form {
   display: flex;
+  gap: 10px;
   flex-direction: column;
+  justify-content: space-between;
+  color: black;
+  height: 100%;
+}
+
+#profil-container form label {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+#profil-container form label input {
+  padding: 10px;
+  border: 2px solid black;
 }

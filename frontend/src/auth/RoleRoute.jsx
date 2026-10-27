@@ -1,6 +1,7 @@
 // TEMPAT MELAKUKAN ROUTE SESUAI ROLE
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
+import "../index.css";
 
 export default function RoleRoute({ allowedRoles }) {
   const { role, loading } = useAuth();
@@ -9,7 +10,7 @@ export default function RoleRoute({ allowedRoles }) {
   console.log("INI HASIL DARI HAS ACCESS DI ROLE ROUTER", hasAccess);
   console.log("INI ADALAH ROLE YANG DIIZANKAN UNTUK MENGAKSES", allowedRoles);
   if (loading) {
-    return <div>Loading di role router...</div>;
+    return <div className="text-loading">Loading di role router...</div>;
   }
 
   if (!role) {

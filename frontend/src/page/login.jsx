@@ -49,19 +49,11 @@ function Login() {
           console.log("ini isi dari check profil login", checkDataProfil);
           // DATA TOKEN DARI USER DIKIRIM KE AUTH CONTEXT UNTUK DI PROSES PADA TAHAP SELAJUTNYA DI AUTHENTICATION DAN AUDHOTIZATION
           if (checkDataProfil === true) {
-            if (role === "OPERATOR") {
-              localStorage.setItem("username", username);
-              login(result.data["access_token"]);
+            login(result.data["access_token"]);
 
-              navigate("/dashboard");
+            navigate("/dashboard");
 
-              console.log("user sudah memiliki profil");
-
-              console.log(
-                "hasil dari tokenisasi users",
-                result.data["access_token"],
-              );
-            }
+            console.log("user sudah memiliki profil");
           }
           if (checkDataProfil === false) {
             localStorage.setItem("username", username);

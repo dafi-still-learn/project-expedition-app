@@ -39,7 +39,7 @@ def input_user_profil(user_id, email_user, nama_user, nama_panggilan, tanggal_la
         cursor = conn.cursor()
         
         cursor.execute("""
-        INSERT INTO profil(user_id, email_user, nama_user, nama_panggilan, tanggal_lahir_user, nomor_hp_user, alamat_sekarang, penempatan, jabatan_sekarang)
+        INSERT INTO profil(user_id, email, nama_user, nama_panggilan, tanggal_lahir_user, nomor_hp_user, alamat_sekarang, penempatan, jabatan_sekarang)
         VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s )
         """, (user_id, email_user, nama_user, nama_panggilan, tanggal_lahir_user, nomor_hp_user, alamat_sekarang, penempatan, jabatan_sekarang))
                 

@@ -92,7 +92,6 @@ async def refresh_token(requests: Request):
     print("data role token", data_token_id_user)
     if data_token_id_user:
         new_access_token = make_access_token_from_from_refresh(private_key, data_token_id_user)
-        # new_access_token = make_access_token(private_key, data_token_id_user)
         return {"access_token": new_access_token}
     else:
         return {"error": "Invalid refresh token"}

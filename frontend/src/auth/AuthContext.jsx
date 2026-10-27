@@ -134,6 +134,9 @@ export function AuthProvider({ children }) {
   const logout = useCallback(() => {
     // HARUS MENGKOSONGKAN DATA DARI TOKEN DAN ROLE KEMUDIAN DAPAT DI SETEL ULANG
     localStorage.removeItem("username");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("emailUser");
+    localStorage.removeItem("profilComplete");
 
     setRole(null);
     setToken(null);

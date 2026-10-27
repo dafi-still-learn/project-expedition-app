@@ -1,3 +1,5 @@
+import "../css/Profil.css";
+
 function ProfilPage() {
   return (
     <>

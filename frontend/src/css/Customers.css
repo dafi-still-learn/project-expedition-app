@@ -1,0 +1,7 @@
+#filter-customers div {
+  border: 2px solid red;
+}
+
+#list-customers div {
+  border: 2px solid red;
+}

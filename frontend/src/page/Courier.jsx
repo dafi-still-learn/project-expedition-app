@@ -1,3 +1,6 @@
+import "../index.css";
+import "../css/Courier.css";
+
 function Kurir() {
   const courir_standby = [
     {

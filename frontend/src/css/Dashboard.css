@@ -1,0 +1,36 @@
+#dashboard-card div div h1,
+#dashboard-card div h1,
+#dashboard-card div ul li {
+  font-size: 20px;
+  color: black;
+}
+
+#list_pengiriman_dashboard li button {
+  height: 30px;
+  overflow-x: auto;
+}
+
+#dashboard-card div ul li {
+  display: flex;
+}
+
+#dashboard-card div div ul li {
+  display: flex;
+  align-items: center;
+}
+
+#pendapatan-card ul li {
+  display: flex;
+  flex-direction: column;
+}
+
+#ul-pengiriman li {
+  background-color: var(--color-primary);
+  border-radius: 5px;
+  padding: 5px;
+}
+
+#ul-pengiriman li h1 {
+  border-right: 1px solid white;
+  color: white;
+}

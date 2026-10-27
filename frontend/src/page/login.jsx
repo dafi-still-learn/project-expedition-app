@@ -1,6 +1,7 @@
 // import { useState } from "react";
 import "../index.css";
-import "../css/login.css";
+import "../css/Login.css";
+
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { LoginOperator } from "../api/AuthApi";

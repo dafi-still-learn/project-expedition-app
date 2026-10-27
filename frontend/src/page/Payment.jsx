@@ -1,3 +1,5 @@
+import "../css/Payment.css";
+
 function Pembayaran() {
   const listCustomer = [
     {

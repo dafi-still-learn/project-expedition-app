@@ -1,6 +1,6 @@
 // import { useState } from "react";
 import "../index.css";
-import "../css/login.css";
+import "../css/Login.css";
 import { useNavigate } from "react-router-dom";
 import { sendEmail } from "../services/sendEmail";
 import { useState } from "react";

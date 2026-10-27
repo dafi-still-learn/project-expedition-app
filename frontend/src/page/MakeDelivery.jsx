@@ -1,3 +1,5 @@
+import "../css/MakeDelivery.css";
+
 import FormDelivery from "../components/FormMakePacket";
 import { useState } from "react";
 function Buat_pengiriman() {

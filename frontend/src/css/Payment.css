@@ -1,0 +1,22 @@
+#filter-payment {
+  padding: 20px;
+  background-color: var(--color-primary-bright);
+  border: 2px solid black;
+}
+
+#payment-item {
+  background-color: var(--color-primary-bright);
+  padding: 20px;
+  border: 2px solid black;
+}
+
+#payment-item ul {
+  background-color: var(--color-primary);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+#payment-item ul li {
+  border-right: 1px solid white;
+  color: white;
+}

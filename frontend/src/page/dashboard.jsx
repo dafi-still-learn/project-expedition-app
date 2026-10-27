@@ -1,3 +1,6 @@
+import "../index.css";
+import "../css/Dashboard.css";
+
 import Navbar from "../components/navbar";
 import { CheckCircle } from "@boxicons/react";
 // import ApexMaps from "apexmaps";

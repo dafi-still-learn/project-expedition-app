@@ -1,3 +1,5 @@
+import "../css/PacketTrack.css";
+
 import LeafletMap from "../services/PengirimanOpenStreetMap";
 
 function Lacak_paket() {

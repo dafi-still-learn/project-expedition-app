@@ -1,3 +1,6 @@
+import "../index.css";
+import "../css/Customers.css";
+
 function Pelanggan() {
   return (
     <>

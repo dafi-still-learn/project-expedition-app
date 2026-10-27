@@ -13,7 +13,7 @@
   transform: translate(-50%, -50%);
   border-radius: 20px;
   border: 2px solid black;
-  z-index: 99999;
+  z-index: 999999999;
 }
 
 #profil-container form {
@@ -33,4 +33,24 @@
 #profil-container form label input {
   padding: 10px;
   border: 2px solid black;
+}
+
+#profil-container {
+  background-color: var(--color-for-cards);
+}
+
+#profil-container form {
+  background-color: var(--color-primary-bright);
+}
+
+#profil-container form button {
+  width: 100px;
+}
+
+.text-loading {
+  font-size: 30px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
 }

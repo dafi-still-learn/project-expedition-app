@@ -1,0 +1,32 @@
+#form-paket {
+  padding: 10px;
+}
+
+#form-paket label {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+#form-packet form label input {
+  padding: 10px;
+}
+
+#form-packet form label input:focus {
+  border: 2px solid black;
+}
+
+#btn-paket {
+  padding: 10px;
+  background-color: var(--color-primary);
+  width: 100px;
+  cursor: pointer;
+  color: white;
+  transition: all 0.3s ease;
+  border-radius: 10px;
+}
+
+#btn-paket:hover {
+  background-color: var(--color-primary-bright);
+  color: black;
+  border: 1px solid black;
+}

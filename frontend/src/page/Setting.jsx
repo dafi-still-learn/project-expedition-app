@@ -1,3 +1,5 @@
+import "../css/Setting.css";
+
 function Setting({ onClose }) {
   console.log("ISI DARI ON CLOSE", onClose);
 

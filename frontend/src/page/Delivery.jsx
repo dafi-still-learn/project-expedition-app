@@ -1,3 +1,6 @@
+import "../index.css";
+import "../css/Delivery.css";
+
 import { useState } from "react";
 import { Filter } from "@boxicons/react";
 import ListDelivery from "../components/ListDelivery";

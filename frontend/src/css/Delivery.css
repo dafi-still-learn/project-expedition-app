@@ -1,0 +1,38 @@
+#list-pengiriman ul li button {
+  width: full;
+}
+
+#list-pengiriman ul li button {
+  display: flex;
+  gap: 30px;
+  padding: 10px 20px;
+  background-color: var(--color-primary);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+#list-pengiriman ul li button {
+  color: white;
+}
+
+#list-pengiriman ul li button h1 {
+  border-right: 1px solid white;
+}
+
+#list-pengiriman ul {
+  display: flex;
+}
+
+#grup-filter {
+  align-items: center;
+}
+#grup-filter h1 {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#grup-filter div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

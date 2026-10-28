@@ -12,7 +12,6 @@ function ExpeditionPage() {
     <>
       <div className="flex w-screen h-screen" id="container-expedition">
         <Sidebar openSetting={() => setOpenSetting(true)} />
-
         <Outlet context={{ location, openSetting }} />
 
         {openSetting && <Setting onClose={() => setOpenSetting(false)} />}

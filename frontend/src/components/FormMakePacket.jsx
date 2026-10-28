@@ -1,30 +1,40 @@
 import { useState } from "react";
 import { postDataPacket } from "../services/dataPengiriman";
+
 function FormDelivery({
   setNameD,
+  setNamaPengirimD,
   setJenisD,
   setJumlahD,
   setAsalD,
   setTujuanD,
   setBeratD,
   setJalurD,
+  setNomorHpPengirimD,
+  setNomorHpPenerimaD,
 }) {
   const [name, setName] = useState("");
+  const [pengirim, setPengirim] = useState("");
   const [jenis, setJenis] = useState("");
   const [jumlah, setJumlah] = useState("");
   const [asal, setAsal] = useState("");
   const [tujuan, setTujuan] = useState("");
   const [berat, setBerat] = useState("");
   const [jalur, setJalur] = useState("");
+  const [nomorHpPengirim, setNomorHpPengirim] = useState("");
+  const [nomorHpPenerima, setNomorHpPenerima] = useState("");
 
   const getData = () => {
     setNameD(name);
+    setNamaPengirimD(pengirim);
     setJumlahD(jumlah);
     setJenisD(jenis);
     setAsalD(asal);
     setTujuanD(tujuan);
     setBeratD(berat);
     setJalurD(jalur);
+    setNomorHpPengirimD(nomorHpPengirim);
+    setNomorHpPenerimaD(nomorHpPenerima);
   };
 
   getData();
@@ -34,23 +44,29 @@ function FormDelivery({
 
     if (
       name == "" ||
+      pengirim == "" ||
       jenis == "" ||
       jumlah == "" ||
       asal == "" ||
       tujuan == "" ||
       berat == "" ||
-      jalur == ""
+      jalur == "" ||
+      nomorHpPengirim == "" ||
+      nomorHpPenerima == ""
     ) {
       console.log("ISI FORM DATA PENGIRIMAN DENGAN BENAR");
     } else {
       const result = await postDataPacket(
         name,
+        pengirim,
         jenis,
         jumlah,
         asal,
         tujuan,
         berat,
         jalur,
+        nomorHpPengirim,
+        nomorHpPenerima,
       );
 
       if (result === true) {
@@ -70,7 +86,7 @@ function FormDelivery({
       <div id="container-form-packet" className="row-span-12">
         <form
           action=""
-          className="grid grid-rows-13 gap-2 w-full h-full"
+          className="grid row-span-12 grid-rows-13 gap-2 w-full h-full"
           id="form-packet"
           onSubmit={handleDataPengiriman}
         >
@@ -83,6 +99,16 @@ function FormDelivery({
                 id=""
                 placeholder="enter name packet"
                 onChange={(e) => setName(e.target.value)}
+              />
+            </label>
+            <label htmlFor="packet-pengirim">
+              nama pengirim
+              <input
+                type="text"
+                name="packet-pengirim"
+                id=""
+                placeholder="enter name pengirim"
+                onChange={(e) => setPengirim(e.target.value)}
               />
             </label>
             <label htmlFor="packet-jenis">
@@ -146,6 +172,26 @@ function FormDelivery({
                 <option value="laut">Laut</option>
                 <option value="udara">Udara</option>
               </select>
+            </label>
+            <label htmlFor="packet-nomorHp-pengirim">
+              nomor hp pengirim
+              <input
+                type="text"
+                name="packet-nomorHp-pengirim"
+                id=""
+                placeholder="enter nomor hp pengirim"
+                onChange={(e) => setNomorHpPengirim(e.target.value)}
+              />
+            </label>
+            <label htmlFor="packet-nomorHp-penerima">
+              nomor hp penerima
+              <input
+                type="text"
+                name="packet-nomorHp-penerima"
+                id=""
+                placeholder="enter nomor hp penerima"
+                onChange={(e) => setNomorHpPenerima(e.target.value)}
+              />
             </label>
           </div>
           <div className="row-span-2">

@@ -1,11 +1,11 @@
 from fastapi import APIRouter
 from app.wilayah.schema import Package
-from app.wilayah.mengolah_wilayah import haversine
+from app.service.mengolah_wilayah import haversine
 
-router = APIRouter(prefix="/wilayah")
-
+router_wilayah = APIRouter(prefix="/wilayah")
 # MENGEMBALIKAN JARAK BERDASARKAN KOORDINAT ASAL DAN TUJUAN
-@router.post("/check_wilayah")
+
+router_wilayah.post("/jarak_paket")
 def create_package(pkg: Package):
     distance = haversine(pkg.origin, pkg.destination)
     

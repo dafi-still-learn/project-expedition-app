@@ -4,12 +4,15 @@ import FormDelivery from "../components/FormMakePacket";
 import { useState } from "react";
 function Buat_pengiriman() {
   const [name, setNameD] = useState("");
+  const [pengirim, setPengirimD] = useState("");
   const [jenis, setJenisD] = useState("");
   const [jumlah, setJumlahD] = useState("");
   const [asal, setAsalD] = useState("");
   const [tujuan, setTujuanD] = useState("");
   const [berat, setBeratD] = useState("");
   const [jalur, setJalurD] = useState("");
+  const [nomorHpPengirim, setNomorHpPengirimD] = useState("");
+  const [nomorHpPenerima, setNomorHpPenerimaD] = useState("");
 
   return (
     <>
@@ -24,12 +27,15 @@ function Buat_pengiriman() {
                 <h1 className="row-span-1">form packet</h1>
                 <FormDelivery
                   setNameD={setNameD}
+                  setNamaPengirimD={setPengirimD}
                   setJenisD={setJenisD}
                   setJumlahD={setJumlahD}
                   setAsalD={setAsalD}
                   setTujuanD={setTujuanD}
                   setBeratD={setBeratD}
                   setJalurD={setJalurD}
+                  setNomorHpPengirimD={setNomorHpPengirimD}
+                  setNomorHpPenerimaD={setNomorHpPenerimaD}
                 />
               </div>
             </div>
@@ -39,6 +45,10 @@ function Buat_pengiriman() {
                 <li>
                   <h1>NAMA PAKET:</h1>
                   <h1>{name}</h1>
+                </li>
+                <li>
+                  <h1>NAMA PENGIRIM:</h1>
+                  <h1>{pengirim}</h1>
                 </li>
                 <li>
                   <h1>JENIS PAKET:</h1>
@@ -63,6 +73,14 @@ function Buat_pengiriman() {
                 <li>
                   <h1>MITRA PENGIRIMAN:</h1>
                   <h1>{jalur}</h1>
+                </li>
+                <li>
+                  <h1>NOMOR HP PENGIRIM:</h1>
+                  <h1>{nomorHpPengirim}</h1>
+                </li>
+                <li>
+                  <h1>NOMOR HP PENERIMA:</h1>
+                  <h1>{nomorHpPenerima}</h1>
                 </li>
               </ul>
             </div>

@@ -1,6 +1,8 @@
 from math import radians, sin, cos, asin, sqrt
 from app.wilayah.schema import Coord
 
+
+# RUMUS MENGHASILKAN JARAK
 def haversine(c1: Coord, c2: Coord) -> float:
     R = 6371
     

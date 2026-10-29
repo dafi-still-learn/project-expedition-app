@@ -9,7 +9,7 @@ def membuat_tabel_profil():
 
         cursor.execute("""
         CREATE TABLE IF NOT EXISTS profil(
-            id SERIAL PRIMARY KEY,
+            id BIGSERIAL PRIMARY KEY,
             user_id INTEGER UNIQUE REFERENCES akun(id),
             email VARCHAR(50) UNIQUE REFERENCES akun(email),
             nama_user VARCHAR(50) UNIQUE,

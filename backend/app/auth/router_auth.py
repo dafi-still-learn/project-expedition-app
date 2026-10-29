@@ -9,6 +9,8 @@ from app.auth.service import check_refresh_token, check_role_user_token, make_ac
 from app.auth.depedencies import check_credential_user, check_hash_password
 from argon2 import PasswordHasher
 
+from app.service.generate_nomor_resi import generate_nomor_resi_paket
+
 ph = PasswordHasher()
 
 router_auth = APIRouter(prefix="/auth")
@@ -18,6 +20,8 @@ membuat_database_user()
 # setelah mempelajari http-only cookie, baru akan mengirim data refresh token ke sana
 @router_auth.post("/login")
 async def login(data: requestLogin, response: Response):
+    order_id = 2
+    generate_nomor_resi_paket(order_id)
     password_database_akun = check_hash_password(data.username)
     
     data_verifikasi_hashing = verify_password(password_database_akun, data.password)

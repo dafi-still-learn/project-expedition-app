@@ -11,7 +11,7 @@ def membuat_database_user():
 
         cursor.execute("""
         CREATE TABLE IF NOT EXISTS akun(
-        id SERIAL PRIMARY KEY UNIQUE,
+        id BIGSERIAL PRIMARY KEY UNIQUE,
         email VARCHAR(255) UNIQUE,
         username VARCHAR(255) UNIQUE,
         password VARCHAR(255) UNIQUE,
@@ -59,7 +59,6 @@ def input_tabel_user(email, username, password, role):
 
     finally:
         conn.close()
-            
 
 # DITAMBAHKAN PADA FORM LOGIN, MEMVALIDASI DATA JIKA SAAT INGIN DIMASUKKAN PADA LOGIN DAN PEMATIKANYA PADA BUTTON FORM LOGIN
 def validate_akun_register(email, username):

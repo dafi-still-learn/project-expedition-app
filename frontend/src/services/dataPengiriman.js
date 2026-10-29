@@ -9,6 +9,7 @@ export const postDataPacket = async (
   tujuan_paket,
   berat_paket,
   jalur_pengiriman,
+  jarak_paket,
   nomor_hp_pengirim,
   nomor_hp_penerima,
 ) => {
@@ -24,6 +25,7 @@ export const postDataPacket = async (
         tujuan_paket: tujuan_paket,
         berat_paket: berat_paket,
         jalur_pengiriman: jalur_pengiriman,
+        jarak_paket: jarak_paket,
         nomor_hp_pengirim: nomor_hp_pengirim,
         nomor_hp_penerima: nomor_hp_penerima,
       },

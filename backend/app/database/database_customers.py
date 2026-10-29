@@ -8,7 +8,7 @@ def membuat_tabel_pelanggan():
         
         cursor.execute("""
         CREATE TABLE IF NOT EXISTS pelanggan(
-            id SERIAL PRIMARY KEY UNIQUE,
+            id BIGSERIAL PRIMARY KEY UNIQUE,
             id_paket INTEGER REFERENCES paket(id),
             nama_pelanggan VARCHAR(50) REFERENCES paket(nama_pengirim),
             nama_paket VARCHAR(255) REFERENCES paket(nama_paket),

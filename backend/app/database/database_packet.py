@@ -8,7 +8,7 @@ def membuat_database_paket():
 
         cursor.execute("""
         CREATE TABLE IF NOT EXISTS paket(
-            id SERIAL PRIMARY KEY,
+            id BIGSERIAL PRIMARY KEY,
             nama_paket VARCHAR(255) UNIQUE,
             nama_pengirim VARCHAR(255) UNIQUE,
             jenis_paket VARCHAR(255) UNIQUE,
@@ -22,10 +22,12 @@ def membuat_database_paket():
             nomor_hp_penerima VARCHAR(50) UNIQUE,
             tanggal_pengiriman DATE UNIQUE,
             tanggal_sampai DATE UNIQUE,
-            harga_pengiriman VARCHAR(255) UNIQUE,
-            nomor_resi_paket VARCHAR(255) UNIQUE
-        )
+            harga_pengiriman VARCHAR(255) UNIQUE
+            ) RETURNING id
         """)
+        
+        data_id = cursor.fetchone()
+        
 
         print("DATABASE PAKET BERHASIL DIBUAT")
         conn.commit()

@@ -1,3 +1,5 @@
+import locale
+
 
 def logika_harga(berat, jarak, jalur, jenis):
     if jalur == 'darat':
@@ -57,3 +59,4 @@ def logika_harga(berat, jarak, jalur, jenis):
             harga = (berat * (3 * 20000)) + \
                 (jarak * 15000) + (berat * (5 * 20000))
             return harga
+

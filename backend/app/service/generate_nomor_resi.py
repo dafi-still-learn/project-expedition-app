@@ -1,6 +1,5 @@
 import secrets
 import hashlib
-from datetime import datetime
 import hmac
 import time
 import psycopg2 as ps
@@ -55,6 +54,9 @@ def generate_nomor_resi_paket(order_id: int, prefix: str = "EXP") -> str:
     
     print(f"hasil dari pembuatan nomor resi paket {prefix}{digest[:12].upper()}")
     
-    return f"{prefix}{digest[:12].upper()}"
+    return {
+        "hasil_generate_resi_paket": f"{prefix}{digest[:12].upper()}",
+        "raw_seed": raw
+    }
     
     

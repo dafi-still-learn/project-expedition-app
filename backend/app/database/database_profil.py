@@ -31,7 +31,7 @@ def membuat_tabel_profil():
     finally:
         conn.close()
 
-membuat_tabel_profil()
+# membuat_tabel_profil()
 
 def input_user_profil(user_id, email_user, nama_user, nama_panggilan, tanggal_lahir_user, nomor_hp_user, alamat_sekarang, penempatan, jabatan_sekarang):
     conn = ps.connect(dbname="expedition_db", user="expedition_app", password="Jakgeyye123!@#", host="localhost", port="5432")

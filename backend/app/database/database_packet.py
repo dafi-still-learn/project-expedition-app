@@ -48,7 +48,7 @@ def input_database_paket(nama_paket, nama_pengirim, jenis_paket, jumlah_paket, a
 
         cursor.execute("""
         INSERT INTO paket(id, nama_paket, nama_pengirim, jenis_paket, jumlah_paket, asal_paket, tujuan_paket, berat_paket, jalur_pengiriman, jarak_paket, nomor_hp_pengirim, nomor_hp_penerima, tanggal_pengiriman, tanggal_sampai, harga_pengiriman)
-        VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s. %s. %s. %s, %s, %s)
+        VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         RETURNING id, nama_paket, nama_pengirim, asal_paket, tujuan_paket, jumlah_paket, harga_pengiriman
         """,
         (nama_paket, nama_pengirim, jenis_paket, jumlah_paket, asal_paket, tujuan_paket, berat_paket, jalur_pengiriman, jarak_paket, nomor_hp_pengirim, nomor_hp_penerima, tanggal_pengiriman, tanggal_sampai, harga_pengiriman))

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { postDataPacket } from "../services/dataPengiriman";
+import { OnInputWilayah } from "../services/inputAutoCompleteWilayah";
 
 function FormDelivery({
   setNameD,
@@ -90,7 +91,7 @@ function FormDelivery({
           id="form-packet"
           onSubmit={handleDataPengiriman}
         >
-          <div className="row-span-11 flex flex-col gap-3">
+          <div className="row-span-13 flex flex-col gap-3">
             <label htmlFor="packet-name">
               nama paket
               <input
@@ -133,23 +134,11 @@ function FormDelivery({
             </label>
             <label htmlFor="packet-asal">
               asal paket
-              <input
-                type="text"
-                name="packet-asal"
-                id=""
-                placeholder="enter asal packet"
-                onChange={(e) => setAsal(e.target.value)}
-              />
+              <OnInputWilayah setName={setAsal} />
             </label>
             <label htmlFor="packet-tujuan">
               tujuan paket
-              <input
-                type="text"
-                name="packet-tujuan"
-                id=""
-                placeholder="enter tujuan packet"
-                onChange={(e) => setTujuan(e.target.value)}
-              />
+              <OnInputWilayah setName={setTujuan} />
             </label>
             <label htmlFor="packet-berat">
               berat paket
@@ -192,12 +181,6 @@ function FormDelivery({
                 placeholder="enter nomor hp penerima"
                 onChange={(e) => setNomorHpPenerima(e.target.value)}
               />
-            </label>
-          </div>
-          <div className="row-span-2">
-            <label htmlFor="price">
-              price:
-              <h1>{}</h1>
             </label>
           </div>
           <button type="submit" className="row-span-1">

@@ -6,7 +6,7 @@ from app.auth.router_auth import router_auth
 from app.packet.router_packet import router_packet
 from app.users.router_profil import router_profil
 from app.customers.router_customers import router_customers
-
+from app.wilayah.router import router_wilayah
 @asynccontextmanager
 async def lifespan(app:lifespan):
     print("server sedang dimulai")
@@ -21,6 +21,7 @@ app.include_router(router_auth)
 app.include_router(router_packet)
 app.include_router(router_profil)
 app.include_router(router_customers)
+app.include_router(router_wilayah)
 
 app.add_middleware(
     CORSMiddleware,

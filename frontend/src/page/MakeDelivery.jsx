@@ -40,49 +40,51 @@ function Buat_pengiriman() {
               </div>
             </div>
             <div className="col-span-2" id="detail-make-delivery">
-              <h1>detail packet</h1>
-              <ul>
-                <li>
-                  <h1>NAMA PAKET:</h1>
-                  <h1>{name}</h1>
-                </li>
-                <li>
-                  <h1>NAMA PENGIRIM:</h1>
-                  <h1>{pengirim}</h1>
-                </li>
-                <li>
-                  <h1>JENIS PAKET:</h1>
-                  <h1>{jenis}</h1>
-                </li>
-                <li>
-                  <h1>JUMLAH PAKET:</h1>
-                  <h1>{jumlah}</h1>
-                </li>
-                <li>
-                  <h1>ASAL PAKET:</h1>
-                  <h1>{asal}</h1>
-                </li>
-                <li>
-                  <h1>TUJUAN PAKET:</h1>
-                  <h1>{tujuan}</h1>
-                </li>
-                <li>
-                  <h1>BERAT PAKET</h1>
-                  <h1>{berat}</h1>
-                </li>
-                <li>
-                  <h1>MITRA PENGIRIMAN:</h1>
-                  <h1>{jalur}</h1>
-                </li>
-                <li>
-                  <h1>NOMOR HP PENGIRIM:</h1>
-                  <h1>{nomorHpPengirim}</h1>
-                </li>
-                <li>
-                  <h1>NOMOR HP PENERIMA:</h1>
-                  <h1>{nomorHpPenerima}</h1>
-                </li>
-              </ul>
+              <div>
+                <h1>detail packet</h1>
+                <ul>
+                  <li>
+                    <h1>NAMA PAKET:</h1>
+                    <h1>{name}</h1>
+                  </li>
+                  <li>
+                    <h1>NAMA PENGIRIM:</h1>
+                    <h1>{pengirim}</h1>
+                  </li>
+                  <li>
+                    <h1>JENIS PAKET:</h1>
+                    <h1>{jenis}</h1>
+                  </li>
+                  <li>
+                    <h1>JUMLAH PAKET:</h1>
+                    <h1>{jumlah}</h1>
+                  </li>
+                  <li>
+                    <h1>ASAL PAKET:</h1>
+                    <h1>{asal}</h1>
+                  </li>
+                  <li>
+                    <h1>TUJUAN PAKET:</h1>
+                    <h1>{tujuan}</h1>
+                  </li>
+                  <li>
+                    <h1>BERAT PAKET</h1>
+                    <h1>{berat}</h1>
+                  </li>
+                  <li>
+                    <h1>MITRA PENGIRIMAN:</h1>
+                    <h1>{jalur}</h1>
+                  </li>
+                  <li>
+                    <h1>NOMOR HP PENGIRIM:</h1>
+                    <h1>{nomorHpPengirim}</h1>
+                  </li>
+                  <li>
+                    <h1>NOMOR HP PENERIMA:</h1>
+                    <h1>{nomorHpPenerima}</h1>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>

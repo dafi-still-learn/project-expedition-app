@@ -30,3 +30,8 @@
   color: black;
   border: 1px solid black;
 }
+
+#input-wilayah {
+  width: 100%;
+  border: 2px solid red;
+}

@@ -1,7 +1,10 @@
 import "../css/MakeDelivery.css";
-
 import FormDelivery from "../components/FormMakePacket";
 import { useState } from "react";
+import { EstimasiWaktuPengiriman } from "../services/EstimasiPengiriman";
+import { EstimasiJarak } from "../services/EstimasiJarak";
+import { HargaPengiriman } from "../services/hargaPengiriman";
+
 function Buat_pengiriman() {
   const [name, setNameD] = useState("");
   const [pengirim, setPengirimD] = useState("");
@@ -13,6 +16,8 @@ function Buat_pengiriman() {
   const [jalur, setJalurD] = useState("");
   const [nomorHpPengirim, setNomorHpPengirimD] = useState("");
   const [nomorHpPenerima, setNomorHpPenerimaD] = useState("");
+
+  const [jarak, setJarak] = useState("");
 
   return (
     <>
@@ -68,12 +73,30 @@ function Buat_pengiriman() {
                     <h1>{tujuan}</h1>
                   </li>
                   <li>
+                    <h1>ESTIMASI JARAK: </h1>
+                    {asal && tujuan && (
+                      <EstimasiJarak
+                        asal={asal}
+                        tujuan={tujuan}
+                        setJarakD={setJarak}
+                      />
+                    )}
+                  </li>
+                  <li>
                     <h1>BERAT PAKET</h1>
                     <h1>{berat}</h1>
                   </li>
                   <li>
                     <h1>MITRA PENGIRIMAN:</h1>
                     <h1>{jalur}</h1>
+                  </li>
+                  <li>
+                    <h1>ESTIMASI WAKTU SAMPAI: </h1>
+                    {jarak &&
+                      jalur &&
+                      (EstimasiWaktuPengiriman(jarak, jalur) || (
+                        <h1>loading...</h1>
+                      ))}
                   </li>
                   <li>
                     <h1>NOMOR HP PENGIRIM:</h1>
@@ -84,6 +107,16 @@ function Buat_pengiriman() {
                     <h1>{nomorHpPenerima}</h1>
                   </li>
                 </ul>
+              </div>
+              <div>
+                {jarak && berat && jalur && jenis && (
+                  <HargaPengiriman
+                    berat={berat}
+                    jarak={jarak}
+                    jalur={jalur}
+                    jenis={jenis}
+                  />
+                )}
               </div>
             </div>
           </div>

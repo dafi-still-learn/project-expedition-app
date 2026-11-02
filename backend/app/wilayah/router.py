@@ -4,6 +4,8 @@ from psycopg2.extras import RealDictCursor
 
 router_wilayah = APIRouter(prefix="/wilayah")
 
+# MEMUNCULKAN ATAU MEREKOMENDASIKAN WILAYAH BERDASARKAN NAMA WILAYAH YANG DIINGINKAN USER
+
 def get_db():
     return  ps.connect(dbname="expedition_db", user="expedition_app", password="Jakgeyye123!@#", host="localhost", port="5432")
 
@@ -13,7 +15,7 @@ def get_rekomendasi_nama_wilayah(q: str = Query(..., min_length=1),db=Depends(ge
         cursor = db.cursor(cursor_factory=RealDictCursor)
         
         cursor.execute("""
-        SELECT id, kode_wilayah, nama_wilayah, type_wilayah
+        SELECT id, kode_wilayah, nama_wilayah, type_wilayah, lat_wilayah, long_wilayah
         FROM tmp_wilayah
         WHERE nama_wilayah ILIKE %s
         ORDER BY

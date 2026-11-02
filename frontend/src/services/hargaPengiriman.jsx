@@ -1,4 +1,4 @@
-import baseURL from "../api/baseURL";
+import baseURL from "../api/Axios";
 
 export const HargaPengiriman = async (berat, jarak, jalur, jenis) => {
   try {
@@ -9,6 +9,7 @@ export const HargaPengiriman = async (berat, jarak, jalur, jenis) => {
     const data = response.data;
 
     console.log("ini data harga pengiriman dari response ", data);
+    return data.data;
   } catch (error) {
     console.error("Error fetching harga pengiriman: ", error);
   }

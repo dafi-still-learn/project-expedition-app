@@ -1,14 +1,19 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 import locale
-from sqlalchemy import text
-from sqlalchemy.orm import Session
-from app.database.database_packet import membuat_database_paket, input_database_paket, cari_id_paket
+from app.database.database_packet import input_database_paket
 from app.packet.schemas import data_pengiriman
 from app.service.waktu_pengiriman_sampai import waktu_pengiriman
-from app.database.database_wilayah import import_csv_wilayah, membuat_tabel_wilayah
+
+from app.database.database_wilayah import data_koordinat_wilayah
+
+import psycopg2 as ps
+from psycopg2.extras import RealDictCursor
+
+from app.wilayah.mengolah_wilayah_jarak import create_package
 
 from app.service.logical_transaksi import logika_harga
 router_packet = APIRouter(prefix="/packet")
+
 
 # membuat_database_resi()
 # membuat_database_paket()
@@ -47,6 +52,7 @@ def get_harga_pengiriman(berat_paket: float,jarak_paket: float, jalur_pengiriman
         
         hasil_dari_locale_harga = locale.currency(harga_pengiriman, grouping=True)
         
+        print("ini hasil harga dari pengiriman", hasil_dari_locale_harga)
         return hasil_dari_locale_harga
     
     except Exception as e:
@@ -57,8 +63,26 @@ def get_waktu_pengiriman(jarak_paket: float, jalur_pengiriman:str):
     try:
         hasil_waktu = waktu_pengiriman(jarak_paket, jalur_pengiriman)
         
+        print("ini hasil waktu dari pengiriman", hasil_waktu)
         return hasil_waktu
     
     except Exception as e:
         print("terjadi eror pada saat menghitung waktu pengiriman ", e)
+
+@router_packet.get("/jarak_pengiriman")
+def get_jarak_pengiriman(id_origin: str, id_destination: str):
+    try:
+        data_koordinat_asal = data_koordinat_wilayah(id_origin)
+        
+        data_koordinat_tujuan = data_koordinat_wilayah(id_destination)
+        
+        print("data dari koordinat asal", data_koordinat_asal)
+        
+        print("data dari koordinat tujaun", data_koordinat_tujuan)
+        
+        hasil_dari_package_wilayah = create_package(data_koordinat_asal, data_koordinat_tujuan)
+        
+        print("hasil dari package wilayah", hasil_dari_package_wilayah)
+    except Exception as e:
+        print("terjadi error pada saat mencari data koordinat berdasarkan kode wilayah", e)
         

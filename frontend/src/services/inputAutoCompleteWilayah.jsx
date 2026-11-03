@@ -3,7 +3,7 @@ import baseURL from "../api/Axios";
 let timer;
 
 // UNTUK MENCARI WILAYAH BERDASARKAN INPUTAN USER DAN DATA YANG DITAMPILKNA DARI BACKEND
-export const OnInputWilayah = ({ setName }) => {
+export const OnInputWilayah = ({ setName, setIdDaerah }) => {
   clearTimeout(timer);
 
   const [input, setInput] = useState("");
@@ -35,6 +35,7 @@ export const OnInputWilayah = ({ setName }) => {
     };
 
     fetchWilayah();
+    return () => clearTimeout(timer);
   }, [input]);
 
   return (
@@ -51,7 +52,9 @@ export const OnInputWilayah = ({ setName }) => {
             <li
               key={wilayah.id_wilayah}
               onClick={() => {
+                setInput(wilayah.nama_wilayah);
                 setName(wilayah.nama_wilayah);
+                setIdDaerah(wilayah.kode_wilayah);
                 setShowDropdown(false);
               }}
             >

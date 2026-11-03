@@ -36,5 +36,3 @@ def get_rekomendasi_nama_wilayah(q: str = Query(..., min_length=1),db=Depends(ge
     
     finally:
         db.close()
-        
-    

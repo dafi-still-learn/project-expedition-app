@@ -1,4 +1,5 @@
 import psycopg2 as ps
+from psycopg2.extras import RealDictCursor
 import csv
 
 def membuat_tabel_wilayah():
@@ -65,3 +66,27 @@ def import_csv_wilayah(pasth_csv):
     finally:
         conn.close()
         
+def data_koordinat_wilayah(data):
+    conn = ps.connect(dbname="expedition_db", user="expedition_app", password="Jakgeyye123!@#", host="localhost", port="5432")
+    try:
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        
+        cursor.execute("""
+        SELECT lat_wilayah, long_wilayah
+        FROM tmp_wilayah
+        WHERE kode_wilayah = %s
+        """, (data, ))
+        
+        data = cursor.fetchone()
+        
+        print("INI DATA DARI KOORDINAT WILAYAH BERDASARKAN KODE_WILAYAH ", data)
+        
+        conn.commit()
+        return data 
+    
+    except ps.Error as e:
+        print("terjadi error pada pengambilan data koordinat wilayah ", e)
+        conn.rollback()
+        
+    finally:
+        conn.close()         

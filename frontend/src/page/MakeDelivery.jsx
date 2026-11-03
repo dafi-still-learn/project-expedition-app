@@ -1,7 +1,7 @@
 import "../css/MakeDelivery.css";
 import FormDelivery from "../components/FormMakePacket";
 import { useState } from "react";
-import { EstimasiWaktuPengiriman } from "../services/EstimasiPengiriman";
+import { EstimasiWaktuPengiriman } from "../services/EstimasiWaktuPengiriman";
 import { EstimasiJarak } from "../services/EstimasiJarak";
 import { HargaPengiriman } from "../services/hargaPengiriman";
 
@@ -18,6 +18,8 @@ function Buat_pengiriman() {
   const [nomorHpPenerima, setNomorHpPenerimaD] = useState("");
 
   const [jarak, setJarak] = useState("");
+  const [idAsal, setIdAsalD] = useState("");
+  const [idTujuan, setIdTujuanD] = useState("");
 
   return (
     <>
@@ -41,6 +43,8 @@ function Buat_pengiriman() {
                   setJalurD={setJalurD}
                   setNomorHpPengirimD={setNomorHpPengirimD}
                   setNomorHpPenerimaD={setNomorHpPenerimaD}
+                  setIdAsalD={setIdAsalD}
+                  setIdTujuanID={setIdTujuanD}
                 />
               </div>
             </div>
@@ -76,8 +80,8 @@ function Buat_pengiriman() {
                     <h1>ESTIMASI JARAK: </h1>
                     {asal && tujuan && (
                       <EstimasiJarak
-                        asal={asal}
-                        tujuan={tujuan}
+                        kodeWilayahAsal={idAsal}
+                        kodeWilayahTujuan={idTujuan}
                         setJarakD={setJarak}
                       />
                     )}
@@ -92,11 +96,9 @@ function Buat_pengiriman() {
                   </li>
                   <li>
                     <h1>ESTIMASI WAKTU SAMPAI: </h1>
-                    {jarak &&
-                      jalur &&
-                      (EstimasiWaktuPengiriman(jarak, jalur) || (
-                        <h1>loading...</h1>
-                      ))}
+                    {jarak && jalur && (
+                      <EstimasiWaktuPengiriman jarak={jarak} jalur={jalur} />
+                    )}
                   </li>
                   <li>
                     <h1>NOMOR HP PENGIRIM:</h1>

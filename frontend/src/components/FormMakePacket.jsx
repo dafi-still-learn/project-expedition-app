@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { postDataPacket } from "../services/dataPengiriman";
 import { OnInputWilayah } from "../services/inputAutoCompleteWilayah";
 
@@ -13,6 +13,8 @@ function FormDelivery({
   setJalurD,
   setNomorHpPengirimD,
   setNomorHpPenerimaD,
+  setIdAsalD,
+  setIdTujuanD,
 }) {
   const [name, setName] = useState("");
   const [pengirim, setPengirim] = useState("");
@@ -25,7 +27,10 @@ function FormDelivery({
   const [nomorHpPengirim, setNomorHpPengirim] = useState("");
   const [nomorHpPenerima, setNomorHpPenerima] = useState("");
 
-  const getData = () => {
+  const [idAsal, setIdAsal] = useState("");
+  const [idTujuan, setIdTujuan] = useState("");
+
+  useEffect(() => {
     setNameD(name);
     setNamaPengirimD(pengirim);
     setJumlahD(jumlah);
@@ -36,9 +41,34 @@ function FormDelivery({
     setJalurD(jalur);
     setNomorHpPengirimD(nomorHpPengirim);
     setNomorHpPenerimaD(nomorHpPenerima);
-  };
-
-  getData();
+    setIdAsalD?.(idAsal);
+    setIdTujuanD?.(idTujuan);
+  }, [
+    name,
+    pengirim,
+    jumlah,
+    jenis,
+    asal,
+    tujuan,
+    berat,
+    jalur,
+    nomorHpPengirim,
+    nomorHpPenerima,
+    idAsal,
+    idTujuan,
+    setNameD,
+    setNamaPengirimD,
+    setJumlahD,
+    setJenisD,
+    setAsalD,
+    setTujuanD,
+    setBeratD,
+    setJalurD,
+    setNomorHpPengirimD,
+    setNomorHpPenerimaD,
+    setIdAsalD,
+    setIdTujuanD,
+  ]);
 
   const handleDataPengiriman = async (e) => {
     e.preventDefault();
@@ -53,7 +83,9 @@ function FormDelivery({
       berat == "" ||
       jalur == "" ||
       nomorHpPengirim == "" ||
-      nomorHpPenerima == ""
+      nomorHpPenerima == "" ||
+      idAsal == "" ||
+      idTujuan == ""
     ) {
       console.log("ISI FORM DATA PENGIRIMAN DENGAN BENAR");
     } else {
@@ -134,11 +166,11 @@ function FormDelivery({
             </label>
             <label htmlFor="packet-asal">
               asal paket
-              <OnInputWilayah setName={setAsal} />
+              <OnInputWilayah setName={setAsal} setIdDaerah={setIdAsal} />
             </label>
             <label htmlFor="packet-tujuan">
               tujuan paket
-              <OnInputWilayah setName={setTujuan} />
+              <OnInputWilayah setName={setTujuan} setIdDaerah={setIdTujuan} />
             </label>
             <label htmlFor="packet-berat">
               berat paket

@@ -16,4 +16,3 @@ class data_pengiriman(BaseModel):
     tanggal_pengiriman: date
     tanggal_sampai: date
     harga_pengiriman: str
-    nomor_resi_paket: str

@@ -1,13 +1,14 @@
 from fastapi import APIRouter, Depends
 import locale
-from app.database.database_packet import input_database_paket
+from app.database.database_packet import input_database_paket, cari_id_paket
 from app.packet.schemas import data_pengiriman
 from app.service.waktu_pengiriman_sampai import waktu_pengiriman
 
 from app.database.database_wilayah import data_koordinat_wilayah
 
-from app.wilayah.mengolah_wilayah_jarak import create_package, haversine
+from app.wilayah.mengolah_wilayah_jarak import haversine
 
+from app.service.generate_nomor_resi import generate_nomor_resi_paket
 
 from app.service.logical_transaksi import logika_harga
 router_packet = APIRouter(prefix="/packet")
@@ -28,11 +29,11 @@ def input_packet_user(data: data_pengiriman):
         print("ini hasil dari harga pengiriman dari harga pengiriman paket ", hasil_dari_locale_harga)  
         
         # MENAMPILKAN WAKTU UNTUK PENGIRIMAN
-        hasil_waktu = waktu_pengiriman(data.jarak_paket, data.jalur_pengiriman)
+        # hasil_waktu = waktu_pengiriman(data.jarak_paket, data.jalur_pengiriman)
             
-        result_input = input_database_paket(data.nama_paket, data.nama_pengirim, data.  jenis_paket, data.jumlah_paket, data.asal_paket, data.tujuan_paket, data.berat_paket, data.jalur_pengiriman, data.jarak_paket, data.nomor_hp_pengirim, data.nomor_hp_penerima,hasil_waktu["waktu_berangkat"], hasil_waktu["waktu_sampai"], hasil_dari_locale_harga)
+        result_input = input_database_paket(data.nama_paket, data.nama_pengirim, data.  jenis_paket, data.jumlah_paket, data.asal_paket, data.tujuan_paket, data.berat_paket, data.jalur_pengiriman, data.jarak_paket, data.nomor_hp_pengirim, data.nomor_hp_penerima, data.tanggal_pengiriman, data.tanggal_sampai, data.harga_pengiriman)
             
-      
+        print("ISI DARI RESULT INPUT DATABASE PAKET ", result_input)
         return result_input
             
     except Exception as e:
@@ -42,9 +43,9 @@ def input_packet_user(data: data_pengiriman):
 # import_csv_wilayah("app/database/data_wilayah.csv")
 
 @router_packet.get("/harga_pengiriman")
-def get_harga_pengiriman(berat_paket: float,jarak_paket: float, jalur_pengiriman: str, jenis_paket: str):
+def get_harga_pengiriman(berat: float,jarak: float, jalur: str, jenis: str):
     try:
-        harga_pengiriman = logika_harga(berat_paket, jarak_paket, jalur_pengiriman, jenis_paket)
+        harga_pengiriman = logika_harga(berat, jarak, jalur, jenis)
         
         locale.setlocale(locale.LC_ALL, "id_ID.UTF-8")
         
@@ -57,12 +58,12 @@ def get_harga_pengiriman(berat_paket: float,jarak_paket: float, jalur_pengiriman
         print("terjadi eror pada saat menghitung harga pengiriman", e)
         
 @router_packet.get("/waktu_pengiriman")
-def get_waktu_pengiriman(jarak_paket: float, jalur_pengiriman:str):
+def get_waktu_pengiriman(jarak: float, jalur:str):
     try:
-        hasil_waktu = waktu_pengiriman(jarak_paket, jalur_pengiriman)
+        hasil_waktu = waktu_pengiriman(jarak, jalur)
         
-        print("ini hasil waktu dari pengiriman", hasil_waktu)
-        return hasil_waktu
+        print(f"ini hasil waktu dari pengiriman", hasil_waktu)
+        return hasil_waktu["waktu_sampai"]
     
     except Exception as e:
         print("terjadi eror pada saat menghitung waktu pengiriman ", e)
@@ -86,4 +87,19 @@ def get_jarak_pengiriman(asal: str, tujuan: str):
         
     except Exception as e:
         print("terjadi error pada saat mencari data koordinat berdasarkan kode wilayah", e)
+
+@router_packet.get("/no_resi")
+def get_no_resi(id: int, pengirim: str):
+    try:
+        hasil_generate_no_resi = generate_nomor_resi_paket(id)
+        
+        print("isi dari data id paket ", hasil_generate_no_resi)
+        
+        return{
+            "no_resi_paket": hasil_generate_no_resi,
+            "pengirim": pengirim,
+            "status": "diproses"
+        }
+    except Exception as e:
+        print("terjadi error pada saat mencari data id paket", e)
         

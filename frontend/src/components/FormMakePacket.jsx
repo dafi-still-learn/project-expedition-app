@@ -13,8 +13,13 @@ function FormDelivery({
   setJalurD,
   setNomorHpPengirimD,
   setNomorHpPenerimaD,
+  setTanggalPengirimanD,
+  setTanggalSampaiD,
+  setHargaPengirimanD,
+  //
   setIdAsalD,
   setIdTujuanD,
+  setIdPaketD,
 }) {
   const [name, setName] = useState("");
   const [pengirim, setPengirim] = useState("");
@@ -26,9 +31,14 @@ function FormDelivery({
   const [jalur, setJalur] = useState("");
   const [nomorHpPengirim, setNomorHpPengirim] = useState("");
   const [nomorHpPenerima, setNomorHpPenerima] = useState("");
+  const [tanggalPengiriman, setTanggalPengiriman] = useState("");
+  const [tanggalSampai, setTanggalSampai] = useState("");
+  const [hargaPengiriman, setHargaPengiriman] = useState("");
 
   const [idAsal, setIdAsal] = useState("");
   const [idTujuan, setIdTujuan] = useState("");
+
+  const [idPaket, setIdPaket] = useState("");
 
   useEffect(() => {
     setNameD(name);
@@ -41,9 +51,15 @@ function FormDelivery({
     setJalurD(jalur);
     setNomorHpPengirimD(nomorHpPengirim);
     setNomorHpPenerimaD(nomorHpPenerima);
+    //
+    setTanggalPengirimanD(tanggalPengiriman);
+    setTanggalSampaiD(tanggalSampai);
+    setHargaPengirimanD(hargaPengiriman);
 
     setIdAsalD(idAsal);
     setIdTujuanD(idTujuan);
+
+    setIdPaketD(idPaket);
   }, [
     name,
     pengirim,
@@ -55,8 +71,13 @@ function FormDelivery({
     jalur,
     nomorHpPengirim,
     nomorHpPenerima,
+    tanggalPengiriman,
+    tanggalSampai,
+    hargaPengiriman,
+    //
     idAsal,
     idTujuan,
+    idPaket,
     setNameD,
     setNamaPengirimD,
     setJumlahD,
@@ -67,8 +88,13 @@ function FormDelivery({
     setJalurD,
     setNomorHpPengirimD,
     setNomorHpPenerimaD,
+    setTanggalPengirimanD,
+    setTanggalSampaiD,
+    setHargaPengirimanD,
+    //
     setIdAsalD,
     setIdTujuanD,
+    setIdPaketD,
   ]);
 
   console.log("isi dari id asal", typeof idAsal);
@@ -103,14 +129,16 @@ function FormDelivery({
         jalur,
         nomorHpPengirim,
         nomorHpPenerima,
+        //
+        tanggalPengiriman,
+        tanggalSampai,
+        hargaPengiriman,
       );
 
-      if (result === true) {
+      setIdPaket(result.data["id_paket"]);
+      console.log("isi dari data result post data packet ", result);
+      if (result.success) {
         console.log("data anda berhasil dikirim");
-        console.log(
-          "harga paket dari barang yang akan dikirim",
-          result["data_harga"],
-        );
       } else {
         console.log("data anda gagal dikirim");
       }

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { EstimasiWaktuPengiriman } from "../services/EstimasiWaktuPengiriman";
 import { EstimasiJarak } from "../services/EstimasiJarak";
 import { EstimasiHargaPengiriman } from "../services/EstimasiHargaPengiriman";
+import { GenerateBarcode } from "../services/GenerateBarcode";
 
 function Buat_pengiriman() {
   const [name, setNameD] = useState("");
@@ -16,11 +17,16 @@ function Buat_pengiriman() {
   const [jalur, setJalurD] = useState("");
   const [nomorHpPengirim, setNomorHpPengirimD] = useState("");
   const [nomorHpPenerima, setNomorHpPenerimaD] = useState("");
+  const [tanggalPengiriman, setTanggalPengirimanD] = useState("");
+  const [tanggalSampai, setTanggalSampaiD] = useState("");
+  const [hargaPengiriman, setHargaPengirimanD] = useState("");
 
   const [jarak, setJarak] = useState("");
 
   const [idAsal, setIdAsalD] = useState("");
   const [idTujuan, setIdTujuanD] = useState("");
+
+  const [idPaket, setIdPaketD] = useState("");
 
   console.log("ini isi id tujuan", idTujuan);
   console.log(idAsal);
@@ -46,8 +52,14 @@ function Buat_pengiriman() {
                   setJalurD={setJalurD}
                   setNomorHpPengirimD={setNomorHpPengirimD}
                   setNomorHpPenerimaD={setNomorHpPenerimaD}
+                  //
+                  setTanggalPengirimanD={setTanggalPengirimanD}
+                  setTanggalSampaiD={setTanggalSampaiD}
+                  setHargaPengirimanD={setHargaPengirimanD}
+                  //
                   setIdAsalD={setIdAsalD}
                   setIdTujuanD={setIdTujuanD}
+                  setIdPaketD={setIdPaketD}
                 />
               </div>
             </div>
@@ -94,13 +106,18 @@ function Buat_pengiriman() {
                     <h1>{berat}</h1>
                   </li>
                   <li>
-                    <h1>MITRA PENGIRIMAN:</h1>
+                    <h1>JALUR PENGIRIMAN:</h1>
                     <h1>{jalur}</h1>
                   </li>
                   <li>
                     <h1>ESTIMASI WAKTU SAMPAI: </h1>
                     {jarak && jalur && (
-                      <EstimasiWaktuPengiriman jarak={jarak} jalur={jalur} />
+                      <EstimasiWaktuPengiriman
+                        jarak={jarak}
+                        jalur={jalur}
+                        setTanggalPengiriman={setTanggalPengirimanD}
+                        setTanggalSampai={setTanggalSampaiD}
+                      />
                     )}
                   </li>
                   <li>
@@ -121,8 +138,26 @@ function Buat_pengiriman() {
                     jarak={jarak}
                     jalur={jalur}
                     jenis={jenis}
+                    setHargaPengiriman={setHargaPengirimanD}
                   />
                 )}
+              </div>
+              <div>
+                <h1>BARCODE PENGIRIMAN</h1>
+                <hr />
+
+                {name &&
+                  pengirim &&
+                  jenis &&
+                  berat &&
+                  asal &&
+                  tujuan &&
+                  jarak &&
+                  nomorHpPengirim &&
+                  nomorHpPenerima &&
+                  idPaket && (
+                    <GenerateBarcode id={idPaket} pengirim={pengirim} />
+                  )}
               </div>
             </div>
           </div>

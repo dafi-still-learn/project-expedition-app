@@ -12,6 +12,10 @@ export const postDataPacket = async (
   jarak_paket,
   nomor_hp_pengirim,
   nomor_hp_penerima,
+  tanggal_pengiriman,
+  tanggal_sampai,
+  harga_pengiriman,
+  nomor_resi_paket,
 ) => {
   try {
     const response = await baseURL.post(
@@ -28,6 +32,10 @@ export const postDataPacket = async (
         jarak_paket: jarak_paket,
         nomor_hp_pengirim: nomor_hp_pengirim,
         nomor_hp_penerima: nomor_hp_penerima,
+        tanggal_pengiriman: tanggal_pengiriman,
+        tanggal_sampai: tanggal_sampai,
+        harga_pengiriman: harga_pengiriman,
+        nomor_resi_paket: nomor_resi_paket,
       },
       {
         withCredentials: true,

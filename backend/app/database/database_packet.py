@@ -75,16 +75,21 @@ def input_database_paket(nama_paket, nama_pengirim, jenis_paket, jumlah_paket, a
 
         conn.commit()
 
-        return True
+        return {
+            "id_paket": data_id["id"],
+            "nama_pengirim": data_id["nama_pengirim"],
+            "nama_paket": data_id["nama_paket"],
+            "success": True,
+            
+        }
     except ps.Error as e:
         print(e)
         conn.rollback()
-        return False
 
     finally:
         conn.close()
 
-def cari_id_paket(nama_pengirim):
+def cari_id_paket(nama_pengirim, nomor_hp_pengirim):
       conn = ps.connect(dbname="expedition_db", user="expedition_app", password="Jakgeyye123!@#", host="localhost", port="5432")
       
       try:

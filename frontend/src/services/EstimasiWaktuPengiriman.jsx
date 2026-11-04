@@ -4,6 +4,9 @@ import { useState, useEffect } from "react";
 export const EstimasiWaktuPengiriman = ({ jarak, jalur }) => {
   const [waktu, setWaktu] = useState("");
 
+  console.log("isi jarak", jarak);
+  console.log("isi jalur", jalur);
+
   useEffect(() => {
     const handleEstimasiWaktuPengiriman = async () => {
       try {
@@ -15,7 +18,7 @@ export const EstimasiWaktuPengiriman = ({ jarak, jalur }) => {
 
         console.log("ini data estimasi waktu pengiriman dari response ", data);
 
-        setWaktu(data.data);
+        setWaktu(data);
       } catch (error) {
         console.error("Error fetching estimasi waktu pengiriman: ", error);
       }
@@ -28,7 +31,7 @@ export const EstimasiWaktuPengiriman = ({ jarak, jalur }) => {
 
   return (
     <>
-      <div>{waktu && <h1>{waktu}</h1>}</div>
+      <div>{waktu && <h1>{waktu} hari</h1>}</div>
     </>
   );
 };

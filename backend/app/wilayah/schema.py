@@ -1,8 +1,8 @@
 from pydantic import BaseModel
 
 class Coord(BaseModel):
-    lat: float
-    lng: float
+    lat_wilayah: float
+    long_wilayah: float
     
 class Package(BaseModel):
     origin: Coord

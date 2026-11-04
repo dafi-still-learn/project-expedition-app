@@ -3,7 +3,7 @@ import FormDelivery from "../components/FormMakePacket";
 import { useState } from "react";
 import { EstimasiWaktuPengiriman } from "../services/EstimasiWaktuPengiriman";
 import { EstimasiJarak } from "../services/EstimasiJarak";
-import { HargaPengiriman } from "../services/hargaPengiriman";
+import { EstimasiHargaPengiriman } from "../services/EstimasiHargaPengiriman";
 
 function Buat_pengiriman() {
   const [name, setNameD] = useState("");
@@ -18,9 +18,12 @@ function Buat_pengiriman() {
   const [nomorHpPenerima, setNomorHpPenerimaD] = useState("");
 
   const [jarak, setJarak] = useState("");
+
   const [idAsal, setIdAsalD] = useState("");
   const [idTujuan, setIdTujuanD] = useState("");
 
+  console.log("ini isi id tujuan", idTujuan);
+  console.log(idAsal);
   return (
     <>
       <section className="w-screen h-screen" id="Container-make-delivery">
@@ -44,7 +47,7 @@ function Buat_pengiriman() {
                   setNomorHpPengirimD={setNomorHpPengirimD}
                   setNomorHpPenerimaD={setNomorHpPenerimaD}
                   setIdAsalD={setIdAsalD}
-                  setIdTujuanID={setIdTujuanD}
+                  setIdTujuanD={setIdTujuanD}
                 />
               </div>
             </div>
@@ -111,8 +114,9 @@ function Buat_pengiriman() {
                 </ul>
               </div>
               <div>
+                <h1>ESTIMASI HARGA PENGIRIMAN:</h1>
                 {jarak && berat && jalur && jenis && (
-                  <HargaPengiriman
+                  <EstimasiHargaPengiriman
                     berat={berat}
                     jarak={jarak}
                     jalur={jalur}

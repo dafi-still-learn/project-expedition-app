@@ -1,52 +1,67 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import baseURL from "../api/Axios";
-let timer;
 
 // UNTUK MENCARI WILAYAH BERDASARKAN INPUTAN USER DAN DATA YANG DITAMPILKNA DARI BACKEND
 export const OnInputWilayah = ({ setName, setIdDaerah }) => {
-  clearTimeout(timer);
-
   const [input, setInput] = useState("");
   const [wilayahList, setWilayahList] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
 
+  const timerRef = useRef(null);
+  const wrapperRef = useRef(null);
+
   useEffect(() => {
-    const fetchWilayah = async () => {
-      try {
-        if (input.length < 2) {
-          setWilayahList([]);
-          setShowDropdown(false);
-          return;
-        }
+    clearTimeout(timerRef.current);
 
-        timer = setTimeout(async () => {
-          const response = await baseURL.get(`/wilayah/search?q=${input}`);
-          const data = response.data;
+    if (input.length < 2) {
+      setWilayahList([]);
+      setShowDropdown(false);
+      return;
+    }
+    try {
+      timerRef.current = setTimeout(async () => {
+        const response = await baseURL.get(`/wilayah/search?q=${input}`);
+        const data = response.data;
 
-          console.log("ini data wilayah dari response ", data);
-          setWilayahList(data.data);
-          setShowDropdown(true);
+        console.log("ini data wilayah dari response ", data);
+        setWilayahList(data.data);
+        setShowDropdown(true);
 
-          console.log("isi dari response data wilayah", data);
-        }, 500);
-      } catch (error) {
-        console.error("Error fetching wilayah:", error);
+        console.log("isi dari response data wilayah", data);
+      }, 500);
+    } catch (error) {
+      console.error("Error fetching wilayah:", error);
+    }
+
+    return () => clearTimeout(timerRef.current);
+  }, [input]);
+
+  useEffect(() => {
+    const handleMouseOut = (e) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+        setShowDropdown(false);
       }
     };
+    document.addEventListener("mousedown", handleMouseOut);
 
-    fetchWilayah();
-    return () => clearTimeout(timer);
-  }, [input]);
+    return () => document.removeEventListener("mousedown", handleMouseOut);
+  }, []);
 
   return (
     <div>
       <input
-        id="input-wilayah"
         type="text"
+        className="input-wilayah"
         value={input}
-        onChange={(e) => setInput(e.target.value)}
+        onChange={(e) => {
+          const val = e.target.value;
+          setInput(val);
+
+          setIdDaerah("");
+          setName("");
+        }}
       />
-      {showDropdown && (
+      {showDropdown && wilayahList.length > 0 && (
         <ul className="dropdown-wilayah">
           {wilayahList.map((wilayah) => (
             <li

@@ -41,8 +41,9 @@ function FormDelivery({
     setJalurD(jalur);
     setNomorHpPengirimD(nomorHpPengirim);
     setNomorHpPenerimaD(nomorHpPenerima);
-    setIdAsalD?.(idAsal);
-    setIdTujuanD?.(idTujuan);
+
+    setIdAsalD(idAsal);
+    setIdTujuanD(idTujuan);
   }, [
     name,
     pengirim,
@@ -70,6 +71,8 @@ function FormDelivery({
     setIdTujuanD,
   ]);
 
+  console.log("isi dari id asal", typeof idAsal);
+  console.log("isi dari id tujuan", typeof idTujuan);
   const handleDataPengiriman = async (e) => {
     e.preventDefault();
 
@@ -179,7 +182,7 @@ function FormDelivery({
                 name="packet-berat"
                 id=""
                 placeholder="enter name packet"
-                onChange={(e) => setBerat(e.target.value)}
+                onChange={(e) => setBerat(parseFloat(e.target.value))}
               />
             </label>
             <label htmlFor="packet-mitra">

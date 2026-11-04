@@ -6,10 +6,8 @@ from app.service.waktu_pengiriman_sampai import waktu_pengiriman
 
 from app.database.database_wilayah import data_koordinat_wilayah
 
-import psycopg2 as ps
-from psycopg2.extras import RealDictCursor
+from app.wilayah.mengolah_wilayah_jarak import create_package, haversine
 
-from app.wilayah.mengolah_wilayah_jarak import create_package
 
 from app.service.logical_transaksi import logika_harga
 router_packet = APIRouter(prefix="/packet")
@@ -70,19 +68,22 @@ def get_waktu_pengiriman(jarak_paket: float, jalur_pengiriman:str):
         print("terjadi eror pada saat menghitung waktu pengiriman ", e)
 
 @router_packet.get("/jarak_pengiriman")
-def get_jarak_pengiriman(id_origin: str, id_destination: str):
+def get_jarak_pengiriman(asal: str, tujuan: str):
     try:
-        data_koordinat_asal = data_koordinat_wilayah(id_origin)
+        data_koordinat_asal = data_koordinat_wilayah(asal)
         
-        data_koordinat_tujuan = data_koordinat_wilayah(id_destination)
+        data_koordinat_tujuan = data_koordinat_wilayah(tujuan)
         
         print("data dari koordinat asal", data_koordinat_asal)
         
         print("data dari koordinat tujaun", data_koordinat_tujuan)
         
-        hasil_dari_package_wilayah = create_package(data_koordinat_asal, data_koordinat_tujuan)
+        hasil_dari_package_wilayah = haversine(data_koordinat_asal, data_koordinat_tujuan)
         
-        print("hasil dari package wilayah", hasil_dari_package_wilayah)
+        print(f"hasil dari package wilayah asal {round(hasil_dari_package_wilayah, 2)} km")
+        
+        return round(hasil_dari_package_wilayah, 2)
+        
     except Exception as e:
         print("terjadi error pada saat mencari data koordinat berdasarkan kode wilayah", e)
         

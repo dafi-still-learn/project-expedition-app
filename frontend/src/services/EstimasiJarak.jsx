@@ -7,6 +7,9 @@ export const EstimasiJarak = ({
   setJarakD,
 }) => {
   const [jarak, setJarak] = useState("");
+
+  console.log("ini isi dari kode wilayah asal", kodeWilayahAsal);
+  console.log("ini isi dari kode wilayah tujuan", kodeWilayahTujuan);
   useEffect(() => {
     const handleEstimasiJarak = async () => {
       try {
@@ -18,9 +21,9 @@ export const EstimasiJarak = ({
 
         console.log("ini data estimasi jarak dari response ", data);
 
-        setJarakD(data.data);
+        setJarakD(data);
 
-        setJarak(data.data);
+        setJarak(data);
       } catch (error) {
         console.error("Error fetching estimasi jarak: ", error);
       }
@@ -33,7 +36,7 @@ export const EstimasiJarak = ({
 
   return (
     <>
-      <div>{jarak && <h1>{jarak}</h1>}</div>
+      <div>{jarak && <h1>{jarak} km</h1>}</div>
     </>
   );
 };

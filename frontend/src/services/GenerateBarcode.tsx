@@ -1,8 +1,16 @@
 import Barcode from "react-barcode";
 import baseURL from "../api/Axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
-export const GenerateBarcode = ({ id, pengirim }) => {
+type GenerateBarcodeProps = {
+  id: number;
+  pengirim: string;
+};
+
+export const GenerateBarcode = ({
+  id,
+  pengirim,
+}: GenerateBarcodeProps): React.JSX.Element => {
   const [dataBarcode, setDataBarcode] = useState("");
 
   useEffect(() => {

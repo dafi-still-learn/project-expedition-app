@@ -1,11 +1,17 @@
 import baseURL from "../api/Axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+
+type EstimasiJarakProps = {
+  kodeWilayahAsal: string;
+  kodeWilayahTujuan: string;
+  setJarakD: (value: number) => void;
+};
 
 export const EstimasiJarak = ({
   kodeWilayahAsal,
   kodeWilayahTujuan,
   setJarakD,
-}) => {
+}: EstimasiJarakProps): React.JSX.Element => {
   const [jarak, setJarak] = useState("");
 
   console.log("ini isi dari kode wilayah asal", kodeWilayahAsal);

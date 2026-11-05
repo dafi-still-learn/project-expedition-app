@@ -1,34 +1,35 @@
-import "../css/MakeDelivery.css";
-import FormDelivery from "../components/FormMakePacket";
-import { useState } from "react";
+import FormDelivery from "../components/FormMakeDelivery";
+import React, { useState } from "react";
 import { EstimasiWaktuPengiriman } from "../services/EstimasiWaktuPengiriman";
 import { EstimasiJarak } from "../services/EstimasiJarak";
 import { EstimasiHargaPengiriman } from "../services/EstimasiHargaPengiriman";
 import { GenerateBarcode } from "../services/GenerateBarcode";
 
-function Buat_pengiriman() {
-  const [name, setNameD] = useState("");
-  const [pengirim, setPengirimD] = useState("");
-  const [jenis, setJenisD] = useState("");
-  const [jumlah, setJumlahD] = useState("");
-  const [asal, setAsalD] = useState("");
-  const [tujuan, setTujuanD] = useState("");
-  const [berat, setBeratD] = useState("");
-  const [jalur, setJalurD] = useState("");
-  const [nomorHpPengirim, setNomorHpPengirimD] = useState("");
-  const [nomorHpPenerima, setNomorHpPenerimaD] = useState("");
-  const [tanggalPengiriman, setTanggalPengirimanD] = useState("");
-  const [tanggalSampai, setTanggalSampaiD] = useState("");
-  const [hargaPengiriman, setHargaPengirimanD] = useState("");
+function Buat_pengiriman(): React.JSX.Element {
+  const [name, setNameD] = useState<string>("");
+  const [pengirim, setPengirimD] = useState<string>("");
+  const [jenis, setJenisD] = useState<string>("");
+  const [jumlah, setJumlahD] = useState<number>(0);
+  const [asal, setAsalD] = useState<string>("");
+  const [tujuan, setTujuanD] = useState<string>("");
+  const [berat, setBeratD] = useState<number>(0);
+  const [jalur, setJalurD] = useState<string>("");
+  const [nomorHpPengirim, setNomorHpPengirimD] = useState<string>("");
+  const [nomorHpPenerima, setNomorHpPenerimaD] = useState<string>("");
 
-  const [jarak, setJarak] = useState("");
+  const [tanggalPengiriman, setTanggalPengirimanD] = useState<string>("");
+  const [tanggalSampai, setTanggalSampaiD] = useState<string>("");
+  const [hargaPengiriman, setHargaPengirimanD] = useState<string>("");
 
-  const [idAsal, setIdAsalD] = useState("");
-  const [idTujuan, setIdTujuanD] = useState("");
+  const [jarak, setJarak] = useState<number>(0);
 
-  const [idPaket, setIdPaketD] = useState("");
+  const [idAsal, setIdAsalD] = useState<string>("");
+  const [idTujuan, setIdTujuanD] = useState<string>("");
+
+  const [idPaket, setIdPaketD] = useState<number>(0);
 
   console.log("ini isi id tujuan", idTujuan);
+  console.log("ini isi jarak", typeof jarak);
   console.log(idAsal);
   return (
     <>
@@ -50,12 +51,13 @@ function Buat_pengiriman() {
                   setTujuanD={setTujuanD}
                   setBeratD={setBeratD}
                   setJalurD={setJalurD}
+                  setJarakD={setJarak}
                   setNomorHpPengirimD={setNomorHpPengirimD}
                   setNomorHpPenerimaD={setNomorHpPenerimaD}
                   //
-                  setTanggalPengirimanD={setTanggalPengirimanD}
-                  setTanggalSampaiD={setTanggalSampaiD}
-                  setHargaPengirimanD={setHargaPengirimanD}
+                  tanggalPengirimanD={tanggalPengiriman}
+                  tanggalSampaiD={tanggalSampai}
+                  hargaPengirimanD={hargaPengiriman}
                   //
                   setIdAsalD={setIdAsalD}
                   setIdTujuanD={setIdTujuanD}

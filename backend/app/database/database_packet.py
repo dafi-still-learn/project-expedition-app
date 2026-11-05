@@ -23,9 +23,9 @@ def membuat_database_paket():
             jarak_paket NUMERIC(10, 2),
             nomor_hp_pengirim VARCHAR(50),
             nomor_hp_penerima VARCHAR(50),
-            tanggal_pengiriman DATE,
-            tanggal_sampai DATE,
-            harga_pengiriman NUMERIC(10, 2)
+            tanggal_pengiriman VARCHAR(50),
+            tanggal_sampai VARCHAR(50),
+            harga_pengiriman VARCHAR(100)
             )
         """)
         
@@ -38,8 +38,6 @@ def membuat_database_paket():
 
     finally:
         conn.close()
-
-# membuat_database_paket()
 
 def input_database_paket(nama_paket, nama_pengirim, jenis_paket, jumlah_paket, asal_paket, tujuan_paket, berat_paket, jalur_pengiriman, jarak_paket, nomor_hp_pengirim, nomor_hp_penerima, tanggal_pengiriman, tanggal_sampai, harga_pengiriman):
     conn = ps.connect(dbname="expedition_db", user="expedition_app", password="Jakgeyye123!@#", host="localhost", port="5432")

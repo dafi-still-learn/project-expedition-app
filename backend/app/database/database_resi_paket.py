@@ -10,7 +10,7 @@ def membuat_database_resi():
         CREATE TABLE IF NOT EXISTS resi_paket(
             id BIGSERIAL PRIMARY KEY,
             id_paket INTEGER REFERENCES paket(id),
-            nama_paket VARCHAR(255) REFERENCES paket(nama_paket),
+            nama_paket VARCHAR(255),
             nomor_resi_paket VARCHAR(255) NOT NULL UNIQUE,
             raw_seed VARCHAR(255) NOT NULL UNIQUE
         )
@@ -26,7 +26,9 @@ def membuat_database_resi():
     finally:
         conn.close()
         
-def input_tabel_resi_paket(paket_id, nama_paket, resi_paket):
+membuat_database_resi
+        
+def input_tabel_resi_paket(id_paket, nama_paket, resi_paket, raw):
     conn = ps.connect(dbname="expedition_db", user="expedition_app", password="Jakgeyye123!@#", host="localhost", port="5432")
     
     try:
@@ -34,8 +36,8 @@ def input_tabel_resi_paket(paket_id, nama_paket, resi_paket):
         
         cursor.execute("""
         INSERT INTO resi_paket(paket_id, nama_paket, nomor_resi_paket, raw_seed)
-        VALUES(%s, %s, %s)
-        """, (paket_id, nama_paket, resi_paket))
+        VALUES(%s, %s, %s, %s)
+        """, (id_paket, nama_paket, resi_paket, raw))
         
         conn.commit()
         return True

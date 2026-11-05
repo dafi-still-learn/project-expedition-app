@@ -1,12 +1,19 @@
 import baseURL from "../api/Axios";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+
+type EstimasiWaktuPengiriman = {
+  jarak: number;
+  jalur: string;
+  setTanggalPengiriman: (value: string) => void;
+  setTanggalSampai: (value: string) => void;
+};
 
 export const EstimasiWaktuPengiriman = ({
   jarak,
   jalur,
   setTanggalPengiriman,
   setTanggalSampai,
-}) => {
+}: EstimasiWaktuPengiriman): React.JSX.Element => {
   const [waktu, setWaktu] = useState("");
 
   useEffect(() => {

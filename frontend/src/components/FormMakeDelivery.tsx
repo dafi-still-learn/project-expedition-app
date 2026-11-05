@@ -1,6 +1,28 @@
-import { useState, useEffect } from "react";
-import { postDataPacket } from "../services/dataPengiriman";
+import React, { useState, useEffect, FormEvent } from "react";
 import { OnInputWilayah } from "../services/inputAutoCompleteWilayah";
+import { postDataPaket } from "../services/dataPengiriman";
+
+type FormDeliveryProps = {
+  setNameD: (value: string) => void;
+  setNamaPengirimD: (value: string) => void;
+  setJenisD: (value: string) => void;
+  setJumlahD: (value: number) => void;
+  setAsalD: (value: string) => void;
+  setTujuanD: (value: string) => void;
+  setBeratD: (value: number) => void;
+  setJalurD: (value: string) => void;
+  setJarakD: (value: number) => void;
+  setNomorHpPengirimD: (value: string) => void;
+  setNomorHpPenerimaD: (value: string) => void;
+  //
+  tanggalPengirimanD: string;
+  tanggalSampaiD: string;
+  hargaPengirimanD: string;
+  //
+  setIdAsalD: (value: string) => void;
+  setIdTujuanD: (value: string) => void;
+  setIdPaketD: (value: number) => void;
+};
 
 function FormDelivery({
   setNameD,
@@ -11,35 +33,44 @@ function FormDelivery({
   setTujuanD,
   setBeratD,
   setJalurD,
+  setJarakD,
   setNomorHpPengirimD,
   setNomorHpPenerimaD,
-  setTanggalPengirimanD,
-  setTanggalSampaiD,
-  setHargaPengirimanD,
+
+  tanggalPengirimanD,
+  tanggalSampaiD,
+  hargaPengirimanD,
+
   //
   setIdAsalD,
   setIdTujuanD,
   setIdPaketD,
-}) {
-  const [name, setName] = useState("");
-  const [pengirim, setPengirim] = useState("");
-  const [jenis, setJenis] = useState("");
-  const [jumlah, setJumlah] = useState("");
-  const [asal, setAsal] = useState("");
-  const [tujuan, setTujuan] = useState("");
-  const [berat, setBerat] = useState("");
-  const [jalur, setJalur] = useState("");
-  const [nomorHpPengirim, setNomorHpPengirim] = useState("");
-  const [nomorHpPenerima, setNomorHpPenerima] = useState("");
-  const [tanggalPengiriman, setTanggalPengiriman] = useState("");
-  const [tanggalSampai, setTanggalSampai] = useState("");
-  const [hargaPengiriman, setHargaPengiriman] = useState("");
+}: FormDeliveryProps): React.JSX.Element {
+  const [name, setName] = useState<string>("");
+  const [pengirim, setPengirim] = useState<string>("");
+  const [jenis, setJenis] = useState<string>("");
+  const [jumlah, setJumlah] = useState<number>(0);
+  const [asal, setAsal] = useState<string>("");
+  const [tujuan, setTujuan] = useState<string>("");
+  const [berat, setBerat] = useState<number>(0);
+  const [jalur, setJalur] = useState<string>("");
+  const [jarak, setJarak] = useState<number>(0);
+  const [nomorHpPengirim, setNomorHpPengirim] = useState<string>("");
+  const [nomorHpPenerima, setNomorHpPenerima] = useState<string>("");
+  //
+  // const [tanggalPengiriman, setTanggalPengiriman] = useState<string>("");
+  // const [tanggalSampai, setTanggalSampai] = useState<string>("");
+  // const [hargaPengiriman, setHargaPengiriman] = useState<string>("");
 
-  const [idAsal, setIdAsal] = useState("");
-  const [idTujuan, setIdTujuan] = useState("");
+  const [idAsal, setIdAsal] = useState<string>("");
+  const [idTujuan, setIdTujuan] = useState<string>("");
 
-  const [idPaket, setIdPaket] = useState("");
+  const [idPaket, setIdPaket] = useState<number>(0);
 
+  console.log("tanggal pengiriman", typeof tanggalPengirimanD);
+  console.log("tanggal sampai", tanggalSampaiD);
+  console.log("harga pengiriman", hargaPengirimanD);
+  console.log("isi dari jarak", jarak);
   useEffect(() => {
     setNameD(name);
     setNamaPengirimD(pengirim);
@@ -49,12 +80,14 @@ function FormDelivery({
     setTujuanD(tujuan);
     setBeratD(berat);
     setJalurD(jalur);
+
+    setJarakD(jarak);
     setNomorHpPengirimD(nomorHpPengirim);
     setNomorHpPenerimaD(nomorHpPenerima);
     //
-    setTanggalPengirimanD(tanggalPengiriman);
-    setTanggalSampaiD(tanggalSampai);
-    setHargaPengirimanD(hargaPengiriman);
+    // setTanggalPengirimanD();
+    // setTanggalSampaiD();
+    // setHargaPengirimanD();
 
     setIdAsalD(idAsal);
     setIdTujuanD(idTujuan);
@@ -71,9 +104,10 @@ function FormDelivery({
     jalur,
     nomorHpPengirim,
     nomorHpPenerima,
-    tanggalPengiriman,
-    tanggalSampai,
-    hargaPengiriman,
+
+    tanggalPengirimanD,
+    tanggalSampaiD,
+    hargaPengirimanD,
     //
     idAsal,
     idTujuan,
@@ -86,11 +120,13 @@ function FormDelivery({
     setTujuanD,
     setBeratD,
     setJalurD,
+    setJarakD,
     setNomorHpPengirimD,
     setNomorHpPenerimaD,
-    setTanggalPengirimanD,
-    setTanggalSampaiD,
-    setHargaPengirimanD,
+    //
+    // setTanggalPengirimanD,
+    // setTanggalSampaiD,
+    // setHargaPengirimanD,
     //
     setIdAsalD,
     setIdTujuanD,
@@ -98,18 +134,18 @@ function FormDelivery({
   ]);
 
   console.log("isi dari id asal", typeof idAsal);
-  console.log("isi dari id tujuan", typeof idTujuan);
-  const handleDataPengiriman = async (e) => {
+  console.log("isi dari id harga", typeof hargaPengirimanD);
+  const handleDataPengiriman = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (
       name == "" ||
       pengirim == "" ||
       jenis == "" ||
-      jumlah == "" ||
+      jumlah == 0 ||
       asal == "" ||
       tujuan == "" ||
-      berat == "" ||
+      berat == 0 ||
       jalur == "" ||
       nomorHpPengirim == "" ||
       nomorHpPenerima == "" ||
@@ -118,29 +154,28 @@ function FormDelivery({
     ) {
       console.log("ISI FORM DATA PENGIRIMAN DENGAN BENAR");
     } else {
-      const result = await postDataPacket(
-        name,
-        pengirim,
-        jenis,
-        jumlah,
-        asal,
-        tujuan,
-        berat,
-        jalur,
-        nomorHpPengirim,
-        nomorHpPenerima,
-        //
-        tanggalPengiriman,
-        tanggalSampai,
-        hargaPengiriman,
-      );
+      try {
+        const result = await postDataPaket(
+          name,
+          pengirim,
+          jenis,
+          jumlah,
+          asal,
+          tujuan,
+          berat,
+          jalur,
+          jarak,
+          nomorHpPengirim,
+          nomorHpPenerima,
+          tanggalPengirimanD,
+          tanggalSampaiD,
+          hargaPengirimanD,
+        );
 
-      setIdPaket(result.data["id_paket"]);
-      console.log("isi dari data result post data packet ", result);
-      if (result.success) {
-        console.log("data anda berhasil dikirim");
-      } else {
-        console.log("data anda gagal dikirim");
+        setIdPaketD(result?.data?.id_paket);
+        console.log(result);
+      } catch (err) {
+        throw err;
       }
     }
   };
@@ -191,7 +226,7 @@ function FormDelivery({
                   name="packet-jumlah"
                   id=""
                   placeholder="enter berat packet"
-                  onChange={(e) => setJumlah(e.target.value)}
+                  onChange={(e) => setJumlah(Number(e.target.value))}
                 />
               </label>
             </label>

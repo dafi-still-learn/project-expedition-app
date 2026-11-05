@@ -10,13 +10,13 @@ def membuat_tabel_pelanggan():
         CREATE TABLE IF NOT EXISTS pelanggan(
             id BIGSERIAL PRIMARY KEY UNIQUE,
             id_paket INTEGER REFERENCES paket(id),
-            nama_pelanggan VARCHAR(50) REFERENCES paket(nama_pengirim),
-            nomor_hp VARCHAR(50) REFERENCES paket(nomor_hp_pengirim),
-            nama_paket VARCHAR(255) REFERENCES paket(nama_paket),
-            asal_pengiriman VARCHAR(50) REFERENCES paket(asal_paket),
-            tujuan_pengiriman VARCHAR(50) REFERENCES paket(tujuan_paket),
-            jumlah_paket INTEGER REFERENCES paket(jumlah_paket),
-            harga_paket VARCHAR(255) REFERENCES paket(harga_pengiriman)
+            nama_pelanggan VARCHAR(50),
+            nomor_hp VARCHAR(50),
+            nama_paket VARCHAR(255),
+            asal_pengiriman VARCHAR(50),
+            tujuan_pengiriman VARCHAR(50),
+            jumlah_paket INTEGER,
+            harga_paket VARCHAR(255)
         )
         """)
 
@@ -32,7 +32,7 @@ def membuat_tabel_pelanggan():
     finally:
         conn.close()
         
-# membuat_tabel_pelanggan()
+membuat_tabel_pelanggan()
         
 def input_tabel_customers(id_paket, nama_pelanggan, nomor_hp_pelanggan, nama_paket,asal_pengiriman, tujuan_pengiriman, jumlah_paket, harga_paket):
     conn = ps.connect(dbname="expedition_db", user="expedition_app", password="Jakgeyye123!@#", host="localhost", port="5432")

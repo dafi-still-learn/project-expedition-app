@@ -1,5 +1,13 @@
 import baseURL from "../api/Axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+
+type EstimasiHargaPengirimanProps = {
+  berat: number;
+  jarak: number;
+  jalur: string;
+  jenis: string;
+  setHargaPengiriman: (harga: string) => void;
+};
 
 export const EstimasiHargaPengiriman = ({
   berat,
@@ -7,7 +15,7 @@ export const EstimasiHargaPengiriman = ({
   jalur,
   jenis,
   setHargaPengiriman,
-}) => {
+}: EstimasiHargaPengirimanProps): React.JSX.Element => {
   const [harga, setHarga] = useState("");
 
   console.log("isi berat", berat);
@@ -17,7 +25,7 @@ export const EstimasiHargaPengiriman = ({
   useEffect(() => {
     const handleHargaPengiriman = async () => {
       try {
-        const response = await baseURL.get(
+        const response = await baseURL.get<{ harga: string }>(
           `/packet/harga_pengiriman?berat=${berat}&jarak=${jarak}&jalur=${jalur}&jenis=${jenis}`,
         );
 
@@ -25,8 +33,8 @@ export const EstimasiHargaPengiriman = ({
 
         console.log("ini data harga pengiriman dari response ", data);
 
-        setHargaPengiriman(data);
-        setHarga(data);
+        setHargaPengiriman(data.harga);
+        setHarga(data.harga);
       } catch (error) {
         console.error("Error fetching harga pengiriman: ", error);
       }

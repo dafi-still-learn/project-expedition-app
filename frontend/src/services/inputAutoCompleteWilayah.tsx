@@ -1,17 +1,30 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import baseURL from "../api/Axios";
 
-// UNTUK MENCARI WILAYAH BERDASARKAN INPUTAN USER DAN DATA YANG DITAMPILKNA DARI BACKEND
-export const OnInputWilayah = ({ setName, setIdDaerah }) => {
-  const [input, setInput] = useState("");
-  const [wilayahList, setWilayahList] = useState([]);
-  const [showDropdown, setShowDropdown] = useState(false);
+type OnInputWilayahProps = {
+  setName: (value: string) => void;
+  setIdDaerah: (value: string) => void;
+};
 
-  const timerRef = useRef(null);
-  const wrapperRef = useRef(null);
+type WilayahListProps = {
+  id_wilayah: string;
+  kode_wilayah: string;
+  nama_wilayah: string;
+};
+// UNTUK MENCARI WILAYAH BERDASARKAN INPUTAN USER DAN DATA YANG DITAMPILKNA DARI BACKEND
+export const OnInputWilayah = ({
+  setName,
+  setIdDaerah,
+}: OnInputWilayahProps): React.JSX.Element => {
+  const [input, setInput] = useState<string>("");
+  const [wilayahList, setWilayahList] = useState<WilayahListProps[]>([]);
+  const [showDropdown, setShowDropdown] = useState<boolean>(false);
+
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    clearTimeout(timerRef.current);
+    if (timerRef.current) clearTimeout(timerRef.current);
 
     if (input.length < 2) {
       setWilayahList([]);
@@ -33,12 +46,17 @@ export const OnInputWilayah = ({ setName, setIdDaerah }) => {
       console.error("Error fetching wilayah:", error);
     }
 
-    return () => clearTimeout(timerRef.current);
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
   }, [input]);
 
   useEffect(() => {
-    const handleMouseOut = (e) => {
-      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+    const handleMouseOut = (e: MouseEvent) => {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(e.target as Node)
+      ) {
         setShowDropdown(false);
       }
     };

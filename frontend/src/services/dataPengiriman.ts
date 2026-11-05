@@ -1,39 +1,22 @@
 import React from "react";
 import baseURL from "../api/Axios";
 
-type PostDataPaketProps = {
-  name: string;
-  pengirim: string;
-  jenis: string;
-  jumlah: number;
-  asal: string;
-  tujuan: string;
-  berat: number;
-  jalur: string;
-  jarak: number;
-  nomorHpPengiriman: string;
-  nomorHpPenerima: string;
-  tanggalPengirimanD: string;
-  tanggalSampaiD: string;
-  hargaPengirimanD: string;
-};
-
-export const postDataPaket = async ({
-  name,
-  pengirim,
-  jenis,
-  jumlah,
-  asal,
-  tujuan,
-  berat,
-  jalur,
-  jarak,
-  nomorHpPengiriman,
-  nomorHpPenerima,
-  tanggalPengirimanD,
-  tanggalSampaiD,
-  hargaPengirimanD,
-}: PostDataPaketProps) => {
+export const postDataPaket = async (
+  name: string,
+  pengirim: string,
+  jenis: string,
+  jumlah: number,
+  asal: string,
+  tujuan: string,
+  berat: number,
+  jalur: string,
+  jarak: number,
+  nomorHpPengiriman: string,
+  nomorHpPenerima: string,
+  tanggalPengirimanD: string,
+  tanggalSampaiD: string,
+  hargaPengirimanD: string,
+) => {
   try {
     const response = await baseURL.post(
       "/packet/input_packet",

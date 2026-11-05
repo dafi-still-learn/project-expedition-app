@@ -12,7 +12,7 @@ export const EstimasiJarak = ({
   kodeWilayahTujuan,
   setJarakD,
 }: EstimasiJarakProps): React.JSX.Element => {
-  const [jarak, setJarak] = useState("");
+  const [jarak, setJarak] = useState<number>(0);
 
   console.log("ini isi dari kode wilayah asal", kodeWilayahAsal);
   console.log("ini isi dari kode wilayah tujuan", kodeWilayahTujuan);

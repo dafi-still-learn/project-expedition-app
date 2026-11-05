@@ -172,8 +172,10 @@ function FormDelivery({
           hargaPengirimanD,
         );
 
-        setIdPaketD(result?.data?.id_paket);
-        console.log(result);
+        const response = result?.data;
+
+        setIdPaketD(response);
+        console.log("ini isi dari data pengiriman ", response);
       } catch (err) {
         throw err;
       }

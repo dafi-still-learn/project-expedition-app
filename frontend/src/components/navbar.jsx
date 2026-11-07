@@ -5,8 +5,7 @@ function Navbar() {
     <>
       <div className="grid grid-cols-5">
         <div className="col-span-1" id="hero-navbar">
-          <h1>selamat datang dafi🤑,</h1>
-          <h1>selamat menikmati fitur</h1>
+          <h1>Overview</h1>
         </div>
         <div id="container-navbar" className="col-span-4">
           <div className="grid grid-cols-9">

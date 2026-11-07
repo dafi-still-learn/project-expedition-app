@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 import locale
 from app.database.database_packet import input_database_paket, membuat_database_paket
 from app.database.database_customers import membuat_tabel_pelanggan
@@ -26,10 +26,13 @@ def input_packet_user(data: data_pengiriman):
         result_input = input_database_paket(data.nama_paket, data.nama_pengirim, data.jenis_paket, data.jumlah_paket, data.asal_paket, data.tujuan_paket, data.berat_paket, data.jalur_pengiriman, data.jarak_paket, data.nomor_hp_pengirim, data.nomor_hp_penerima, data.tanggal_pengiriman, data.tanggal_sampai, data.harga_pengiriman)
             
         print("ISI DARI RESULT INPUT DATABASE PAKET ", result_input)
-        return result_input
+        return {
+            "result":result_input,
+            "success": True
+        }
             
     except Exception as e:
-        print("terjadi eror pada input paket", e)
+        raise HTTPException(status_code=500, detail=(e))
 
 # membuat_tabel_wilayah()
 # import_csv_wilayah("app/database/data_wilayah.csv")
@@ -44,7 +47,7 @@ def get_harga_pengiriman(berat: float,jarak: float, jalur: str, jenis: str):
         hasil_dari_locale_harga = locale.currency(harga_pengiriman, grouping=True)
         
         print("ini hasil harga dari pengiriman", hasil_dari_locale_harga)
-        return hasil_dari_locale_harga
+        return {"harga": hasil_dari_locale_harga}
     
     except Exception as e:
         print("terjadi eror pada saat menghitung harga pengiriman", e)
@@ -54,8 +57,14 @@ def get_waktu_pengiriman(jarak: float, jalur:str):
     try:
         hasil_waktu = waktu_pengiriman(jarak, jalur)
         
-        print(f"ini hasil waktu dari pengiriman", hasil_waktu["waktu_sampai"])
-        return hasil_waktu["waktu_sampai"]
+        if hasil_waktu is None:
+            return {"waktu_berangkat": None, "waktu_sampai": None}
+        
+        print("ini hasil waktu dari pengiriman", hasil_waktu["waktu_sampai"])
+        return {
+            "waktu_berangkat": hasil_waktu["waktu_berangkat"],
+            "waktu_sampai": hasil_waktu["waktu_sampai"],
+        }
     
     except Exception as e:
         print("terjadi eror pada saat menghitung waktu pengiriman ", e)

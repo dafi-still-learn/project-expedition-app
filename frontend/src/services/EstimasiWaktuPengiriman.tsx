@@ -24,13 +24,17 @@ export const EstimasiWaktuPengiriman = ({
         );
 
         const data = response.data;
+        const berangkat =
+          typeof data === "string" ? data : (data?.waktu_berangkat ?? "");
+        const sampai =
+          typeof data === "string" ? data : (data?.waktu_sampai ?? "");
 
         console.log("ini data estimasi waktu pengiriman dari response ", data);
 
-        setTanggalPengiriman(data);
-        setTanggalSampai(data);
+        setTanggalPengiriman(berangkat);
+        setTanggalSampai(sampai);
 
-        setWaktu(data);
+        setWaktu(sampai);
       } catch (error) {
         console.error("Error fetching estimasi waktu pengiriman: ", error);
       }

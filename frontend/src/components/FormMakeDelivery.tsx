@@ -11,10 +11,10 @@ type FormDeliveryProps = {
   setTujuanD: (value: string) => void;
   setBeratD: (value: number) => void;
   setJalurD: (value: string) => void;
-  setJarakD: (value: number) => void;
   setNomorHpPengirimD: (value: string) => void;
   setNomorHpPenerimaD: (value: string) => void;
   //
+  jarak: number;
   tanggalPengirimanD: string;
   tanggalSampaiD: string;
   hargaPengirimanD: string;
@@ -33,7 +33,7 @@ function FormDelivery({
   setTujuanD,
   setBeratD,
   setJalurD,
-  setJarakD,
+  jarak,
   setNomorHpPengirimD,
   setNomorHpPenerimaD,
 
@@ -54,7 +54,7 @@ function FormDelivery({
   const [tujuan, setTujuan] = useState<string>("");
   const [berat, setBerat] = useState<number>(0);
   const [jalur, setJalur] = useState<string>("");
-  const [jarak, setJarak] = useState<number>(0);
+  // const [jarak, setJarak] = useState<number | null>(null);
   const [nomorHpPengirim, setNomorHpPengirim] = useState<string>("");
   const [nomorHpPenerima, setNomorHpPenerima] = useState<string>("");
   //
@@ -70,7 +70,9 @@ function FormDelivery({
   console.log("tanggal pengiriman", typeof tanggalPengirimanD);
   console.log("tanggal sampai", tanggalSampaiD);
   console.log("harga pengiriman", hargaPengirimanD);
-  console.log("isi dari jarak", jarak);
+
+  console.log("id paket", idPaket);
+  // console.log("isi dari jarak", jarak);
   useEffect(() => {
     setNameD(name);
     setNamaPengirimD(pengirim);
@@ -81,7 +83,9 @@ function FormDelivery({
     setBeratD(berat);
     setJalurD(jalur);
 
-    setJarakD(jarak);
+    // if (setJarak !== null && Number.isFinite(setJarak)) {
+    //   setJarakD(setJarak);
+    // }
     setNomorHpPengirimD(nomorHpPengirim);
     setNomorHpPenerimaD(nomorHpPenerima);
     //
@@ -120,7 +124,6 @@ function FormDelivery({
     setTujuanD,
     setBeratD,
     setJalurD,
-    setJarakD,
     setNomorHpPengirimD,
     setNomorHpPenerimaD,
     //
@@ -134,7 +137,7 @@ function FormDelivery({
   ]);
 
   console.log("isi dari id asal", typeof idAsal);
-  console.log("isi dari id harga", typeof hargaPengirimanD);
+  console.log("isi dari id jumlah", typeof jumlah);
   const handleDataPengiriman = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -150,7 +153,11 @@ function FormDelivery({
       nomorHpPengirim == "" ||
       nomorHpPenerima == "" ||
       idAsal == "" ||
-      idTujuan == ""
+      idTujuan == "" ||
+      jarak == 0 ||
+      tanggalPengirimanD == null ||
+      tanggalSampaiD == null ||
+      hargaPengirimanD == null
     ) {
       console.log("ISI FORM DATA PENGIRIMAN DENGAN BENAR");
     } else {
@@ -172,10 +179,14 @@ function FormDelivery({
           hargaPengirimanD,
         );
 
-        const response = result?.data;
+        console.log("ini isi dari data pengiriman ", result);
+        const body = result?.data;
+        const paket = body?.result;
 
-        setIdPaketD(response);
-        console.log("ini isi dari data pengiriman ", response);
+        const id_paket = paket?.id_paket;
+
+        console.log("ini id paket ", id_paket);
+        setIdPaket(id_paket);
       } catch (err) {
         throw err;
       }
@@ -247,7 +258,10 @@ function FormDelivery({
                 name="packet-berat"
                 id=""
                 placeholder="enter name packet"
-                onChange={(e) => setBerat(parseFloat(e.target.value))}
+                onChange={(e) => {
+                  const value = parseFloat(e.target.value);
+                  setBerat(Number.isFinite(value) ? value : 0);
+                }}
               />
             </label>
             <label htmlFor="packet-mitra">
@@ -284,7 +298,7 @@ function FormDelivery({
             </label>
           </div>
           <button type="submit" className="row-span-1">
-            pay
+            cetak
           </button>
         </form>
       </div>

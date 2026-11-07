@@ -51,7 +51,7 @@ function Buat_pengiriman(): React.JSX.Element {
                   setTujuanD={setTujuanD}
                   setBeratD={setBeratD}
                   setJalurD={setJalurD}
-                  setJarakD={setJarak}
+                  jarak={jarak}
                   setNomorHpPengirimD={setNomorHpPengirimD}
                   setNomorHpPenerimaD={setNomorHpPenerimaD}
                   //
@@ -113,7 +113,7 @@ function Buat_pengiriman(): React.JSX.Element {
                   </li>
                   <li>
                     <h1>ESTIMASI WAKTU SAMPAI: </h1>
-                    {jarak && jalur && (
+                    {jarak != null && jalur && (
                       <EstimasiWaktuPengiriman
                         jarak={jarak}
                         jalur={jalur}
@@ -134,7 +134,7 @@ function Buat_pengiriman(): React.JSX.Element {
               </div>
               <div>
                 <h1>ESTIMASI HARGA PENGIRIMAN:</h1>
-                {jarak && berat && jalur && jenis && (
+                {jarak != null && berat && jalur && jenis && (
                   <EstimasiHargaPengiriman
                     berat={berat}
                     jarak={jarak}
@@ -148,18 +148,11 @@ function Buat_pengiriman(): React.JSX.Element {
                 <h1>BARCODE PENGIRIMAN</h1>
                 <hr />
 
-                {name &&
-                  pengirim &&
-                  jenis &&
-                  berat &&
-                  asal &&
-                  tujuan &&
-                  jarak &&
-                  nomorHpPengirim &&
-                  nomorHpPenerima &&
-                  idPaket && (
-                    <GenerateBarcode id={idPaket} pengirim={pengirim} />
-                  )}
+                {idPaket && (
+                  <GenerateBarcode id={idPaket} pengirim={pengirim} />
+                )}
+
+                {idPaket && <button>bayar</button>}
               </div>
             </div>
           </div>

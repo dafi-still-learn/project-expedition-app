@@ -24,12 +24,17 @@ export const EstimasiJarak = ({
         );
 
         const data = response.data;
+        const jarakAngka = Number(data);
 
         console.log("ini data estimasi jarak dari response ", data);
 
-        setJarakD(data);
+        if (!Number.isFinite(jarakAngka)) {
+          return;
+        }
 
-        setJarak(data);
+        setJarakD(jarakAngka);
+
+        setJarak(jarakAngka);
       } catch (error) {
         console.error("Error fetching estimasi jarak: ", error);
       }

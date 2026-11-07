@@ -5,7 +5,7 @@ class data_pengiriman(BaseModel):
     nama_paket: str
     nama_pengirim: str
     jenis_paket: str
-    jumlah_paket: int
+    jumlah_paket: float
     asal_paket: str
     tujuan_paket: str
     berat_paket: float

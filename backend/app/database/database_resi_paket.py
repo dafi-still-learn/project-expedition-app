@@ -9,7 +9,7 @@ def membuat_database_resi():
         cursor.execute("""
         CREATE TABLE IF NOT EXISTS resi_paket(
             id BIGSERIAL PRIMARY KEY,
-            id_paket INTEGER REFERENCES paket(id),
+            id_paket INTEGER UNIQUE,
             nama_paket VARCHAR(255),
             nomor_resi_paket VARCHAR(255) NOT NULL UNIQUE,
             raw_seed VARCHAR(255) NOT NULL UNIQUE
@@ -35,10 +35,11 @@ def input_tabel_resi_paket(id_paket, nama_paket, resi_paket, raw):
         cursor = conn.cursor()
         
         cursor.execute("""
-        INSERT INTO resi_paket(paket_id, nama_paket, nomor_resi_paket, raw_seed)
+        INSERT INTO resi_paket(id_paket, nama_paket, nomor_resi_paket, raw_seed)
         VALUES(%s, %s, %s, %s)
         """, (id_paket, nama_paket, resi_paket, raw))
         
+        print("nomor resi paket berhasil diisi")
         conn.commit()
         return True
     except ps.Error as e:

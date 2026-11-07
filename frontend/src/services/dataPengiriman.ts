@@ -1,4 +1,3 @@
-import React from "react";
 import baseURL from "../api/Axios";
 
 export const postDataPaket = async (
@@ -32,9 +31,9 @@ export const postDataPaket = async (
         jarak_paket: jarak,
         nomor_hp_pengirim: nomorHpPengiriman,
         nomor_hp_penerima: nomorHpPenerima,
-        tanggal_pengiriman: tanggalPengirimanD,
-        tanggal_sampai: tanggalSampaiD,
-        harga_pengiriman: hargaPengirimanD,
+        tanggal_pengiriman: tanggalPengirimanD ?? "",
+        tanggal_sampai: tanggalSampaiD ?? "",
+        harga_pengiriman: hargaPengirimanD ?? "",
       },
       {
         withCredentials: true,

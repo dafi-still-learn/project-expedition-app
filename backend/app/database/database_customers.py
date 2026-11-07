@@ -9,7 +9,7 @@ def membuat_tabel_pelanggan():
         cursor.execute("""
         CREATE TABLE IF NOT EXISTS pelanggan(
             id BIGSERIAL PRIMARY KEY UNIQUE,
-            id_paket INTEGER REFERENCES paket(id),
+            id_paket INTEGER UNIQUE,
             nama_pelanggan VARCHAR(50),
             nomor_hp VARCHAR(50),
             nama_paket VARCHAR(255),
@@ -67,7 +67,7 @@ def check_pelanggan(nama_pelanggan, nomor_hp):
             cursor.execute("""
             SELECT nama_pelanggan, nomor_hp
             FROM pelanggan
-            WHERE nama_pelanggan = %s and nomor_hp = %s           
+            WHERE nama_pelanggan = %s AND nomor_hp = %s           
             """, (nama_pelanggan, nomor_hp, ))
             
             data = cursor.fetchone()

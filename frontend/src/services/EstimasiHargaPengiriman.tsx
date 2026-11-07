@@ -30,11 +30,14 @@ export const EstimasiHargaPengiriman = ({
         );
 
         const data = response.data;
+        const hargaText = typeof data === "string" ? data : (data?.harga ?? "");
 
         console.log("ini data harga pengiriman dari response ", data);
 
-        setHargaPengiriman(data.harga);
-        setHarga(data.harga);
+        console.log("bentuk data dari jarka");
+
+        setHargaPengiriman(hargaText);
+        setHarga(hargaText);
       } catch (error) {
         console.error("Error fetching harga pengiriman: ", error);
       }

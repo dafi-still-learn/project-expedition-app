@@ -1,6 +1,8 @@
 import React, { useState, useEffect, FormEvent } from "react";
 import { OnInputWilayah } from "../services/inputAutoCompleteWilayah";
 import { postDataPaket } from "../services/dataPengiriman";
+import { ConfirmPay } from "./ConfirmPay";
+import { HandlePembayaran } from "../services/MetodePembayaran";
 
 type FormDeliveryProps = {
   setNameD: (value: string) => void;
@@ -46,6 +48,9 @@ function FormDelivery({
   setIdTujuanD,
   setIdPaketD,
 }: FormDeliveryProps): React.JSX.Element {
+  const [handleConfirm, setHandleConfirm] = useState<boolean>(false);
+  const [handlePayment, setHandelPayment] = useState<boolean>(false);
+
   const [name, setName] = useState<string>("");
   const [pengirim, setPengirim] = useState<string>("");
   const [jenis, setJenis] = useState<string>("");
@@ -187,10 +192,25 @@ function FormDelivery({
 
         console.log("ini id paket ", id_paket);
         setIdPaket(id_paket);
+        setHandleConfirm(true);
       } catch (err) {
         throw err;
       }
     }
+  };
+
+  // UNTUK TOMBOL YANG MENGATUR MEMASTIKAN BAHWA PEMERITAHUAN PENGISIAN DATA TELAH DIBACA OLEH USER
+  const handleConfirmToggle = () => {
+    setHandleConfirm(false);
+  };
+  // UNTUK TOMBOL YANG MEMASITKAN BAHWA USER SETUJU KE TAHAP SELANJUTNYA YAITU PEMBAYARAN DAN METODE NYA
+  const handleConfirmTogglePay = () => {
+    setHandleConfirm(false);
+    setHandelPayment(true);
+  };
+
+  const handleConfirmPayment = () => {
+    setHandelPayment(false);
   };
 
   return (
@@ -298,10 +318,20 @@ function FormDelivery({
             </label>
           </div>
           <button type="submit" className="row-span-1">
-            cetak
+            bayar
           </button>
         </form>
       </div>
+      {handleConfirm && (
+        <ConfirmPay
+          onConfirm={handleConfirmToggle}
+          onConfirmPay={handleConfirmTogglePay}
+        />
+      )}
+
+      {handlePayment && (
+        <HandlePembayaran onConfirmPembayaran={handleConfirmPayment} />
+      )}
     </>
   );
 }

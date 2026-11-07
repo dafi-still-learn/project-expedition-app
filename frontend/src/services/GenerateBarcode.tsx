@@ -39,7 +39,7 @@ export const GenerateBarcode = ({
 
   return (
     <>
-      <div>
+      <div className="flex justify-center">
         <Barcode value={dataBarcode} format="CODE128" width={2} height={100} />
       </div>
     </>

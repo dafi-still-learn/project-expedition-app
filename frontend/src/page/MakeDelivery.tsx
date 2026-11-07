@@ -31,6 +31,11 @@ function Buat_pengiriman(): React.JSX.Element {
   console.log("ini isi id tujuan", idTujuan);
   console.log("ini isi jarak", typeof jarak);
   console.log(idAsal);
+
+  const handlPrintStruckPaket = () => {
+    console.log("CETAK STRUCK PAKET");
+  };
+
   return (
     <>
       <section className="w-screen h-screen" id="Container-make-delivery">
@@ -144,7 +149,7 @@ function Buat_pengiriman(): React.JSX.Element {
                   />
                 )}
               </div>
-              <div>
+              <div className="grid grid-row-1 gap-5 overflow-hidden">
                 <h1>BARCODE PENGIRIMAN</h1>
                 <hr />
 
@@ -152,7 +157,15 @@ function Buat_pengiriman(): React.JSX.Element {
                   <GenerateBarcode id={idPaket} pengirim={pengirim} />
                 )}
 
-                {idPaket && <button>bayar</button>}
+                {/* BAGIAN INI DIGUNAKAN UNTUK MENCETAK DALAM BENTUK CETAKAN KERTAS YANG TERHUBUNG DENGAN ALAT IOT PERCETAKAN YANG DIGUNAKAN UNTUK CONFIRM STATUS PADA PAKET DAN TANDA PENGENAL PAKET */}
+                {idPaket && (
+                  <button
+                    className="cursor-pointer bg-red-500 w-20 h-10"
+                    onClick={handlPrintStruckPaket}
+                  >
+                    cetak
+                  </button>
+                )}
               </div>
             </div>
           </div>

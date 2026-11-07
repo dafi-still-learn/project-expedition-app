@@ -3,13 +3,11 @@ import "../css/Dashboard.css";
 
 import Navbar from "../components/navbar";
 import { CheckCircle } from "@boxicons/react";
-// import ApexMaps from "apexmaps";
 import LeafletMap from "../services/PengirimanOpenStreetMap";
 import DiagramFinansial from "../components/DiagramPieFinansial";
 import DiagramFinansialBar from "../components/DiagramBarPacket";
 import DiagramMultiLinePacket from "../components/DiagramMultiLinePacket";
 import DiagramMultiLineFinansial from "../components/DiagramMultiLinFinansial";
-// import PieChartDefaultIndex from "../services/DiagramPie";
 import Profil from "../components/Profil";
 
 function Dashboard() {

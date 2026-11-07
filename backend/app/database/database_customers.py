@@ -1,4 +1,5 @@
 import psycopg2 as ps
+from psycopg2.extras import RealDictCursor
 from fastapi import HTTPException
 
 def membuat_tabel_pelanggan():
@@ -87,3 +88,28 @@ def check_pelanggan(nama_pelanggan, nomor_hp):
             print(e)
         finally:
             conn.close
+            
+def get_data_all_pelanggan():
+    conn = ps.connect(dbname="expedition_db", user="expedition_app", password="Jakgeyye123!@#", host="localhost", port="5432")
+
+    try:
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        
+        cursor.execute("""
+        SELECT * FROM pelanggan
+        """)
+        
+        data_all = cursor.fetchone()
+        
+        print("semua data pelanggan ", data_all)
+        
+        return {
+            "data_all": data_all,
+            "success": True
+        }
+        
+    except ps.Error as e:
+        print("terjadi error pada pengambilan data pelanggan ", e)
+        
+    finally:
+        conn.close()

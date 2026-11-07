@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 import locale
-from app.database.database_packet import input_database_paket, membuat_database_paket
+from app.database.database_packet import input_database_paket, membuat_database_paket, get_data_all_paket
 from app.database.database_customers import membuat_tabel_pelanggan
 from app.packet.schemas import data_pengiriman
 from app.service.waktu_pengiriman_sampai import waktu_pengiriman
@@ -103,3 +103,19 @@ def get_no_resi(id: int, pengirim: str):
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=(e))        
+    
+
+@router_packet.get("/all")
+def get_data_all_paket():
+    try:
+        result_get_data_all_paket = get_data_all_paket()
+    
+        print("ini data semua dari paket ", result_get_data_all_paket)
+    
+        return{
+            "data_all": result_get_data_all_paket,
+            "success": True
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=(e))
+    

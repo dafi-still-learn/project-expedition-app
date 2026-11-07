@@ -122,4 +122,26 @@ def cari_id_paket(nama_pengirim):
           print(e)        
       finally:
           conn.close()
-          
+
+def get_data_all_paket():
+    conn = ps.connect(dbname="expedition_db", user="expedition_app", password="Jakgeyye123!@#", host="localhost", port="5432")
+
+    try:
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        
+        cursor.execute("""
+        SELECT * FROM paket               
+        """)
+        
+        data_all = cursor.fetchone()
+        
+        print("data semua dari paket ",data_all)
+        return {
+            "data": data_all,
+            "success": True
+        }
+    except ps.Error as e:
+        print("terjadi error pada saat pengambilan data paket ", e)
+    
+    finally:
+        conn.close()

@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from app.database.database_profil import membuat_tabel_profil, input_user_profil, check_data_profil
 from app.users.schemas import data_profil, requestCheckProfil
 router_profil = APIRouter(prefix="/profil")
@@ -12,8 +12,8 @@ def input_profil_user(data: data_profil):
     
         return result_input
     except Exception as e:
-        print("terjadi eror pada input paket", e)
-        
+        raise HTTPException(status_code=500, detail=(e))
+                
 @router_profil.post("/check_profil")
 def result_check_data_profil(data: requestCheckProfil):
     print("isi user_id", data.user_id)
@@ -24,5 +24,4 @@ def result_check_data_profil(data: requestCheckProfil):
         return result_check_profil
     
     except Exception as e:
-        print("terjadi error pada saat mengecek profil", e)
-        
+        raise HTTPException(status_code=500, detail=(e))        

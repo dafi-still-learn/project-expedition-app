@@ -9,8 +9,6 @@ from app.auth.service import check_refresh_token, check_role_user_token, make_ac
 from app.auth.depedencies import check_credential_user, check_hash_password
 from argon2 import PasswordHasher
 
-from app.service.generate_nomor_resi import generate_nomor_resi_paket
-
 ph = PasswordHasher()
 
 router_auth = APIRouter(prefix="/auth")
@@ -20,90 +18,98 @@ membuat_database_user()
 # setelah mempelajari http-only cookie, baru akan mengirim data refresh token ke sana
 @router_auth.post("/login")
 async def login(data: requestLogin, response: Response):
-    order_id = 2
-    generate_nomor_resi_paket(order_id)
-    password_database_akun = check_hash_password(data.username)
+    try:
+        password_database_akun = check_hash_password(data.username)
     
-    data_verifikasi_hashing = verify_password(password_database_akun, data.password)
+        data_verifikasi_hashing = verify_password(password_database_akun, data.password)
 
-    print("hasil validasi data", password_database_akun)
+        print("hasil validasi data", password_database_akun)
 
-    if data_verifikasi_hashing == True:
-        data_authentication = check_credential_user(data.username)
+        if data_verifikasi_hashing == True:
+            data_authentication = check_credential_user(data.username)
     
-        print("hasil authentication",data_authentication)
-        if data_authentication['success'] == True:
-            data_token = {
+            print("hasil authentication",data_authentication)
+            if data_authentication['success'] == True:
+                data_token = {
                     "access_token": make_access_token(private_key, data_authentication["user_id"]),
                     "refresh_token": make_refresh_token(private_key, data_authentication["user_id"])
-            }
+                }
             
-            response.set_cookie(
+                response.set_cookie(
                 key = "refresh_token",
                 value = data_token["refresh_token"],
-                httponly = True,
-                secure = False,
-                samesite="lax",
-                max_age= 60 * 60 * 24 * 30,
-                path="/"
-            )
+                    httponly = True,
+                    secure = False,
+                    samesite="lax",
+                    max_age= 60 * 60 * 24 * 30,
+                    path="/"
+                    )
             
-            data_check_role = check_role_user_token(data_token['access_token'], public_key)
-            print("ini adalah id dari user", data_check_role['user_id'])
-            print("ini adalah email dari user", data_authentication['email_user'])
-            return {
+                data_check_role = check_role_user_token(data_token['access_token'], public_key)
+                print("ini adalah id dari user", data_check_role['user_id'])
+                print("ini adalah email dari user", data_authentication['email_user'])
+                return {
                     "access_token": data_token['access_token'],
                     "success": True,
                     "user_id": data_check_role['user_id'],
                     "email_user": data_authentication["email_user"]
-                }
-    else:
-        print("data tidak ditemukan!")
-        return False
+                    }
+        else:
+            print("data tidak ditemukan!")
+            return False
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=(e))
 
 @router_auth.post("/register")
 async def register(data: requestRegister):
-    hashed_password = hash_password(data.password)
-    tampilkan_akun()
+    try:
+        hashed_password = hash_password(data.password)    
+        hasil_validasi_register = validate_akun_register(data.email, data.username)
+        print("ini register dari database")
     
-    hasil_validasi_register = validate_akun_register(data.email, data.username)
-    print("ini register dari database")
-    
-    if hasil_validasi_register == True:
-        data_input = input_tabel_user(
-            data.email, data.username, hashed_password, roleUser.OPERATOR)
+        if hasil_validasi_register == True:
+            data_input = input_tabel_user(
+                data.email, data.username, hashed_password, roleUser.OPERATOR)
 
-        return data_input
-    else:
-        return False
-        
+            return data_input
+        else:
+            return False
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=(e))        
 # INI DIJALANKAN KALAU TOKEN AKSES SUDAH KADARLUARSA
 @router_auth.post("/refresh_token")
 async def refresh_token(requests: Request):
 
     # BERISI DATA DARI REFRESH TOKEN
-    data_cookie_refresh = requests.cookies.get("refresh_token")
+    try:
+        data_cookie_refresh = requests.cookies.get("refresh_token")
     
-    print("ini data dari refresh token",data_cookie_refresh)
-    if data_cookie_refresh is None:
-        raise HTTPException(status_code="401", detail="refresh_token tidak ditemukan")
+        print("ini data dari refresh token",data_cookie_refresh)
+        if data_cookie_refresh is None:
+            raise HTTPException(status_code="401", detail="refresh_token tidak ditemukan")
         
     # KEMUDIAN PENGECEKKAN DATA DATABASE USER BERDASARKAN REFRESH TOKEN MELALUI DECODE
     
     # DAN MENGEMBALIKKAN ID DARI USER
-    data_token_id_user = check_refresh_token(data_cookie_refresh, public_key)
+        data_token_id_user = check_refresh_token(data_cookie_refresh, public_key)
 
-    print("data role token", data_token_id_user)
-    if data_token_id_user:
-        new_access_token = make_access_token_from_from_refresh(private_key, data_token_id_user)
-        return {"access_token": new_access_token}
-    else:
-        return {"error": "Invalid refresh token"}
+        print("data role token", data_token_id_user)
+        if data_token_id_user:
+            new_access_token = make_access_token_from_from_refresh(private_key, data_token_id_user)
+            return {"access_token": new_access_token}
+        else:
+            return {"error": "Invalid refresh token"}
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=(e))
 
 
 # MENGEMBALIKKAN ROLE DARI TOKEN
 @router_auth.post("/verify_role")
 async def verify_role(data: requestVerifyRole):
-    role_token = check_role_user_token(data.token, public_key)
+    try:
+        role_token = check_role_user_token(data.token, public_key)
     
-    return role_token
+        return role_token
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=(e))

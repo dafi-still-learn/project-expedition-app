@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, HTTPException
 import psycopg2 as ps
 from psycopg2.extras import RealDictCursor
 
@@ -32,7 +32,7 @@ def get_rekomendasi_nama_wilayah(q: str = Query(..., min_length=1),db=Depends(ge
         return {"status": "success", "data": hasil}
     
     except ps.Error as e:
-        return {"status": "error", "message": str(e)}
+        raise HTTPException(status_code=500, detail=(e))
     
     finally:
         db.close()

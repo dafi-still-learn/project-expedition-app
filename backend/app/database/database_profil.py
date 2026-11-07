@@ -1,5 +1,5 @@
 import psycopg2 as ps
-
+from fastapi import HTTPException
 
 def membuat_tabel_profil():
     conn = ps.connect(dbname="expedition_db", user="expedition_app",password="Jakgeyye123!@#", host="localhost", port="5432")
@@ -27,7 +27,6 @@ def membuat_tabel_profil():
     except ps.Error as e:
         conn.rollback()
         print(e)
-
     finally:
         conn.close()
 
@@ -47,9 +46,8 @@ def input_user_profil(user_id, email_user, nama_user, nama_panggilan, tanggal_la
         
         return True
     except ps.Error as e:
-        print(e)
         conn.rollback()
-        
+        print(e)        
     finally:
         conn.close()
     
@@ -74,8 +72,7 @@ def check_data_profil(user_id):
         return True
     
     except ps.Error as e:
-        print("terjadi error pada saat pengecekkan", e)
-        
+        print(e)            
     finally:
         conn.close()
         

@@ -96,12 +96,12 @@ def input_database_paket(nama_paket, nama_pengirim, jenis_paket, jumlah_paket, a
         }
     except ps.Error as e:
         conn.rollback()
-        raise HTTPException(status_code=500, detail=str(e))
-
+        print(e)
+        
     finally:
         conn.close()
 
-def cari_id_paket(nama_pengirim, nomor_hp_pengirim):
+def cari_id_paket(nama_pengirim):
       conn = ps.connect(dbname="expedition_db", user="expedition_app", password="Jakgeyye123!@#", host="localhost", port="5432")
       
       try:
@@ -118,9 +118,8 @@ def cari_id_paket(nama_pengirim, nomor_hp_pengirim):
           return data_pengirim
         
       except ps.Error as e:
-          print("terjadi error pada saat melakukn pencarian nama pengirim", e)
           conn.rollback()
-          
+          print(e)        
       finally:
           conn.close()
           

@@ -1,4 +1,5 @@
 import psycopg2 as ps
+from fastapi import HTTPException
 
 def membuat_tabel_pelanggan():
     conn = ps.connect(dbname="expedition_db", user="expedition_app", password="Jakgeyye123!@#", host="localhost", port="5432")
@@ -26,8 +27,8 @@ def membuat_tabel_pelanggan():
         
         return True
     except ps.Error as e:
-        print("terjadi error pada pembuatan tabel paket", e)
         conn.rollback()
+        raise HTTPException(status_code=500, detail=(e))
         
     finally:
         conn.close()
@@ -50,11 +51,9 @@ def input_tabel_customers(id_paket, nama_pelanggan, nomor_hp_pelanggan, nama_pak
 
         conn.commit()
         
-    except ps.Error as e:
-        print("terjadi error pada saat proses penambhakan paket", e)
-        
+    except ps.Error as e:        
         conn.rollback()
-        
+        print(e)        
     finally:
         conn.close()
 
@@ -84,7 +83,7 @@ def check_pelanggan(nama_pelanggan, nomor_hp):
                 }
         
         except ps.Error as e:
-            print("terjadi error pada saat ingin mengecek nama_pelanggan dan nomor_pelanggan ", e)
             conn.rollback()
+            print(e)
         finally:
             conn.close

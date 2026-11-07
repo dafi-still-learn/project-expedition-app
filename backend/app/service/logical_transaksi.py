@@ -1,5 +1,3 @@
-import locale
-
 
 def logika_harga(berat, jarak, jalur, jenis):
     if jalur == 'darat':

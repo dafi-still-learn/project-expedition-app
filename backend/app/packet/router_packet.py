@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, HTTPException
 import locale
 from app.database.database_packet import input_database_paket, membuat_database_paket
 from app.database.database_customers import membuat_tabel_pelanggan
@@ -50,7 +50,7 @@ def get_harga_pengiriman(berat: float,jarak: float, jalur: str, jenis: str):
         return {"harga": hasil_dari_locale_harga}
     
     except Exception as e:
-        print("terjadi eror pada saat menghitung harga pengiriman", e)
+        raise HTTPException(status_code=500, detail=(e))
         
 @router_packet.get("/waktu_pengiriman")
 def get_waktu_pengiriman(jarak: float, jalur:str):
@@ -67,8 +67,8 @@ def get_waktu_pengiriman(jarak: float, jalur:str):
         }
     
     except Exception as e:
-        print("terjadi eror pada saat menghitung waktu pengiriman ", e)
-
+        raise HTTPException(status_code=500, detail=(e))
+    
 @router_packet.get("/jarak_pengiriman")
 def get_jarak_pengiriman(asal: str, tujuan: str):
     try:
@@ -87,7 +87,7 @@ def get_jarak_pengiriman(asal: str, tujuan: str):
         return round(hasil_dari_package_wilayah, 2)
         
     except Exception as e:
-        print("terjadi error pada saat mencari data koordinat berdasarkan kode wilayah", e)
+        raise HTTPException(status_code=500, detail=(e))
 
 @router_packet.get("/no_resi")
 def get_no_resi(id: int, pengirim: str):
@@ -102,5 +102,4 @@ def get_no_resi(id: int, pengirim: str):
             "status": "diproses"
         }
     except Exception as e:
-        print("terjadi error pada saat mencari data id paket", e)
-        
+        raise HTTPException(status_code=500, detail=(e))        

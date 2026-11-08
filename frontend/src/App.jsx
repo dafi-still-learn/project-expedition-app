@@ -1,4 +1,5 @@
 import "./index.css";
+import "./css/Dashboard.css";
 import { Routes, Route } from "react-router-dom";
 import Login from "./page/login";
 import LupaPassword from "./page/ResetPassword";

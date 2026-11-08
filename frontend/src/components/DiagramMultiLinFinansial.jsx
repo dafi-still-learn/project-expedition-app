@@ -36,11 +36,15 @@ function DiagramMultiLineFinansial({ data_item }) {
     const chart = new Chart(canvas, {
       type: "line",
       data: data,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+      },
     });
 
     return () => chart.destroy();
   }, [data_item]);
-  return <canvas ref={canvasRef} className="h-full w-full"></canvas>;
+  return <canvas ref={canvasRef}></canvas>;
 }
 
 export default DiagramMultiLineFinansial;

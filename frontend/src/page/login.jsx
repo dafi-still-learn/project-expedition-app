@@ -44,6 +44,8 @@ function Login() {
           localStorage.setItem("username", username);
           console.log("INI DARI ADMIN DI PAGE LOGIN");
           login(result.data["access_token"]);
+
+          console.log(result.data);
         } else {
           const checkDataProfil = await checkProfil(result.data["user_id"]);
 

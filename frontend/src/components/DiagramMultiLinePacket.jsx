@@ -30,12 +30,16 @@ function DiagramMultiLinePacket({ data_item }) {
     const chart = new Chart(canvas, {
       type: "line",
       data: data,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+      },
     });
 
     return () => chart.destroy();
   }, [data_item]);
 
-  return <canvas ref={canvasRef} className="w-full h-full"></canvas>;
+  return <canvas ref={canvasRef}></canvas>;
 }
 
 export default DiagramMultiLinePacket;

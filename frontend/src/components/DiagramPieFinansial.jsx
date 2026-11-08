@@ -29,17 +29,15 @@ function DiagramFinansial({ item_data }) {
     const chart = new Chart(canvas, {
       type: "pie",
       data: data,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+      },
     });
 
     return () => chart.destroy();
   }, [item_data]);
-  return (
-    <canvas
-      ref={canvasRef}
-      className="h-full w-full"
-      id="diagram_pie_finansial"
-    ></canvas>
-  );
+  return <canvas ref={canvasRef}></canvas>;
 }
 
 export default DiagramFinansial;

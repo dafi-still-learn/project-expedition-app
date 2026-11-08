@@ -8,9 +8,13 @@ import Sidebar from "../components/sidebar";
 function ExpeditionPage() {
   const location = useLocation();
   const [openSetting, setOpenSetting] = useState(false);
+
   return (
     <>
-      <div className="flex w-screen h-screen" id="container-expedition">
+      <div
+        className="flex w-screen h-screen overflow-hidden p-2"
+        id="container-expedition"
+      >
         <Sidebar openSetting={() => setOpenSetting(true)} />
         <Outlet context={{ location, openSetting }} />
 

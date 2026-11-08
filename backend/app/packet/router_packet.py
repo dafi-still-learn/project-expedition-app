@@ -105,6 +105,7 @@ def get_no_resi(id: int, pengirim: str):
         raise HTTPException(status_code=500, detail=(e))        
     
 
+
 @router_packet.get("/all")
 def get_data_all_paket():
     try:
@@ -118,4 +119,4 @@ def get_data_all_paket():
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=(e))
-    
+        

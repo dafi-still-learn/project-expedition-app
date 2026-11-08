@@ -124,29 +124,6 @@ def cari_id_paket(nama_pengirim):
           conn.close()
 
 # MENGEMBALIKAN DATA PAKET 
-def get_data_all_paket():
-    conn = ps.connect(dbname="expedition_db", user="expedition_app", password="Jakgeyye123!@#", host="localhost", port="5432")
-
-    try:
-        cursor = conn.cursor(cursor_factory=RealDictCursor)
-        
-        cursor.execute("""
-        SELECT * FROM paket               
-        """)
-        
-        data_all = cursor.fetchone()
-        
-        print("data semua dari paket ",data_all)
-        return {
-            "data": data_all,
-            "success": True
-        }
-    except ps.Error as e:
-        print("terjadi error pada saat pengambilan data paket ", e)
-    
-    finally:
-        conn.close()
-        
 # MENGEMBALIKAN DATA HARGA DAN TANGGAL BERANGKAT
 
 def get_data_harga_tanggal():
@@ -160,16 +137,20 @@ def get_data_harga_tanggal():
         FROM paket
         """)
         
-        data = cursor.fetchone()
+        data = cursor.fetchall()
+        
         
         print("isi data")
-        return {
-            "data": data,
-            "success": data
-        }
+        if not data :
+            print('terjadi error pada saat pengamnilan data')
+        else:
+            print("isi data dari tanggl dan harga", data)
+            return data
+        
         
     except ps.Error as e:
         print(e)
         
     finally:
         conn.close()
+        

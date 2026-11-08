@@ -1,37 +1,39 @@
-import React, { useEffect } from "react";
-import baseURL from "../api/Axios";
-import { useState } from "react";
+// import React, { useContext, useEffect } from "react";
+// import baseURL from "../api/Axios";
+// import { useState, useRef, useMemo, createContext } from "react";
+// import { useAuth } from "../auth/AuthContext";
 
-type GetDataPaketProps = {
-  token: string;
-};
-// DIGUNAKAN UNTUK MENGAMBIL DATA PELANGGANe DARI BACKEND DAN DITAMPILKAN DI FRONTEND
-export const GetDataPaket = ({
-  token,
-}: GetDataPaketProps): React.JSX.Element => {
-  const [data, setData] = useState([]);
+// const PaketContext = createContext({
+//   data: [],
+//   loading: true,
+//   refetch: () => {},
+// });
+// // DIGUNAKAN UNTUK MENGAMBIL DATA PELANGGANe DARI BACKEND DAN DITAMPILKAN DI FRONTEND
+// export const GetDataPaket = ({ children }: { children: React.ReactNode }) => {
+//   const [data, setData] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const { token } = useAuth();
 
-  useEffect(() => {
-    const handleGetData = async () => {
-      try {
-        const response = await baseURL.get("/paket/all");
+//   useEffect(() => {
+//     const handleGetData = async () => {
+//       try {
+//         if (!token) return;
 
-        const data = response.data;
+//         const response = await baseURL.get("/paket/all", {
+//           headers: { Authorization: `Bearer ${token}` },
+//         });
 
-        setData(data);
-      } catch (err) {
-        console.log("terjadi error pada saat pengambilan data");
-      }
-    };
+//         setData(response.data);
+//       } catch (err) {
+//         console.log("terjadi error pada saat pengambilan data");
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+//     handleGetData();
+//   }, [token]);
 
-    if (token) {
-      handleGetData();
-    }
-  }, [token]);
+//   return <PaketContext value={{ data, loading }}>{children}</PaketContext>;
+// };
 
-  return (
-    <>
-      <div>{token && <h1>{data}</h1>}</div>
-    </>
-  );
-};
+// export const usePaketData = () => useContext(PaketContext);

@@ -5,7 +5,8 @@ import { useGetDataPaket } from "../hooks/useGetDataPaket";
 export const DiagramLine = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const { dataHarga, dataTanggalKirim, loading } = useGetDataPaket();
+  const { dataHarga, dataTanggalKirim, dataPelanggan, loading } =
+    useGetDataPaket();
 
   // Safety: pastikan data adalah array sebelum .map
 
@@ -20,6 +21,7 @@ export const DiagramLine = () => {
       })
     : [];
   console.log(harga_pengiriman);
+  console.log("isi dari data pelanggan ", dataPelanggan);
   console.log("isi dari data", dataHarga);
   console.log("isi data tanggal", dataTanggalKirim);
   useEffect(() => {

@@ -12,7 +12,8 @@ import { useAuth } from "../auth/AuthContext";
 
 function Dashboard() {
   const openProfil = localStorage.getItem("profilComplete");
-  const { dataHarga, dataTanggalKirim, loading } = useGetDataPaket();
+  const { dataHarga, dataTanggalKirim, dataPelanggan, loading } =
+    useGetDataPaket();
   const item_data = [123, 25, 13];
   const item_data_packet = [99, 32, 61];
 
@@ -21,15 +22,15 @@ function Dashboard() {
       <section className="w-screen h-screen" id="Container-dashboard">
         {openProfil && <Profil></Profil>}
         {/* <Profil></Profil> */}
-        <div className="flex flex-col gap-5" id="dashboard">
+        <div className="flex flex-col gap-5 overflow-hidden h-[calc(100vh-80px)]">
           <Navbar></Navbar>
           <div
-            className="grid gap-1 grid-rows-2 w-full h-full
+            className="grid gap-1 grid-rows-2 w-full
             overflow-hidden"
             id="dashboard-card"
           >
             {/* BERISI CARD UNTUK SETIAP FITUR YANG PENTING */}
-            <div className="row-span-1 grid grid-cols-3 gap-2 h-90 overflow-hidden">
+            <div className="row-span-1 grid grid-cols-3 gap-2  overflow-hidden">
               <div className="shadow-lg flex w-full h-full">
                 <DiagramFinansialBar item_data={item_data_packet} />
               </div>
@@ -48,22 +49,28 @@ function Dashboard() {
                 </div>
               </div>
             </div>
-            <div className="row-span-1 grid grid-cols-3 gap-2">
-              <div
-                className="shadow-lg grid gap-1 grid-cols-1 col-span-2 w-full h-full"
-                id="list_pengiriman_dashboard"
-              >
+            <div className="row-span-1 grid grid-cols-3 gap-2 w-full h-full overflow-hidden">
+              <div className="shadow-lg grid gap-1 grid-cols-1 col-span-2">
                 <DiagramLine />
               </div>
-              {/* <div className="shadow-lg">
-                <LeafletMap />
-              </div> */}
               <div
-                className="shadow-lg grid grid-rows-2 w-full h-full col-span-1 gap-2
-            "
+                className="shadow-lg grid grid-rows-2 col-span-1 gap-5
+             overflow-y-auto overflow-x-hidden"
               >
-                {/* <DiagramMultiLineFinansial />
-              <DiagramMultiLinePacket /> */}
+                {dataPelanggan.map((item: any) => {
+                  return (
+                    <>
+                      <ul
+                        key={item.id}
+                        className="grid grid-cols-8 gap-1 justify-between list-inside bg-blue-200 cursor-pointer"
+                      >
+                        <li className="col-span-2">{item.nama_pelanggan}</li>
+                        <li className="col-span-3">{item.nama_paket}</li>
+                        <li className="col-span-3">{item.harga_paket}</li>
+                      </ul>
+                    </>
+                  );
+                })}
               </div>
             </div>
           </div>

@@ -5,6 +5,7 @@ import { useAuth } from "../auth/AuthContext";
 export const useGetDataPaket = () => {
   const [dataHarga, setDataHarga] = useState([]);
   const [dataTanggalKirim, setDataTanggalKirim] = useState([]);
+  const [dataPelanggan, setDataPelanggan] = useState([]);
   const [loading, setLoading] = useState(true);
   const { token } = useAuth();
 
@@ -20,10 +21,12 @@ export const useGetDataPaket = () => {
             Authorization: `Bearer ${token}`,
           },
         });
+
         // response.data = { data: [array_baris_paket], success: true }
         // Ambil yang ada di dalam .data (array-nya)
         setDataHarga(response?.data.data_harga ?? []);
         setDataTanggalKirim(response?.data.data_tanggal ?? []);
+        setDataPelanggan(response?.data.data_pelanggan ?? []);
       } catch (err) {
         console.log("terjadi error pada saat pengambilan data", err);
         setDataHarga([]); // pastikan tetap array walaupun error
@@ -35,5 +38,5 @@ export const useGetDataPaket = () => {
     fetchData();
   }, [token]);
 
-  return { dataHarga, dataTanggalKirim, loading };
+  return { dataHarga, dataTanggalKirim, dataPelanggan, loading };
 };

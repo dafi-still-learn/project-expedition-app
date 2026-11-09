@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 import locale
 from app.database.database_packet import input_database_paket, membuat_database_paket, get_data_harga_tanggal
-from app.database.database_customers import membuat_tabel_pelanggan
+from app.database.database_customers import membuat_tabel_pelanggan, get_data_all_pelanggan
 from app.packet.schemas import data_pengiriman
 from app.service.waktu_pengiriman_sampai import waktu_pengiriman
 from app.database.database_resi_paket import membuat_database_resi
@@ -109,12 +109,14 @@ def get_no_resi(id: int, pengirim: str):
 @router_packet.get("/all")
 def get_data_all_paket():
     try:
-        rows = get_data_harga_tanggal() or []
-        print("ini data semua dari paket ", [row["harga_pengiriman"] for row in rows])
-
+        rows_paket = get_data_harga_tanggal() or []
+        rows_pelanggan = get_data_all_pelanggan() or []
+        print("ini data semua dari paket ", [row["harga_pengiriman"] for row in rows_paket])
+        print("ini data semua pelanggan ", [row for row in rows_pelanggan],)
         return {
-           "data_harga": [row["harga_pengiriman"] for row in rows],
-           "data_tanggal": [row["tanggal_pengiriman"] for row in rows],
+           "data_harga": [row["harga_pengiriman"] for row in rows_paket],
+           "data_tanggal": [row["tanggal_pengiriman"] for row in rows_paket],
+           "data_pelanggan": [row for row in rows_pelanggan],
            "success": True
         }
     except Exception as e:

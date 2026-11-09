@@ -99,14 +99,13 @@ def get_data_all_pelanggan():
         SELECT * FROM pelanggan
         """)
         
-        data_all = cursor.fetchone()
+        data_all = cursor.fetchall()
         
-        print("semua data pelanggan ", data_all)
         
-        return {
-            "data_all": data_all,
-            "success": True
-        }
+        if not data_all:
+            print("gagal ambil")
+        else:
+            return data_all
         
     except ps.Error as e:
         print("terjadi error pada pengambilan data pelanggan ", e)

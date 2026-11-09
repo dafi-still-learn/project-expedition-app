@@ -11,7 +11,7 @@ export const GenerateBarcode = ({
   id,
   pengirim,
 }: GenerateBarcodeProps): React.JSX.Element => {
-  const [dataBarcode, setDataBarcode] = useState("");
+  const [dataBarcodeStatus, setDataBarcodeStatus] = useState("");
 
   useEffect(() => {
     const handleGenerateBarcode = async () => {
@@ -20,10 +20,7 @@ export const GenerateBarcode = ({
           `/packet/no_resi?id=${id}&pengirim=${pengirim}`,
         );
 
-        const data = response.data;
-
-        setDataBarcode(data);
-        console.log("ini isi dari data barcode dari backend", data);
+        setDataBarcodeStatus(response?.data.status);
       } catch (err) {
         console.log(
           "terjadi error pada saat mengambil dan mencari data dari backend ",
@@ -40,7 +37,12 @@ export const GenerateBarcode = ({
   return (
     <>
       <div className="flex justify-center">
-        <Barcode value={dataBarcode} format="CODE128" width={2} height={100} />
+        <Barcode
+          value={dataBarcodeStatus}
+          format="CODE128"
+          width={2}
+          height={100}
+        />
       </div>
     </>
   );

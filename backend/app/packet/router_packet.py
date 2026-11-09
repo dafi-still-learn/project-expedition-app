@@ -4,7 +4,7 @@ from app.database.database_packet import input_database_paket, membuat_database_
 from app.database.database_customers import membuat_tabel_pelanggan, get_data_all_pelanggan
 from app.packet.schemas import data_pengiriman
 from app.service.waktu_pengiriman_sampai import waktu_pengiriman
-from app.database.database_resi_paket import membuat_database_resi
+from app.database.database_resi_paket import membuat_database_resi, get_data_resi_paket
 
 from app.database.database_wilayah import data_koordinat_wilayah
 
@@ -122,3 +122,13 @@ def get_data_all_paket():
     except Exception as e:
         print(e)
         
+@router_packet.get("/resi_paket")
+def get_all_data_resi_paket(resi_paket: str):
+    try:
+        data_all = get_data_resi_paket(resi_paket)
+        
+        print(data_all)
+        return data_all
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=(e))

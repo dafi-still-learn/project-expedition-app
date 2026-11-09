@@ -564,3 +564,406 @@ Database adalah investasi jangka panjang. 1-2 minggu belajar ORM dan migration a
 ---
 
 **Ingat:** Tidak ada yang langsung sempurna. Bahkan startup unicorn pun dulu mulai dengan kode sederhana. Yang penting **selangkah lebih baik dari kemarin**.
+
+---
+
+## 11. SQLAlchemy yang Sering Dipakai: Modul, Method, dan Session
+
+Bagian ini menambah materi belajar. Materi di atas tidak diubah. Contoh di bawah memakai tabel `paket` supaya nyambung dengan kode yang sudah ada di proyek ini.
+
+### 11.1 Peta modul SQLAlchemy
+
+SQLAlchemy punya dua lapisan:
+
+| Lapisan | Nama | Kegunaan |
+|---|---|---|
+| Core | `sqlalchemy` | Engine, connection, SQL expression, metadata |
+| ORM | `sqlalchemy.orm` | Class Python yang mewakili baris tabel, plus `Session` |
+
+Modul dan class yang paling sering dipakai:
+
+| Yang di-import | Dari mana | Fungsi |
+|---|---|---|
+| `create_engine` | `sqlalchemy` | Membuat engine: pengelola koneksi ke PostgreSQL |
+| `text` | `sqlalchemy` | Menjalankan SQL mentah dengan parameter aman |
+| `select`, `insert`, `update`, `delete` | `sqlalchemy` | Membangun perintah SQL tanpa menulis string mentah |
+| `Column`, `Integer`, `String`, `Numeric`, `DateTime`, `ForeignKey` | `sqlalchemy` | Mendefinisikan kolom di class model |
+| `declarative_base` atau `DeclarativeBase` | `sqlalchemy.orm` | Induk semua class model |
+| `sessionmaker` | `sqlalchemy.orm` | Pabrik yang menghasilkan object `Session` |
+| `Session` | `sqlalchemy.orm` | Satu unit kerja: baca, tambah, ubah, hapus, lalu commit |
+| `relationship` | `sqlalchemy.orm` | Menghubungkan model, misalnya `Paket` ke `ResiPaket` |
+
+Contoh import yang dipakai berulang:
+
+```python
+from sqlalchemy import create_engine, select
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker, Session
+```
+
+### 11.2 Empat benda yang harus dibedakan
+
+```text
+Engine        -> tahu cara terhubung ke database dan menyimpan pool koneksi
+SessionLocal  -> resep/pabrik Session, belum terhubung ke satu request
+Session (db)  -> satu percakapan kerja untuk satu request
+Model (Paket) -> gambaran satu baris di tabel paket
+```
+
+`create_engine()` **tidak** membuka 10 koneksi sekaligus. Ia menyiapkan pool. Koneksi baru diambil saat `Session` benar-benar butuh query.
+
+```python
+engine = create_engine(
+    DATABASE_URL,
+    pool_size=10,      # koneksi yang disimpan siap pakai
+    max_overflow=20,   # tambahan sementara saat ramai
+    pool_pre_ping=True # cek koneksi mati sebelum dipakai
+)
+```
+
+### 11.3 Method Session yang paling sering
+
+`db` di contoh berikut bertipe `Session`.
+
+| Method | Apa yang terjadi | Apakah langsung ke database? |
+|---|---|---|
+| `add(obj)` | Masukkan object baru ke antrean insert | Belum |
+| `add_all([a, b])` | Masukkan banyak object sekaligus | Belum |
+| `delete(obj)` | Tandai object untuk dihapus | Belum |
+| `flush()` | Kirim SQL yang tertunda, tapi transaksi masih terbuka | Ya, tanpa commit |
+| `commit()` | Simpan permanen semua perubahan dalam transaksi ini | Ya |
+| `rollback()` | Batalkan semua perubahan sejak transaksi dimulai | Ya |
+| `refresh(obj)` | Baca ulang object dari database setelah insert/update | Ya |
+| `get(Model, id)` | Ambil satu baris lewat primary key | Ya |
+| `execute(stmt)` | Jalankan `select`, `update`, `delete`, atau `text()` | Ya |
+| `scalars(stmt)` | Sama seperti execute, lalu ambil object modelnya saja | Ya |
+| `close()` | Kembalikan koneksi ke pool | Menutup session, bukan mematikan database |
+| `expunge(obj)` | Lepaskan object dari pengawasan Session | Tidak |
+| `merge(obj)` | Masukkan object yang sebelumnya terlepas kembali ke Session | Bisa |
+
+Perubahan Python **belum tentu** sudah tersimpan:
+
+```text
+db.add(paket)     -> masih di memori Python
+db.flush()        -> SQL INSERT terkirim, id bisa sudah terisi, tapi bisa di-rollback
+db.commit()       -> baru benar-benar tersimpan
+db.rollback()     -> insert/update/delete dalam transaksi itu dibatalkan
+```
+
+Kalau ada error di tengah jalan, panggil `rollback()` sebelum menutup session. Kalau tidak, session bisa tetap dalam keadaan gagal dan query berikutnya ditolak.
+
+### 11.4 Apa arti class Session
+
+`Session` adalah **unit of work**, bukan koneksi itu sendiri dan bukan tabel.
+
+Artinya:
+
+1. Session mengawasi object Python yang kamu baca atau ubah.
+2. Saat sebuah field object berubah, Session mencatat "baris ini kotor dan perlu di-UPDATE".
+3. Semua operasi itu masuk satu transaksi.
+4. `commit()` menyimpan semuanya bersama-sama.
+5. `rollback()` membatalkan semuanya bersama-sama.
+6. Setelah selesai, `close()` mengembalikan koneksi ke pool supaya request lain bisa memakainya.
+
+Ini bedanya dengan kode sekarang. Di `database_packet.py`, satu fungsi membuka `ps.connect()`, membuat cursor, menjalankan SQL, lalu `commit()` dan `close()`. Di `router.py` wilayah, `get_db()` juga langsung mengembalikan koneksi psycopg2. Session menggantikan pola buka-tutup itu dengan satu object yang bisa dipakai untuk banyak operasi dalam satu transaksi.
+
+Contoh: menyimpan paket dan resi harus sama-sama berhasil.
+
+```python
+def simpan_paket_dan_resi(db: Session, data: dict, nomor_resi: str):
+    try:
+        paket = Paket(**data)
+        db.add(paket)
+        db.flush()  # paket.id sudah ada, transaksi belum ditutup
+
+        resi = ResiPaket(id_paket=paket.id, nomor_resi=nomor_resi)
+        db.add(resi)
+
+        db.commit()      # paket dan resi tersimpan bersama
+        db.refresh(paket)
+        return paket
+    except Exception:
+        db.rollback()    # kalau resi gagal, paket juga ikut batal
+        raise
+```
+
+Kalau keduanya memakai koneksi dan `commit()` yang berbeda, bisa terjadi paket sudah tersimpan tetapi resinya gagal. Satu Session menjaga keduanya dalam satu transaksi.
+
+### 11.5 Create, Read, Update, Delete
+
+Model yang dipakai contoh:
+
+```python
+class Base(DeclarativeBase):
+    pass
+
+class Paket(Base):
+    __tablename__ = "paket"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    nama_paket: Mapped[str] = mapped_column(String(255))
+    nama_pengirim: Mapped[str] = mapped_column(String(255))
+    harga_pengiriman: Mapped[float] = mapped_column(Numeric(12, 2))
+```
+
+#### Insert satu data
+
+```python
+paket = Paket(
+    nama_paket="Elektronik",
+    nama_pengirim="Budi",
+    harga_pengiriman=500000,
+)
+db.add(paket)
+db.commit()
+db.refresh(paket)   # mengambil id yang baru dibuat database
+print(paket.id)
+```
+
+`add()` hanya menandai object. `commit()` yang mengirim `INSERT`. `refresh()` dibutuhkan kalau kamu mau memakai nilai yang dihasilkan database, seperti `id` atau default timestamp.
+
+#### Insert banyak data
+
+```python
+db.add_all([
+    Paket(nama_paket="Dokumen", nama_pengirim="Ani", harga_pengiriman=25000),
+    Paket(nama_paket="Makanan", nama_pengirim="Sari", harga_pengiriman=40000),
+])
+db.commit()
+```
+
+#### Menampilkan satu data
+
+Primary key lebih jelas memakai `get`:
+
+```python
+paket = db.get(Paket, 10)
+if paket is None:
+    raise HTTPException(status_code=404, detail="Paket tidak ditemukan")
+```
+
+Filter selain primary key memakai `select`:
+
+```python
+stmt = select(Paket).where(Paket.nama_pengirim == "Budi")
+paket = db.scalars(stmt).first()      # satu object atau None
+```
+
+#### Menampilkan semua data yang diinginkan
+
+```python
+stmt = (
+    select(Paket)
+    .where(Paket.nama_pengirim.ilike("%budi%"))
+    .order_by(Paket.id.desc())
+    .limit(50)
+    .offset(0)
+)
+semua = db.scalars(stmt).all()
+```
+
+| Method hasil | Hasil |
+|---|---|
+| `.first()` | Object pertama atau `None` |
+| `.one()` | Tepat satu; error kalau kosong atau lebih dari satu |
+| `.one_or_none()` | Satu atau `None`; error kalau lebih dari satu |
+| `.all()` | List, bisa kosong |
+
+Jangan memakai `.all()` untuk tabel yang bisa tumbuh besar tanpa `limit`. Untuk laporan, hitung total terpisah lalu kirim data per halaman.
+
+#### Update
+
+Cara ORM: ambil object, ubah atributnya, lalu commit. Session mengetahui perubahannya.
+
+```python
+paket = db.get(Paket, 10)
+if paket is None:
+    raise HTTPException(status_code=404, detail="Paket tidak ditemukan")
+
+paket.harga_pengiriman = 550000
+db.commit()
+db.refresh(paket)
+```
+
+Cara ini tidak memerlukan `db.add()` lagi karena object itu sudah berada di dalam Session sejak `db.get()`.
+
+Cara query langsung, tanpa lebih dulu memuat object:
+
+```python
+stmt = (
+    update(Paket)
+    .where(Paket.id == 10)
+    .values(harga_pengiriman=550000)
+)
+hasil = db.execute(stmt)
+db.commit()
+print(hasil.rowcount)   # jumlah baris yang berubah
+```
+
+Pilih cara ORM saat kamu sudah memegang objectnya. Pilih `update()` saat banyak baris diubah sekaligus.
+
+#### Delete
+
+```python
+paket = db.get(Paket, 10)
+if paket is not None:
+    db.delete(paket)
+    db.commit()
+```
+
+Atau:
+
+```python
+stmt = delete(Paket).where(Paket.id == 10)
+db.execute(stmt)
+db.commit()
+```
+
+### 11.6 Di mana Session dipanggil: router, service, atau database?
+
+Jawaban singkatnya: **Session dibuat sekali untuk satu request, biasanya lewat dependency router. Perintah insert, select, dan update tidak ditulis langsung memenuhi router.**
+
+Di proyek ini pembagiannya sekarang begini:
+
+```text
+main.py
+  -> router_packet.py menerima HTTP
+      -> database_packet.py membuka koneksi dan menjalankan SQL
+```
+
+Misalnya endpoint `/packet/input_packet` hanya menerima schema `data_pengiriman`, lalu memanggil `input_database_paket(...)`. Router tidak menulis `INSERT` sendiri. Itu pola yang tetap dipertahankan saat pindah ke SQLAlchemy.
+
+Bentuk yang rapi:
+
+```text
+Router     -> urusan HTTP: terima request, panggil lapisan bawah, kembalikan response
+Service    -> urusan bisnis: harga, resi, pelanggan sudah ada atau belum
+CRUD/repo  -> urusan tabel: add, select, update, delete
+database.py -> engine, SessionLocal, Base, dan get_db
+models.py  -> bentuk tabel dalam class Python
+```
+
+`get_db()` boleh dipanggil dari router karena FastAPI yang membuka dan menutupnya:
+
+```python
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    except Exception:
+        db.rollback()
+        raise
+    finally:
+        db.close()
+
+@router.post("/input_packet")
+def input_packet_user(
+    data: DataPengiriman,
+    db: Session = Depends(get_db),
+):
+    return paket_service.simpan_paket(db, data)
+```
+
+`Depends(get_db)` artinya:
+
+1. FastAPI memanggil `get_db()` sebelum fungsi endpoint berjalan.
+2. Object yang di-`yield` masuk ke parameter `db`.
+3. Setelah response selesai atau terjadi error, blok `finally` tetap menjalankan `db.close()`.
+
+Fungsi CRUD menerima `db`, bukan membuat Session sendiri:
+
+```python
+def create_paket(db: Session, data: dict) -> Paket:
+    paket = Paket(**data)
+    db.add(paket)
+    db.commit()
+    db.refresh(paket)
+    return paket
+```
+
+Jangan buat `SessionLocal()` di dalam setiap fungsi CRUD. Kalau dibuat di sana, setiap fungsi punya transaksi berbeda sehingga `rollback()` di router tidak bisa membatalkan semuanya.
+
+Satu pengecualian adalah script sekali jalan, seperti seed atau perintah CLI. Script tidak punya request FastAPI, jadi ia membuat session sendiri:
+
+```python
+with SessionLocal() as db:
+    db.add(Paket(...))
+    db.commit()
+```
+
+### 11.7 Apakah database.py masih diperlukan?
+
+**Masih.** `models.py` dan `database.py` tidak saling menggantikan.
+
+`database.py` menampung infrastruktur koneksi, bukan data paket dan bukan aturan harga:
+
+| Isi database.py | Tugasnya |
+|---|---|
+| `engine` | Alamat database dan connection pool |
+| `SessionLocal` | Cara membuat Session |
+| `Base` | Induk class model |
+| `get_db()` | Membuka satu Session per request dan selalu menutupnya |
+
+`models.py` menampung bentuk tabel. `crud` atau repository menampung query. Router menampung endpoint. Service menampung aturan bisnis.
+
+Jadi "cukup satu file" bukan tujuan yang tepat. Yang diganti adalah pola **satu koneksi manual di setiap fungsi**. Tetap ada satu pusat koneksi, lalu query tersebar sesuai tanggung jawabnya.
+
+### 11.8 Apakah database.py yang membuat tabel?
+
+Tidak secara otomatis. Ada tiga pekerjaan yang sering tertukar:
+
+| Pekerjaan | Tool yang tepat | Kapan |
+|---|---|---|
+| Menghubungkan aplikasi ke database | `create_engine` di `database.py` | Setiap aplikasi hidup |
+| Mengirim query aplikasi | `Session` | Setiap request |
+| Membuat atau mengubah tabel | Alembic migration | Saat schema berubah |
+
+Model hanya menjelaskan keinginan kita. PostgreSQL belum berubah hanya karena class `Paket` disimpan.
+
+`Base.metadata.create_all(bind=engine)` bisa membuat tabel yang belum ada dari semua model. Ini berguna untuk percobaan lokal, tetapi tidak mengubah tabel lama, tidak menghapus kolom lama, dan tidak punya riwayat perubahan. Karena itu untuk aplikasi yang terus berkembang, pembuatan dan perubahan tabel dimiliki Alembic:
+
+```bash
+alembic revision --autogenerate -m "buat tabel paket"
+alembic upgrade head
+```
+
+File migration itulah yang menjadi versi dari `CREATE TABLE`, `ALTER TABLE`, penambahan index, dan penambahan foreign key. `database.py` tetap bertanggung jawab pada koneksi; Alembic bertanggung jawab pada evolusi schema.
+
+### 11.9 Alur lengkap satu request
+
+```text
+POST /packet/input_packet
+        |
+        v
+router menerima data_pengiriman
+        |
+        v
+Depends(get_db) membuat Session dari SessionLocal
+        |
+        v
+service menghitung resi / mengecek pelanggan
+        |
+        v
+repository menjalankan db.add(), db.get(), atau select()
+        |
+        v
+db.commit() menyimpan transaksi
+        |
+        v
+router mengubah object menjadi response
+        |
+        v
+get_db() menutup Session di finally
+```
+
+Kalau service atau repository melempar error, `rollback()` membatalkan perubahan dan `close()` tetap dipanggil.
+
+### 11.10 Urutan belajar yang aman
+
+1. Pindahkan alamat database ke `.env`, tetapi jangan ubah perilaku endpoint dulu.
+2. Buat `database.py` yang hanya berisi engine, `SessionLocal`, `Base`, dan `get_db()`.
+3. Buat satu model `Paket` yang sesuai dengan tabel yang sudah ada.
+4. Uji `db.get()`, `select().all()`, insert, update, dan rollback pada satu endpoint.
+5. Setelah pola itu paham, baru pindahkan fungsi di `database_packet.py` satu per satu.
+6. Baru kemudian masukkan Alembic untuk perubahan schema.
+
+Jangan mengganti semua file database sekaligus. Kode sekarang memakai psycopg2 dan masih berjalan sebagai acuan. SQLAlchemy menggantikan cara berbicara dengan database, tetapi pembagian tanggung jawabnya tetap: router menerima request, fungsi database atau repository menjalankan operasi data, dan satu file koneksi mengatur Session.

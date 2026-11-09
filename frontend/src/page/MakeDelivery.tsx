@@ -39,7 +39,7 @@ function Buat_pengiriman(): React.JSX.Element {
   return (
     <>
       <section className="w-screen h-screen" id="Container-make-delivery">
-        <div className="" id="make-delivery">
+        <div id="make-delivery">
           <div
             className="grid grid-cols-5 gap-6 w-full h-full"
             id="make-delivery-card"
@@ -70,7 +70,10 @@ function Buat_pengiriman(): React.JSX.Element {
                 />
               </div>
             </div>
-            <div className="col-span-2" id="detail-make-delivery">
+            <div
+              className="col-span-2 flex flex-col gap-5"
+              id="detail-make-delivery"
+            >
               <div>
                 <h1>detail packet</h1>
                 <ul>

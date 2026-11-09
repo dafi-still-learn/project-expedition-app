@@ -4,7 +4,7 @@ function Navbar() {
   return (
     <>
       <div className="grid grid-cols-5">
-        <div className="col-span-1" id="hero-navbar">
+        <div className="col-span-1 flex place-content-center" id="hero-navbar">
           <h1>Overview</h1>
         </div>
         <div id="container-navbar" className="col-span-4">

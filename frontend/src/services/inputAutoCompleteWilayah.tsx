@@ -69,7 +69,7 @@ export const OnInputWilayah = ({
     <div>
       <input
         type="text"
-        className="input-wilayah"
+        className="w-full"
         value={input}
         onChange={(e) => {
           const val = e.target.value;

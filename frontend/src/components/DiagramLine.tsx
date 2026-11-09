@@ -1,41 +1,38 @@
 import Chart, { ChartData, ChartOptions } from "chart.js/auto";
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useGetDataPaket } from "../hooks/useGetDataPaket";
 
-export const DiagramLine = () => {
+type DiagramLineProps = {
+  labels: any;
+  data: any;
+};
+export const DiagramLine = ({
+  labels,
+  data,
+}: DiagramLineProps): React.JSX.Element => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const { dataHarga, dataTanggalKirim, dataPelanggan, loading } =
-    useGetDataPaket();
+  const [loading, setLoading] = useState<boolean>(true);
 
   // Safety: pastikan data adalah array sebelum .map
 
-  const harga_pengiriman = Array.isArray(dataHarga)
-    ? dataHarga.map((p: any) => {
-        const raw = p ?? "0";
-        console.log(raw);
-        // Bersihkan format Indonesia: "Rp10.240.750,00" -> 10240750
-        const cleaned = raw.replace(/[^\d,]/g, "").replace(",", ".");
-        console.log(cleaned);
-        return parseFloat(cleaned) || 0;
-      })
-    : [];
-  console.log(harga_pengiriman);
-  console.log("isi dari data pelanggan ", dataPelanggan);
-  console.log("isi dari data", dataHarga);
-  console.log("isi data tanggal", dataTanggalKirim);
+  // console.log(harga_pengiriman);
+  // console.log("isi dari data pelanggan ", dataPelanggan);
+  // console.log("isi dari data", dataHarga);
+  // console.log("isi data tanggal", dataTanggalKirim);
   useEffect(() => {
     const canvas = canvasRef.current;
+    setLoading(false);
     if (!canvas) return;
 
     if (loading) return;
 
     const dataChart: ChartData<"line"> = {
-      labels: dataTanggalKirim,
+      labels: labels,
       datasets: [
         {
           label: "grafik pemasukkan",
-          data: harga_pengiriman,
+          data: data,
           borderColor: "rgb(75, 192, 192)",
           tension: 0.1,
         },
@@ -54,7 +51,7 @@ export const DiagramLine = () => {
     });
 
     return () => chart.destroy();
-  }, [dataTanggalKirim, harga_pengiriman, loading]);
+  }, [labels, data, loading]);
 
   return (
     <div

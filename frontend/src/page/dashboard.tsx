@@ -17,6 +17,17 @@ function Dashboard() {
   const item_data = [123, 25, 13];
   const item_data_packet = [99, 32, 61];
 
+  const harga_pengiriman = Array.isArray(dataHarga)
+    ? dataHarga.map((p: any) => {
+        const raw = p ?? "0";
+        console.log(raw);
+        // Bersihkan format Indonesia: "Rp10.240.750,00" -> 10240750
+        const cleaned = raw.replace(/[^\d,]/g, "").replace(",", ".");
+        console.log(cleaned);
+        return parseFloat(cleaned) || 0;
+      })
+    : [];
+
   return (
     <>
       <section className="w-screen h-screen" id="Container-dashboard">
@@ -51,7 +62,10 @@ function Dashboard() {
             </div>
             <div className="row-span-1 grid grid-cols-3 gap-2 w-full h-full overflow-hidden">
               <div className="shadow-lg grid gap-1 grid-cols-1 col-span-2">
-                <DiagramLine />
+                <DiagramLine
+                  data={harga_pengiriman}
+                  labels={dataTanggalKirim}
+                />
               </div>
               <div
                 className="shadow-lg grid grid-rows-2 col-span-1 gap-5

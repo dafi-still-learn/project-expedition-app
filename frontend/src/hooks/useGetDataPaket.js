@@ -6,6 +6,7 @@ export const useGetDataPaket = () => {
   const [dataHarga, setDataHarga] = useState([]);
   const [dataTanggalKirim, setDataTanggalKirim] = useState([]);
   const [dataPelanggan, setDataPelanggan] = useState([]);
+  // const [idPelanggan, setIdPelanggan] = useState([]);
   const [loading, setLoading] = useState(true);
   const { token } = useAuth();
 
@@ -38,5 +39,10 @@ export const useGetDataPaket = () => {
     fetchData();
   }, [token]);
 
-  return { dataHarga, dataTanggalKirim, dataPelanggan, loading };
+  return {
+    dataHarga,
+    dataTanggalKirim,
+    dataPelanggan,
+    loading,
+  };
 };

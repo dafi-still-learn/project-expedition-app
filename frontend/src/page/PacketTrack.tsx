@@ -1,4 +1,3 @@
-import "../css/PacketTrack.css";
 import baseURL from "../api/Axios";
 
 import LeafletMap from "../services/PengirimanOpenStreetMap";
@@ -7,12 +6,11 @@ import { useState } from "react";
 
 function Lacak_paket() {
   const { token } = useAuth();
-  const [loading, setLoading] = useState(false);
-  const [dataResi, setDataResi] = useState([]);
-  const [resiPaket, setResiPaket] = useState("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [dataResi, setDataResi] = useState<any>([]);
+  const [resiPaket, setResiPaket] = useState<string>("");
 
-  const handleDataResi = async (e) => {
-    e.preventDefault();
+  const handleDataResi = async () => {
     setLoading(true);
     try {
       const response = await baseURL.get(

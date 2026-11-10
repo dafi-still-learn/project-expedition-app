@@ -1,6 +1,3 @@
-import "../index.css";
-import "../css/Location.css";
-
 import LeafletMap from "../services/PengirimanOpenStreetMap";
 
 function Lokasi() {

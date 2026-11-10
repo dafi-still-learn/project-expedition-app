@@ -1,0 +1,62 @@
+import "../css/Payment.css";
+
+import { useGetDataPaket } from "../hooks/useGetDataPaket";
+
+function Pembayaran() {
+  const { dataPelanggan } = useGetDataPaket();
+
+  return (
+    <>
+      <section className="w-screen h-screen" id="Container-payment">
+        <div className="w-full h-full" id="payment">
+          <div
+            className="grid gap-6 grid-rows-5 w-full h-full overflow-auto"
+            id="payment-card"
+          >
+            <div className="row-span-1 rounded-xl" id="filter-payment">
+              <div>berisi filter payment</div>
+            </div>
+            <div
+              className="row-span-4 grid gap-1 grid-rows-12 overflow-y-auto rounded-xl"
+              id="payment-item"
+            >
+              {dataPelanggan.map((item: any) => {
+                return (
+                  <>
+                    <ul
+                      key={item.id}
+                      className="grid grid-cols-16 cursor-pointer"
+                    >
+                      <li className="col-span-2">paket: {item.id}</li>
+                      <li className="col-span-3">
+                        nama: {item.nama_pelanggan}
+                      </li>
+                      <li className="col-span-4">
+                        nama paket: {item.nama_paket}
+                      </li>
+                      {/* <li className="col-span-4">
+                        asal pengiriman: {item.asal_pengiriman}
+                      </li>
+                      <li className="col-span-4">
+                        tujuan pengiriman: {item.tujuan_pengiriman}
+                      </li> */}
+                      <li className="col-span-4">
+                        harga pengiriman: {item.harga_paket}
+                      </li>
+                      <li className="col-span-2">
+                        jumlah paket: {item.jumlah_paket}
+                      </li>
+                      <li className="col-span-1">status: lunas</li>
+                    </ul>
+                  </>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
+export default Pembayaran;

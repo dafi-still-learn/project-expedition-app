@@ -69,6 +69,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const RoleResponse = await validateRole(currentToken);
 
       console.log("INI RESPONSE DARI DATA VALIDASI ROLE", RoleResponse);
+
       const data_bersih_role = RoleResponse?.data.role_user[0][0];
 
       if (!data_bersih_role) {
@@ -96,6 +97,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const login = useCallback((newToken: any) => {
     if (!newToken) return;
+
     setTokenFromLogin(newToken);
   }, []);
 

@@ -3,11 +3,10 @@ import baseURL from "../api/Axios";
 import { useAuth } from "../auth/AuthContext";
 
 export const useGetDataPaket = () => {
-  const [dataHarga, setDataHarga] = useState([]);
-  const [dataTanggalKirim, setDataTanggalKirim] = useState([]);
-  const [dataPelanggan, setDataPelanggan] = useState([]);
-  // const [idPelanggan, setIdPelanggan] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [dataHarga, setDataHarga] = useState<[]>([]);
+  const [dataTanggalKirim, setDataTanggalKirim] = useState<[]>([]);
+  const [dataPelanggan, setDataPelanggan] = useState<[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const { token } = useAuth();
 
   useEffect(() => {
@@ -21,7 +20,6 @@ export const useGetDataPaket = () => {
           },
         });
 
-        // response.data = { data: [array_baris_paket], success: true }
         // Ambil yang ada di dalam .data (array-nya)
         setDataHarga(response?.data.data_harga ?? []);
         setDataTanggalKirim(response?.data.data_tanggal ?? []);

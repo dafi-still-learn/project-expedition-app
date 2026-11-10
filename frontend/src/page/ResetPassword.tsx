@@ -2,24 +2,23 @@
 import "../index.css";
 import "../css/Login.css";
 import { useNavigate } from "react-router-dom";
-import { sendEmail } from "../services/sendEmail";
 import { useState } from "react";
+import baseURL from "../api/Axios";
 
 function LupaPassword() {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState<string>("");
   const navigate = useNavigate();
 
   function handleLogin() {
     navigate("/login");
   }
 
-  const handleEmail = async (e) => {
-    e.preventDefault();
+  const handleEmail = async () => {
+    const response = await baseURL.post("/", {
+      email: email,
+    });
 
-    const result = await sendEmail(email);
-
-    console.log("USERNAME USER", email);
-
+    console.log(response);
     if (result === true) {
       navigate("/login");
     }
@@ -30,7 +29,10 @@ function LupaPassword() {
       <div id="Container-login" className="w-screen h-screen">
         <form
           action=""
-          onSubmit={handleEmail}
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleEmail;
+          }}
           className="bg-amber-400 p-20 grid place-content-center grid-cols-1 gap-5 rounded-4xl"
           id="Form-login"
         >

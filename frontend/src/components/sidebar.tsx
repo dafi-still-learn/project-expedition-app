@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 
-function Sidebar({ openSetting }) {
+function Sidebar({ openSetting }: any) {
   const navigate = useNavigate();
 
   const { logout, role } = useAuth();

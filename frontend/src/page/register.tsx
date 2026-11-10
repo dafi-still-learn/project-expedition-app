@@ -6,15 +6,13 @@ import { useState } from "react";
 import { RegisterOperator } from "../api/AuthApi";
 
 function Register() {
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   const navigate = useNavigate();
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
-
+  const handleRegister = async () => {
     if (email == "" || username == "" || password == "") {
       console.log("isi dengan benar");
     } else {
@@ -25,10 +23,10 @@ function Register() {
       console.log("PASSWORD USER REGISTER", password);
 
       console.log("hasil dari register database", result);
-      if (result.data === true) {
+      if (result?.data === true) {
         navigate("/login");
       }
-      if (result.data === false || result.data == null) {
+      if (result?.data === false || result?.data == null) {
         console.log("gmail atau username ini sudah digunakan");
       }
     }
@@ -42,7 +40,10 @@ function Register() {
       <div id="Container-register" className="w-screen h-screen">
         <form
           action=""
-          onSubmit={handleRegister}
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleRegister;
+          }}
           className="p-20 grid place-content-center grid-cols-1 gap-5 rounded-4xl"
           id="Form-register"
         >

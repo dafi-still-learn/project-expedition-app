@@ -1,8 +1,7 @@
+import React from "react";
 import "../css/Setting.css";
 
-function Setting({ onClose }) {
-  console.log("ISI DARI ON CLOSE", onClose);
-
+function Setting({ onClose }: any) {
   return (
     <>
       <div className="fixed inset-0 bg-black/50 items-center justify-center flex">

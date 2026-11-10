@@ -1,15 +1,15 @@
 import baseURL from "../api/Axios";
 
 export const postDataProfil = async (
-  user_id,
-  email_user,
-  nama_user,
-  nama_panggilan,
-  tanggal_lahir_user,
-  nomor_hp_user,
-  alamat_sekarang,
-  penempatan,
-  jabatan_sekarang,
+  user_id: number,
+  email_user: string,
+  nama_user: string,
+  nama_panggilan: string,
+  tanggal_lahir_user: string,
+  nomor_hp_user: string,
+  alamat_sekarang: string,
+  penempatan: string,
+  jabatan_sekarang: string,
 ) => {
   try {
     const response = await baseURL.post(
@@ -37,7 +37,7 @@ export const postDataProfil = async (
   }
 };
 
-export const checkProfil = async (user_id) => {
+export const checkProfil = async (user_id: number) => {
   try {
     const response = await baseURL.post(
       "/profil/check_profil",

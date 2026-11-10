@@ -10,8 +10,6 @@ export const useGetDataPaket = () => {
   const [loading, setLoading] = useState(true);
   const { token } = useAuth();
 
-  console.log("isi token", token);
-
   useEffect(() => {
     const fetchData = async () => {
       try {

@@ -8,7 +8,6 @@ import DiagramMultiLineFinansial from "../components/DiagramMultiLinFinansial";
 import Profil from "../components/Profil";
 import { DiagramLine } from "../components/DiagramLine";
 import { useGetDataPaket } from "../hooks/useGetDataPaket";
-import { useAuth } from "../auth/AuthContext";
 
 function Dashboard() {
   const openProfil = localStorage.getItem("profilComplete");
@@ -20,10 +19,8 @@ function Dashboard() {
   const harga_pengiriman = Array.isArray(dataHarga)
     ? dataHarga.map((p: any) => {
         const raw = p ?? "0";
-        console.log(raw);
         // Bersihkan format Indonesia: "Rp10.240.750,00" -> 10240750
         const cleaned = raw.replace(/[^\d,]/g, "").replace(",", ".");
-        console.log(cleaned);
         return parseFloat(cleaned) || 0;
       })
     : [];

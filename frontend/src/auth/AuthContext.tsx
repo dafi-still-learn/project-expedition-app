@@ -1,5 +1,5 @@
 // MENGIRIM DATA YANG SESUAI DENGAN ROLE
-import {
+import React, {
   useState,
   createContext,
   useContext,
@@ -10,13 +10,21 @@ import {
 } from "react";
 import { validateRole, getAccessTokenRefresh } from "../api/AuthApi";
 
+type ValueProps = {
+  role: string | null;
+  loading: boolean;
+  isAuthenticated: boolean;
+  login: (newTokne: string) => void;
+  logout: () => void;
+  token: string | null;
+};
 const AuthContext = createContext(null);
 
-export function AuthProvider({ children }) {
-  const [role, setRole] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [token, setToken] = useState(null);
-  const [tokenFromLogin, setTokenFromLogin] = useState(null);
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [role, setRole] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [token, setToken] = useState<string | null>(null);
+  const [tokenFromLogin, setTokenFromLogin] = useState<string | null>(null);
 
   const isInisasi = useRef(false);
   // TO DO: TEMPAT MELAKUKAN PENGAMBILAN TOKEN DARI BACKEND DAN DISIMPAN KE STATE
@@ -31,6 +39,7 @@ export function AuthProvider({ children }) {
         // REQUEST SUDAH BERHASIL DAN MENGEMBALIKAN TOKEN YANG DIINGINKAN JIKA TERJADI REFRESH
         const access_token = response_token;
 
+        if (!access_token) return;
         // INI JUGA SUDAH BERHASIL MENGHASILKAN TOKEN ACCESS NYA
         if (access_token) {
           // INI JUGA SUDAH BERHASIL MENGEMBALIKAN ACCESS TOKEN DARI RESPON
@@ -49,7 +58,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   // MENJADIKAN REFRESH ROLE SEBAGAI GERBANG UNTUK MELANJUTKAN KE PROSES SELANJUTNYA
-  const refreshRole = useCallback(async (currentToken) => {
+  const refreshRole = useCallback(async (currentToken: any) => {
     if (!currentToken) {
       setLoading(false);
       return;
@@ -60,22 +69,21 @@ export function AuthProvider({ children }) {
       const RoleResponse = await validateRole(currentToken);
 
       console.log("INI RESPONSE DARI DATA VALIDASI ROLE", RoleResponse);
-      const data_bersih_role = RoleResponse.data.role_user[0][0];
+      const data_bersih_role = RoleResponse?.data.role_user[0][0];
 
       if (!data_bersih_role) {
         setToken(null);
         setRole(null);
+        setTokenFromLogin(null);
+
+        return;
       }
-      if (data_bersih_role === "ADMIN") {
-        setRole("ADMIN");
-      }
-      if (data_bersih_role === "OPERATOR") {
-        setRole("OPERATOR");
-      }
+      setRole(data_bersih_role);
     } catch (err) {
-      if (err.response?.status === 401) {
+      if (err) {
         setToken(null);
         setRole(null);
+        setTokenFromLogin(null);
       } else {
         console.log(
           "terjadi error saat pengiriman data user ke frontend dan diluar error auth",
@@ -86,7 +94,8 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  const login = useCallback((newToken) => {
+  const login = useCallback((newToken: any) => {
+    if (!newToken) return;
     setTokenFromLogin(newToken);
   }, []);
 
@@ -100,6 +109,8 @@ export function AuthProvider({ children }) {
       try {
         const result_access_token = await getTokenRefresh();
 
+        if (!result_access_token) return;
+
         if (result_access_token) {
           // INI BETUL TOKE NYA MASIH KOSONG
           // INI SUDAH MENGEMBALIKAN ACCESS TOKEN
@@ -108,6 +119,8 @@ export function AuthProvider({ children }) {
       } catch (err) {
         setToken(null);
         setRole(null);
+        setTokenFromLogin(null);
+
         console.log(
           "terjadi errror pada mekanisme dalam pengirimana token dan sistem role",
           err,
@@ -141,12 +154,13 @@ export function AuthProvider({ children }) {
     setRole(null);
     setToken(null);
     setLoading(true);
+    setTokenFromLogin(null);
   }, []);
 
   const isAuthenticated = Boolean(role && token);
 
   const value = useMemo(
-    () => ({
+    (): ValueProps => ({
       role,
       loading,
       isAuthenticated,
@@ -158,7 +172,7 @@ export function AuthProvider({ children }) {
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-}
+};
 
 export function useAuth() {
   const ctx = useContext(AuthContext);

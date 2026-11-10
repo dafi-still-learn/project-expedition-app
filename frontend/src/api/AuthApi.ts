@@ -1,7 +1,7 @@
 import baseURL from "./Axios";
 
 // MERESPON DATA DARI BACKEND UNTUK LOGIN DAN REGISTER
-export const LoginOperator = async (username, password) => {
+export const LoginOperator = async (username: string, password: string) => {
   try {
     const response = await baseURL.post(
       "/auth/login",
@@ -19,7 +19,11 @@ export const LoginOperator = async (username, password) => {
   }
 };
 
-export const RegisterOperator = async (email, username, password) => {
+export const RegisterOperator = async (
+  email: string,
+  username: string,
+  password: string,
+) => {
   try {
     const response = await baseURL.post(
       "/auth/register",
@@ -39,7 +43,7 @@ export const RegisterOperator = async (email, username, password) => {
   }
 };
 
-export const validateRole = async (token) => {
+export const validateRole = async (token: string) => {
   try {
     const response = await baseURL.post(
       "/auth/verify_role",

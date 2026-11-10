@@ -15,11 +15,6 @@ export const DiagramLine = ({
   const [loading, setLoading] = useState<boolean>(true);
 
   // Safety: pastikan data adalah array sebelum .map
-
-  // console.log(harga_pengiriman);
-  // console.log("isi dari data pelanggan ", dataPelanggan);
-  // console.log("isi dari data", dataHarga);
-  // console.log("isi data tanggal", dataTanggalKirim);
   useEffect(() => {
     const canvas = canvasRef.current;
     setLoading(false);

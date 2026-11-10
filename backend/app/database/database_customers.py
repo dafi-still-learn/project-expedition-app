@@ -1,9 +1,27 @@
 import psycopg2 as ps
 from psycopg2.extras import RealDictCursor
 from fastapi import HTTPException
+import os
+from dotenv import load_dotenv
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv(BASE_DIR / ".env")
+
+if ("DB_NAME" or "USER" or "PASSWORD" or "HOST" or "PORT") not in os.environ:
+    raise RuntimeError(
+        f"DATA KEAMANAN dari database tidk ditemukan. pastikan penaruhan dan pengambilan data dari .env benar DI {BASE_DIR / 'env'}"
+    )
+
+DB_NAME = os.environ["DB_NAME"]
+USER = os.environ["USER"]
+PASSWORD = os.environ["PASSWORD"]
+HOST = os.environ["HOST"]
+PORT = os.environ["PORT"]
 
 def membuat_tabel_pelanggan():
-    conn = ps.connect(dbname="expedition_db", user="expedition_app", password="Jakgeyye123!@#", host="localhost", port="5432")
+    conn = ps.connect(dbname=DB_NAME, user=USER, password=PASSWORD, host=HOST, port=PORT)
 
     try:
         cursor = conn.cursor()

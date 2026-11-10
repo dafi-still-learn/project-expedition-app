@@ -1,7 +1,21 @@
 import psycopg2 as ps
 import pandas as pd
 from app.auth.security import hash_password
+from sqlalchemy.orm import Session
+from sqlalchemy import select
+from app.database.models import Akun
 
+def get_user_by_username(db: Session, username: str):
+    stmt = select(Akun).where(Akun.username == username)
+    return db.scalar(stmt)
+
+def insert_user(db: Session, email, username, passoword,role):
+    obk = Akun(email=email, username=username, passoword=passoword, role=role)
+    db.add(obk)
+    db.commit()
+    db.refresh(obk)
+    
+    return obk
 def membuat_database_user():
     conn = ps.connect(dbname="expedition_db", user="expedition_app",
                       password="Jakgeyye123!@#", host="localhost", port="5432")

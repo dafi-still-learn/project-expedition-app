@@ -1,12 +1,12 @@
 from fastapi import APIRouter, HTTPException
 import locale
-from app.database.database_packet import input_database_paket, membuat_database_paket, get_data_harga_tanggal
-from app.database.database_customers import membuat_tabel_pelanggan, get_data_all_pelanggan
+from app.packet.service import input_database_paket, membuat_database_paket, get_data_harga_tanggal
+from app.customers.service import membuat_tabel_pelanggan, get_data_all_pelanggan
 from app.packet.schemas import data_pengiriman
 from app.service.waktu_pengiriman_sampai import waktu_pengiriman
-from app.database.database_resi_paket import membuat_database_resi, get_data_resi_paket
+from app.packet.resi_paket.service import membuat_database_resi, get_data_resi_paket
 
-from app.database.database_wilayah import data_koordinat_wilayah
+from app.wilayah.service import data_koordinat_wilayah
 
 from app.wilayah.mengolah_wilayah_jarak import haversine
 

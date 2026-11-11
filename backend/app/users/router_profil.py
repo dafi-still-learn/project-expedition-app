@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from app.database.database_profil import membuat_tabel_profil, input_user_profil, check_data_profil
+from app.users.profil.service import membuat_tabel_profil, input_user_profil, check_data_profil
 from app.users.schemas import data_profil, requestCheckProfil
 router_profil = APIRouter(prefix="/profil")
 

@@ -1,4 +1,3 @@
-# TEMPAT BERISI DATABSE DARI USER, REFRESH TOKEN, USER PROFIL
 from sqlalchemy import Column, BigInteger, String, Numeric, DateTime
 from sqlalchemy.orm import relationship
 from app.database.connection import Base
@@ -12,5 +11,3 @@ class Akun(Base):
     role = Column(String(50), nullable=False)
 
     profil = relationship("Profil", back_populates="akun", uselist=False)
-    
-    

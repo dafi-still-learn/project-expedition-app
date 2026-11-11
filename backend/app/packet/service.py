@@ -1,6 +1,6 @@
-from app.database.database_resi_paket import input_tabel_resi_paket
+from app.packet.resi_paket import input_tabel_resi_paket
 from app.service.generate_nomor_resi import generate_nomor_resi_paket
-from app.database.database_customers import input_tabel_customers, check_pelanggan
+from app.customers.service import input_tabel_customers, check_pelanggan
 import psycopg2 as ps
 from psycopg2.extras import RealDictCursor
 from fastapi import HTTPException

@@ -23,12 +23,8 @@ membuat_database_user()
 # setelah mempelajari http-only cookie, baru akan mengirim data refresh token ke sana
 @router_auth.post("/login")
 async def login(data: requestLogin, response: Response, username: str, db:Session = Depends(get_db)):
-    user = get_user_by_username(db, data.username)
-    if not user:
-        raise HTTPException(404, "User tidak ditemukan")
-    else:
-        return{"success": True, "user_id": user.id}
     try:
+        
         password_database_akun = check_hash_password(data.username)
     
         data_verifikasi_hashing = verify_password(password_database_akun, data.password)
@@ -39,6 +35,13 @@ async def login(data: requestLogin, response: Response, username: str, db:Sessio
             data_authentication = check_credential_user(data.username)
     
             print("hasil authentication",data_authentication)
+            # 
+            
+            # user = get_user_by_username(db, data.username)
+            # if not user:
+            #     raise HTTPException(404, "User tidak ditemukan")
+            # else:
+            #     return{"success": True, "user_id": user.id}
             if data_authentication['success'] == True:
                 data_token = {
                     "access_token": make_access_token(private_key, data_authentication["user_id"]),

@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from app.database.database_customers import membuat_tabel_pelanggan, input_tabel_customers, get_data_all_pelanggan
+from app.customers.service import membuat_tabel_pelanggan, input_tabel_customers, get_data_all_pelanggan
 from app.customers.schemas import requestCustomers
 
 router_customers = APIRouter(prefix="/customers")

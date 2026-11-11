@@ -20,37 +20,37 @@ PASSWORD = os.environ["PASSWORD"]
 HOST = os.environ["HOST"]
 PORT = os.environ["PORT"]
 
-def membuat_tabel_pelanggan():
-    conn = ps.connect(dbname=DB_NAME, user=USER, password=PASSWORD, host=HOST, port=PORT)
+# def membuat_tabel_pelanggan():
+#     conn = ps.connect(dbname=DB_NAME, user=USER, password=PASSWORD, host=HOST, port=PORT)
 
-    try:
-        cursor = conn.cursor()
+#     try:
+#         cursor = conn.cursor()
         
-        cursor.execute("""
-        CREATE TABLE IF NOT EXISTS pelanggan(
-            id BIGSERIAL PRIMARY KEY UNIQUE,
-            id_paket INTEGER UNIQUE,
-            nama_pelanggan VARCHAR(50),
-            nomor_hp VARCHAR(50),
-            nama_paket VARCHAR(255),
-            asal_pengiriman VARCHAR(50),
-            tujuan_pengiriman VARCHAR(50),
-            jumlah_paket INTEGER,
-            harga_paket VARCHAR(255)
-        )
-        """)
+#         cursor.execute("""
+#         CREATE TABLE IF NOT EXISTS pelanggan(
+#             id BIGSERIAL PRIMARY KEY UNIQUE,
+#             id_paket INTEGER UNIQUE,
+#             nama_pelanggan VARCHAR(50),
+#             nomor_hp VARCHAR(50),
+#             nama_paket VARCHAR(255),
+#             asal_pengiriman VARCHAR(50),
+#             tujuan_pengiriman VARCHAR(50),
+#             jumlah_paket INTEGER,
+#             harga_paket VARCHAR(255)
+#         )
+#         """)
 
-        print("TABEL PAKET SELESAI DIBUAT")
+#         print("TABEL PAKET SELESAI DIBUAT")
         
-        conn.commit()
+#         conn.commit()
         
-        return True
-    except ps.Error as e:
-        conn.rollback()
-        raise HTTPException(status_code=500, detail=(e))
+#         return True
+#     except ps.Error as e:
+#         conn.rollback()
+#         raise HTTPException(status_code=500, detail=(e))
         
-    finally:
-        conn.close()
+#     finally:
+#         conn.close()
         
 membuat_tabel_pelanggan()
         

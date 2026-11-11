@@ -2,11 +2,17 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
+from app.database.base import *
+from app.database.connection import Base, engine
+
 from app.auth.router_auth import router_auth
 from app.packet.router_packet import router_packet
 from app.users.router_profil import router_profil
 from app.customers.router_customers import router_customers
 from app.wilayah.router import router_wilayah
+
+Base.metadata.create_all(bind=engine)
+
 @asynccontextmanager
 async def lifespan(app:lifespan):
     print("server sedang dimulai")

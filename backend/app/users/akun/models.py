@@ -10,4 +10,5 @@ class Akun(Base):
     password = Column(String(255), nullable=False)
     role = Column(String(50), nullable=False)
 
-    profil = relationship("Profil", back_populates="akun", uselist=False)
+    profil = relationship("profil", back_populates="Profil", uselist=False)
+    

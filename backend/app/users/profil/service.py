@@ -2,34 +2,34 @@
 import psycopg2 as ps
 from fastapi import HTTPException
 
-def membuat_tabel_profil():
-    conn = ps.connect(dbname="expedition_db", user="expedition_app",password="Jakgeyye123!@#", host="localhost", port="5432")
+# def membuat_tabel_profil():
+#     conn = ps.connect(dbname="expedition_db", user="expedition_app",password="Jakgeyye123!@#", host="localhost", port="5432")
 
-    try:
-        cursor = conn.cursor()
+#     try:
+#         cursor = conn.cursor()
 
-        cursor.execute("""
-        CREATE TABLE IF NOT EXISTS profil(
-            id BIGSERIAL PRIMARY KEY,
-            user_id INTEGER UNIQUE REFERENCES akun(id),
-            email VARCHAR(50) UNIQUE REFERENCES akun(email),
-            nama_user VARCHAR(50) UNIQUE,
-            nama_panggilan VARCHAR(50) UNIQUE,
-            tanggal_lahir_user DATE UNIQUE,
-            nomor_hp_user VARCHAR(50) UNIQUE,
-            alamat_sekarang VARCHAR(255) UNIQUE,
-            penempatan VARCHAR(50) UNIQUE,
-            jabatan_sekarang VARCHAR(50) UNIQUE
-            )
-        """)
-        print("database profil selesi di buat")
+#         cursor.execute("""
+#         CREATE TABLE IF NOT EXISTS profil(
+#             id BIGSERIAL PRIMARY KEY,
+#             user_id INTEGER UNIQUE REFERENCES akun(id),
+#             email VARCHAR(50) UNIQUE REFERENCES akun(email),
+#             nama_user VARCHAR(50) UNIQUE,
+#             nama_panggilan VARCHAR(50) UNIQUE,
+#             tanggal_lahir_user DATE UNIQUE,
+#             nomor_hp_user VARCHAR(50) UNIQUE,
+#             alamat_sekarang VARCHAR(255) UNIQUE,
+#             penempatan VARCHAR(50) UNIQUE,
+#             jabatan_sekarang VARCHAR(50) UNIQUE
+#             )
+#         """)
+#         print("database profil selesi di buat")
 
-        conn.commit()
-    except ps.Error as e:
-        conn.rollback()
-        print(e)
-    finally:
-        conn.close()
+#         conn.commit()
+#     except ps.Error as e:
+#         conn.rollback()
+#         print(e)
+#     finally:
+#         conn.close()
 
 # membuat_tabel_profil()
 

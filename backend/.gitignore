@@ -1,6 +1,11 @@
 # key jwt
-app/auth/key/*.pem
+app/auth/keys/*.pem
 .venv/
-__pycache__/
+venv/
+**/__pycache__/
 *.pyc
+*.pyo
 .env
+*.env
+.env.*
+.DS_Store

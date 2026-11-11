@@ -2,34 +2,34 @@ import psycopg2 as ps
 from psycopg2.extras import RealDictCursor
 import csv
 
-def membuat_tabel_wilayah():
-    conn = ps.connect(dbname="expedition_db", user="expedition_app", password="Jakgeyye123!@#", host="localhost", port="5432")
+# def membuat_tabel_wilayah():
+#     conn = ps.connect(dbname="expedition_db", user="expedition_app", password="Jakgeyye123!@#", host="localhost", port="5432")
     
-    try:
-        cursor = conn.cursor()
+#     try:
+#         cursor = conn.cursor()
         
-        cursor.execute("""
-        CREATE TABLE IF NOT EXISTS tmp_wilayah(
-            id BIGSERIAL PRIMARY KEY,
-            kode_wilayah VARCHAR(5) UNIQUE,
-            nama_wilayah VARCHAR(255),
-            type_wilayah VARCHAR(10),
-            lat_wilayah NUMERIC(10, 7),
-            long_wilayah NUMERIC(10, 7),
-            status_wilayah VARCHAR(10),
-            geom GEOMETRY(POINT, 4326)
-        )
-        """)
+#         cursor.execute("""
+#         CREATE TABLE IF NOT EXISTS tmp_wilayah(
+#             id BIGSERIAL PRIMARY KEY,
+#             kode_wilayah VARCHAR(5) UNIQUE,
+#             nama_wilayah VARCHAR(255),
+#             type_wilayah VARCHAR(10),
+#             lat_wilayah NUMERIC(10, 7),
+#             long_wilayah NUMERIC(10, 7),
+#             status_wilayah VARCHAR(10),
+#             geom GEOMETRY(POINT, 4326)
+#         )
+#         """)
 
-        print("table wilayah berhasil dibuat")
-        conn.commit()
+#         print("table wilayah berhasil dibuat")
+#         conn.commit()
     
-    except ps.Error as e:
-        print("terjadi error pada pembuatan table wilayah ", e)
-        conn.rollback()
+#     except ps.Error as e:
+#         print("terjadi error pada pembuatan table wilayah ", e)
+#         conn.rollback()
     
-    finally:
-        conn.close
+#     finally:
+#         conn.close
         
 def import_csv_wilayah(pasth_csv):
     conn = ps.connect(dbname="expedition_db", user="expedition_app", password="Jakgeyye123!@#", host="localhost", port="5432")

@@ -5,7 +5,7 @@ from app.database.connection import Base
 # MEMBUAT FORMAT KEPADA TABLE PELANGGAN UNTUK KEPERLUAN DATBASE
 
 class Pelanggan(Base):
-    "__tablename__" = "pelanggan"
+    __tablename__ = "pelanggan"
     
     id = Column(BigInteger, primary_key=True, index=True)
     id_paket = Column(BigInteger, ForeignKey("pelanggan.id"))

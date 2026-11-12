@@ -1,188 +1,53 @@
 import psycopg2 as ps
 import pandas as pd
 from app.auth.security import hash_password
-from sqlalchemy.orm import Session
+
 from sqlalchemy import select
-from app.database.models import Akun
-
-def get_user_by_username(db: Session, username: str):
-    stmt = select(Akun).where(Akun.username == username)
-    return db.scalar(stmt)
-
-def insert_user(db: Session, email, username, passoword,role):
-    obk = Akun(email=email, username=username, passoword=passoword, role=role)
-    db.add(obk)
-    db.commit()
-    db.refresh(obk)
-    
-    return obk
-def membuat_database_user():
-    conn = ps.connect(dbname="expedition_db", user="expedition_app",
-                      password="Jakgeyye123!@#", host="localhost", port="5432")
-
-    try:
-        cursor = conn.cursor()
-
-        cursor.execute("""
-        CREATE TABLE IF NOT EXISTS akun(
-        id BIGSERIAL PRIMARY KEY UNIQUE,
-        email VARCHAR(255) UNIQUE,
-        username VARCHAR(255) UNIQUE,
-        password VARCHAR(255) UNIQUE,
-        role VARCHAR(255)
-        )
-        """)
-
-        print("database berhasil di buat")
-
-        conn.commit()
-    except ps.Error as e:
-        conn.rollback()
-        print(e)
-
-    finally:
-        conn.close()
-
-membuat_database_user()
+from sqlalchemy.orm import Session
+from app.users.akun.models import Akun
 
 # DITAMBAHKAN ATAU DIGUNKAN PADA FORM REGISTER KHUSUS NYA PADA BUTTON NYA, AKAN MEMBERI PENGINGAT JIKA KOSONG
-def input_tabel_user(email, username, password, role):
-    conn = ps.connect(dbname="expedition_db", user="expedition_app",
-                          password="Jakgeyye123!@#", host="localhost", port="5432")
-
-    try:
-        cursor = conn.cursor()
-
-        if email == "" or username == "" or password == "":
-            print("ISI REGISTRASI DENGAN BENAR")
-            return False
-        else:
-            cursor.execute("""
-            INSERT INTO akun(email, username, password, role)
-            VALUES(%s, %s, %s, %s)               
-            """, (email, username, password, role))
-
-            print("data bershasil di tambahkan")
-
-            conn.commit()
-
-            return True
-    except ps.Error as e:
-        print(e)
-        conn.rollback()
-
-    finally:
-        conn.close()
-
+def input_tabel_user(db: Session, email, username, password, role):
+    akun = Akun(email=email, username=username, password=password, role=role)
+    
+    db.add(akun)
+    db.refresh(akun)
+    db.commit()
+   
+    return True
 # DITAMBAHKAN PADA FORM LOGIN, MEMVALIDASI DATA JIKA SAAT INGIN DIMASUKKAN PADA LOGIN DAN PEMATIKANYA PADA BUTTON FORM LOGIN
-def validate_akun_register(email, username):
-    conn = ps.connect(dbname="expedition_db", user="expedition_app",
-                          password="Jakgeyye123!@#", host="localhost", port="5432")
+def validate_akun_register(db: Session, email, username):
+    rows = db.scalars(select(Akun).where(Akun.email == email, Akun.username == username)).one()
+    
+    if rows is None:
+        return False
 
-    try:
-        cursor = conn.cursor()
-
-        cursor.execute("""
-        SELECT email
-        FROM akun
-        WHERE email = %s OR username = %s    
-        """, (email, username))
-
-        user = cursor.fetchone()
-
-        if user is not None:
-            return False
-
-        return True
-    except ps.Error as e:
-        print(e)
-        conn.rollback()
-
-    finally:
-        conn.close()
 
 # MELAKUKAN VALIDASI PADA FORM LOGIN, AKAN MERESPON KETIKA DATA YANG DIMASUKKAN ITU TIDAK ADA
 
 
-def validate_akun_login(username, password):
-    conn = ps.connect(dbname="expedition_db", user="expedition_app",
-                          password="Jakgeyye123!@#", host="localhost", port="5432")
-    try:
-        cursor = conn.cursor()
+def validate_akun_login(db: Session, username, password):
+    rows = db.scalars(select(Akun).where(Akun.username == username)).one()
+    
+    if rows is None:
+        return False
+    if rows[2] != password:
+        return False
+    
+    return {
+        'user_id': rows[0],
+        'success': True
+    }
 
-        cursor.execute("""
-        SELECT id, username, password
-        FROM akun
-        WHERE username = %s
-        """, (username,))
+def lupa_password_user(db: Session, email):
+    email_akun = db.get(Akun, email)
+    if email_akun is None:
+        print("404 not found")
+        return False
+    
+    rows = db.scalars(select(Akun).where(Akun.email == email_akun)).one()
+    
+    return rows
 
-        user = cursor.fetchone()
-
-        print("data username validasi", user)
-        if user is None:
-            print("data user tidak ditemukan")
-            return False
-
-        if user[2] != password:
-            print("data user tidak ditemukan")
-            return False
-
-        conn.commit()
-        return {
-            'user_id': user[0],
-            'success': True
-        }
-    except ps.Error as e:
-        print(e)
-        conn.rollback()
-
-    finally:
-        conn.close()
-
-
-def lupa_password_user(email):
-    conn = ps.connect(dbname="expedition_db", user="expedition_app",
-                          password="Jakgeyye123!@#", host="localhost", port="5432")
-    try:
-        cursor = conn.cursor()
-
-        cursor.execute("""
-        SELECT email
-        FROM akun
-        WHERE email = %s
-        """, (email,))
-
-        data = cursor.fetchone()
-
-        print("DATA EMAIL DARI LUPA PASSWORD", data)
-        conn.commit()
-
-    except ps.Error as e:
-        conn.rollback()
-        print(e)
-
-    finally:
-        conn.close()
-
-
-def tampilkan_akun():
-    conn = ps.connect(dbname="expedition_db", user="expedition_app",
-                          password="Jakgeyye123!@#", host="localhost", port="5432")
-
-    try:
-        cursor = conn.cursor()
-
-        cursor.execute("""
-        SELECT * FROM akun
-        """)
-
-        data = cursor.fetchall()
-
-        print("data dari database akun", data)
-
-    except Exception as e:
-        print(e)
-
- 
     
         

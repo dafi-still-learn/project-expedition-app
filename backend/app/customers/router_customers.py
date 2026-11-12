@@ -1,15 +1,14 @@
 from fastapi import APIRouter, HTTPException
-from app.customers.service import membuat_tabel_pelanggan, input_tabel_customers, get_data_all_pelanggan
+from app.customers.service import get_data_all_pelanggan, get_insert_pelanggan
 from app.customers.schemas import requestCustomers
 
 router_customers = APIRouter(prefix="/customers")
 
-membuat_tabel_pelanggan()
 
 router_customers.post("/input_customers")
 def input_customers(data: requestCustomers):
     try:
-        result_input_data_customers = input_tabel_customers(data.id_paket, data.nama_pelanggan, data.nama_paket, data.asal_pengiriman, data.tujuan_pengiriman,data.jumlah_paket, data.harga_paket)
+        result_input_data_customers = get_insert_pelanggan(data.id_paket, data.nama_pelanggan, data.nama_paket, data.asal_pengiriman, data.tujuan_pengiriman,data.jumlah_paket, data.harga_paket)
 
         return result_input_data_customers
     

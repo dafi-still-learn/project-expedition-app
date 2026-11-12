@@ -2,7 +2,7 @@
 # MELAKUKAN ENDPOINT DARI FRONTEND DAN MENGEMBALIKAN NILAI BERDASARKAN DATA YANG DITERIMA DAN DIPROSES
 from fastapi import APIRouter, Response, Request, HTTPException, Depends
 from app.auth.schemas import requestLogin, requestRegister, roleUser, requestVerifyRole
-from app.database.database_user import membuat_database_user, input_tabel_user, tampilkan_akun, validate_akun_register
+from app.users.akun.service import input_tabel_user, validate_akun_register
 from app.auth.security import make_access_token, make_refresh_token, hash_password, verify_password
 from app.auth.keys import private_key, public_key
 from app.auth.service import check_refresh_token, check_role_user_token, make_access_token_from_from_refresh
@@ -10,19 +10,15 @@ from app.auth.depedencies import check_credential_user, check_hash_password
 from argon2 import PasswordHasher
 
 from app.database.connection import get_db
-from app.database.database_user import get_user_by_username
 
 ph = PasswordHasher()
 
 router_auth = APIRouter(prefix="/auth")
 
-membuat_database_user()
-
-
 
 # setelah mempelajari http-only cookie, baru akan mengirim data refresh token ke sana
 @router_auth.post("/login")
-async def login(data: requestLogin, response: Response, username: str, db:Session = Depends(get_db)):
+async def login(data: requestLogin, response: Response):
     try:
         
         password_database_akun = check_hash_password(data.username)
@@ -35,13 +31,7 @@ async def login(data: requestLogin, response: Response, username: str, db:Sessio
             data_authentication = check_credential_user(data.username)
     
             print("hasil authentication",data_authentication)
-            # 
-            
-            # user = get_user_by_username(db, data.username)
-            # if not user:
-            #     raise HTTPException(404, "User tidak ditemukan")
-            # else:
-            #     return{"success": True, "user_id": user.id}
+        
             if data_authentication['success'] == True:
                 data_token = {
                     "access_token": make_access_token(private_key, data_authentication["user_id"]),

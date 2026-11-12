@@ -1,10 +1,9 @@
 from fastapi import APIRouter, HTTPException
 import locale
-from app.packet.service import input_database_paket, membuat_database_paket, get_data_harga_tanggal
-from app.customers.service import membuat_tabel_pelanggan, get_data_all_pelanggan
+from app.packet.service import input_database_paket, get_data_harga_tanggal
+from app.customers.service import get_data_all_pelanggan
 from app.packet.schemas import data_pengiriman
 from app.service.waktu_pengiriman_sampai import waktu_pengiriman
-from app.packet.resi_paket.service import membuat_database_resi, get_data_resi_paket
 
 from app.wilayah.service import data_koordinat_wilayah
 
@@ -13,11 +12,9 @@ from app.wilayah.mengolah_wilayah_jarak import haversine
 from app.service.generate_nomor_resi import generate_nomor_resi_paket
 
 from app.service.logical_transaksi import logika_harga
-router_packet = APIRouter(prefix="/packet")
 
-membuat_database_paket()
-membuat_tabel_pelanggan()
-membuat_database_resi()
+from app.packet.resi_paket.service import get_data_resi_paket
+router_packet = APIRouter(prefix="/packet")
 
 @router_packet.post("/input_packet")
 def input_packet_user(data: data_pengiriman):

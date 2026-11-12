@@ -1,156 +1,61 @@
-from app.packet.resi_paket import input_tabel_resi_paket
+
+from sqlalchemy import insert, select
+from sqlalchemy.orm import Session
+from app.packet.models import Paket, ResiPaket
 from app.service.generate_nomor_resi import generate_nomor_resi_paket
-from app.customers.service import input_tabel_customers, check_pelanggan
-import psycopg2 as ps
-from psycopg2.extras import RealDictCursor
-from fastapi import HTTPException
+from app.customers.models import Pelanggan
 
+def input_database_paket(db: Session, nama_paket, nama_pengirim, jenis_paket, jumlah_paket, asal_paket, tujuan_paket, berat_paket, jalur_pengiriman, jarak_paket, nomor_hp_pengirim, nomor_hp_penerima, tanggal_pengiriman, tanggal_sampai, harga_pengiriman):
+    
+    smt = (insert(Paket).values(nama_paket=nama_paket, nama_pengirim=nama_pengirim, jenis_paket=jenis_paket, jumlah_paket=jumlah_paket,asal_paket=asal_paket, tujuan_paket=tujuan_paket, berat_paket=berat_paket, jalur_pengiriman=jalur_pengiriman,jarak_paket=jarak_paket, nomor_hp_pengirim=nomor_hp_pengirim, nomor_hp_penerima=nomor_hp_penerima, tanggal_pengiriman=tanggal_pengiriman, tanggal_sampai=tanggal_sampai, harga_pengiriman=harga_pengiriman).returning(id, nama_paket, nama_pengirim, asal_paket, tujuan_paket, jumlah_paket, nomor_hp_pengirim, harga_pengiriman))
+    
+    paket = db.scalars(smt).one()
+    
+    result_generate_resi = generate_nomor_resi_paket(paket["id"])
+    
+    resiPaket = ResiPaket(
+        id_paket = paket["id"],
+        nama_paket = paket["nama_paket"],
+        nomor_resi_paket = result_generate_resi
+    )
+    
+    
+    db.add(resiPaket)
+    db.refresh(resiPaket)
+    
+    rows_check_pelanggan = insert(select(Pelanggan).where(paket.nama_pengirim, paket.nomor_hp_pengirim))
+    
+    if rows_check_pelanggan is None:
+        pelanggan_insert = (insert(Pelanggan).values(id_paket = paket.id, nama_pelanggan = paket.nama_pengirim, nomor_hp = paket.nomor_hp_pengirim, nama_paket = paket.nama_paket, asal_pengiriman = paket.asal_pengiriman, tujuan_pengiriman = paket.tujuan_pengirimn, jumlah_paket = paket.jumlah_paket, harga_pengiriman = harga_pengiriman).returning(nama_pelanggan, nomor_hp))
+        
+        pelanggan = db.scalars(pelanggan_insert).one()
+    else:
+        pelanggan_sudah_ada = Pelanggan(id_paket = paket.id, nama_pelanggan = pelanggan.nama_pelanggan, nomor_hp = pelanggan.nomor_hp,  nama_paket = paket.nama_paket, asal_pengiriman = paket.asal_paket, tujuan_pengiriman = paket.tujuan_paket, jumlah_paket = paket.jumlah_paket, harga_paket = paket.harga_pengiriman)
+        
+        db.add(pelanggan_sudah_ada)
+        db.refresh(pelanggan_sudah_ada)
+         
+    
+    db.commit()
+    
+    return{
+        "id_paket": paket["id"],
+        "nama_pengirim": paket["nama_pengirim"],
+        "nama_paket": paket["nama_paket"],
+        "success": True
+    }
 
-def membuat_database_paket():
-    conn = ps.connect(dbname="expedition_db", user="expedition_app", password="Jakgeyye123!@#", host="localhost", port="5432")
+def cari_id_paket(db: Session, nama_pengirim)-> str:
     try:
-        cursor = conn.cursor()
+        rows = db.scalars(select(Paket).where(Paket.nama_pengirim == nama_pengirim)).one()
+        return rows
+    except Exception as e:
+        print("terjadi eror ambil id paket ", e)
 
-        cursor.execute("""
-        CREATE TABLE IF NOT EXISTS paket(
-            id BIGSERIAL PRIMARY KEY,
-            nama_paket VARCHAR(255),
-            nama_pengirim VARCHAR(255),
-            jenis_paket VARCHAR(255),
-            jumlah_paket NUMERIC(10, 2),
-            asal_paket VARCHAR(255),
-            tujuan_paket VARCHAR(255),
-            berat_paket NUMERIC(10, 2),
-            jalur_pengiriman VARCHAR(255),
-            jarak_paket NUMERIC(10, 2),
-            nomor_hp_pengirim VARCHAR(50),
-            nomor_hp_penerima VARCHAR(50),
-            tanggal_pengiriman VARCHAR(50),
-            tanggal_sampai VARCHAR(50),
-            harga_pengiriman VARCHAR(100)
-            )
-        """)
-        
-        print("DATABASE PAKET BERHASIL DIBUAT")
-        conn.commit()
-
-    except ps.Error as e:
-        conn.rollback()
-        print(e)
-
-    finally:
-        conn.close()
-
-def input_database_paket(nama_paket, nama_pengirim, jenis_paket, jumlah_paket, asal_paket, tujuan_paket, berat_paket, jalur_pengiriman, jarak_paket, nomor_hp_pengirim, nomor_hp_penerima, tanggal_pengiriman, tanggal_sampai, harga_pengiriman):
-    conn = ps.connect(dbname="expedition_db", user="expedition_app", password="Jakgeyye123!@#", host="localhost", port="5432")
+def get_data_harga_tanggal(db :Session)-> str:
     try:
-        cursor = conn.cursor(cursor_factory=RealDictCursor)
-
-        cursor.execute("""
-        INSERT INTO paket(nama_paket, nama_pengirim, jenis_paket, jumlah_paket, asal_paket, tujuan_paket, berat_paket, jalur_pengiriman, jarak_paket, nomor_hp_pengirim, nomor_hp_penerima, tanggal_pengiriman, tanggal_sampai, harga_pengiriman)
-        VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-        RETURNING id, nama_paket, nama_pengirim, asal_paket, tujuan_paket, jumlah_paket, nomor_hp_pengirim, harga_pengiriman
-        """,
-        (nama_paket, nama_pengirim, jenis_paket, jumlah_paket, asal_paket, tujuan_paket, berat_paket, jalur_pengiriman, jarak_paket, nomor_hp_pengirim, nomor_hp_penerima, tanggal_pengiriman, tanggal_sampai, harga_pengiriman))
-
-        print("data tabel paket berhasil diisi")
-        
-        data_id = cursor.fetchone()
-                
-        print("isi data dari data_id di paket ", data_id)
-        print("isi data dari data_id paket bagian nama_pengirim ", data_id["nama_pengirim"])
-        print("isi data dari data_id paket bagian asal ", data_id["asal_paket"])
-        print("isi data dari data_id paket bagian tujuan ", data_id["tujuan_paket"])
-        print("isi data dari data_id paket bagian jumlah ", data_id["jumlah_paket"])
-        print("isi data dari data_id paket bagian harga ", data_id["harga_pengiriman"])
-        # MENGINPUT HASIL DARI NOMOR RESI DAN MENGENERATE HASIL RESI DARI ID PAKET
-        hasil_generate_nomor_resi = generate_nomor_resi_paket(data_id["id"])
-                
-        print("hasil generate resi paket ", hasil_generate_nomor_resi)
-        
-        print("ini nomor resi paket ", hasil_generate_nomor_resi["hasil_generate_resi_paket"])
-        
-        input_tabel_resi_paket(data_id["id"], data_id["nama_paket"], hasil_generate_nomor_resi["hasil_generate_resi_paket"],hasil_generate_nomor_resi["raw_seed"])
-        
-        # MELAKUKAN PENGECEKKAN PADA NAMA PELANGGAN DAN NOMOR HP PELANGGAN
-        hasil_pengecekkan_pelanggan = check_pelanggan(data_id["nama_pengirim"], data_id["nomor_hp_pengirim"])
-        
-        print("hasil pngencekan id pelanggan ", hasil_pengecekkan_pelanggan)
-        # MENGINPUT HASIL DARI PELANGGAN, JIKA SUDAH ADA TETAP DITAMBAHKAN TAPI DENGAN NAMA YANG SAMA DAN NOMOR HP YANG SAMA YANG DIAMBIL DARI CHECK AKUN PELANGGAN BAGIAN DATABASE PAKET4
-        
-        if hasil_pengecekkan_pelanggan["success"] == True:
-            input_tabel_customers(data_id["id"], data_id["nama_pengirim"], data_id["nomor_hp_pengirim"], data_id["nama_paket"], data_id["asal_paket"], data_id["tujuan_paket"], data_id["jumlah_paket"], data_id["harga_pengiriman"])
-            
-        elif hasil_pengecekkan_pelanggan["success"] == False:
-            print("pelanggan sudah punya akun")
-            input_tabel_customers(data_id["id"], hasil_pengecekkan_pelanggan["nama_pelanggan_punya_akun"], hasil_pengecekkan_pelanggan["nomor_hp_sudah_punya"], data_id["nama_paket"], data_id["asal_paket"], data_id["tujuan_paket"], data_id["jumlah_paket"], data_id["harga_pengiriman"])
-
-        conn.commit()
-
-        return {
-            "id_paket": data_id["id"],
-            "nama_pengirim": data_id["nama_pengirim"],
-            "nama_paket": data_id["nama_paket"],
-            "success": True,
-            
-        }
-    except ps.Error as e:
-        conn.rollback()
-        print(e)
-        
-    finally:
-        conn.close()
-
-def cari_id_paket(nama_pengirim):
-      conn = ps.connect(dbname="expedition_db", user="expedition_app", password="Jakgeyye123!@#", host="localhost", port="5432")
-      
-      try:
-          cursor = conn.cursor()
-          
-          cursor.execute("""
-            SELECT id
-            FROM paket
-            WHERE nama_pengirim = %s         
-            """, (nama_pengirim, ))
-          
-          data_pengirim = cursor.fetchone()
-          
-          return data_pengirim
-        
-      except ps.Error as e:
-          conn.rollback()
-          print(e)        
-      finally:
-          conn.close()
-
-# MENGEMBALIKAN DATA PAKET 
-# MENGEMBALIKAN DATA HARGA DAN TANGGAL BERANGKAT
-
-def get_data_harga_tanggal():
-    conn = ps.connect(dbname="expedition_db", user="expedition_app", password="Jakgeyye123!@#", host="localhost", port="5432")
-
-    try:
-        cursor = conn.cursor(cursor_factory=RealDictCursor)
-        
-        cursor.execute("""
-        SELECT tanggal_pengiriman, harga_pengiriman
-        FROM paket
-        """)
-        
-        data = cursor.fetchall()
-        
-        
-        print("isi data")
-        if not data :
-            print('terjadi error pada saat pengamnilan data')
-        else:
-            print("isi data dari tanggl dan harga", data)
-            return data
-        
-        
-    except ps.Error as e:
-        print(e)
-        
-    finally:
-        conn.close()
-        
+        rows = db.scalars(Paket(select(Paket).where(Paket.tanggal_pengiriman, Paket.harga_pengiriman))).all()
+        return rows
+    except Exception as e:
+        print("eror ambil paket ", e)
+    

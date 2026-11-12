@@ -1,9 +1,7 @@
 from fastapi import APIRouter, HTTPException
-from app.users.profil.service import membuat_tabel_profil, input_user_profil, check_data_profil
+from app.users.profil.service import input_user_profil, check_data_profil
 from app.users.schemas import data_profil, requestCheckProfil
 router_profil = APIRouter(prefix="/profil")
-
-membuat_tabel_profil()
 
 @router_profil.post("/input_profil")
 def input_profil_user(data: data_profil):
@@ -24,4 +22,4 @@ def result_check_data_profil(data: requestCheckProfil):
         return result_check_profil
     
     except Exception as e:
-        raise HTTPException(status_code=500, detail=(e))        
+        raise HTTPException(status_code=404, detail=(e))        

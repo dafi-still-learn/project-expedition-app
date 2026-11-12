@@ -1,92 +1,47 @@
-import psycopg2 as ps
-from psycopg2.extras import RealDictCursor
-import csv
-
-# def membuat_tabel_wilayah():
+# import psycopg2 as ps
+# from psycopg2.extras import RealDictCursor
+# import csv
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+from app.wilayah.models import Wilayah
+        
+        
+def data_koordinat_wilayah(db: Session, data):
+    rows = db.scalars(select(Wilayah).where(Wilayah.kode_wilayah == data)).one()
+    
+    return rows
+  
+# def import_csv_wilayah(pasth_csv):
 #     conn = ps.connect(dbname="expedition_db", user="expedition_app", password="Jakgeyye123!@#", host="localhost", port="5432")
     
 #     try:
 #         cursor = conn.cursor()
         
-#         cursor.execute("""
-#         CREATE TABLE IF NOT EXISTS tmp_wilayah(
-#             id BIGSERIAL PRIMARY KEY,
-#             kode_wilayah VARCHAR(5) UNIQUE,
-#             nama_wilayah VARCHAR(255),
-#             type_wilayah VARCHAR(10),
-#             lat_wilayah NUMERIC(10, 7),
-#             long_wilayah NUMERIC(10, 7),
-#             status_wilayah VARCHAR(10),
-#             geom GEOMETRY(POINT, 4326)
-#         )
-#         """)
-
-#         print("table wilayah berhasil dibuat")
-#         conn.commit()
-    
-#     except ps.Error as e:
-#         print("terjadi error pada pembuatan table wilayah ", e)
-#         conn.rollback()
-    
-#     finally:
-#         conn.close
-        
-def import_csv_wilayah(pasth_csv):
-    conn = ps.connect(dbname="expedition_db", user="expedition_app", password="Jakgeyye123!@#", host="localhost", port="5432")
-    
-    try:
-        cursor = conn.cursor()
-        
-        with open(pasth_csv, newline='', encoding='utf-8') as f:
-            reader = csv.DictReader(f)
+#         with open(pasth_csv, newline='', encoding='utf-8') as f:
+#             reader = csv.DictReader(f)
             
-            sql = """
-            INSERT INTO tmp_wilayah(kode_wilayah, nama_wilayah, type_wilayah, lat_wilayah, long_wilayah, status_wilayah, geom)
-            VALUES(%s, %s, %s, %s, %s, %s, ST_SetSRID(ST_MakePoint(%s, %s), 4326))
-            ON CONFLICT (kode_wilayah) DO NOTHING;
-            """
+#             sql = """
+#             INSERT INTO tmp_wilayah(kode_wilayah, nama_wilayah, type_wilayah, lat_wilayah, long_wilayah, status_wilayah, geom)
+#             VALUES(%s, %s, %s, %s, %s, %s, ST_SetSRID(ST_MakePoint(%s, %s), 4326))
+#             ON CONFLICT (kode_wilayah) DO NOTHING;
+#             """
             
-            for row in reader:
-                kode = row["serial"]
-                nama = row["name"]
-                tipe = row["type"]
-                lat= row["latitude"]
-                long = row["longitude"]
-                status = row["status"]
+#             for row in reader:
+#                 kode = row["serial"]
+#                 nama = row["name"]
+#                 tipe = row["type"]
+#                 lat= row["latitude"]
+#                 long = row["longitude"]
+#                 status = row["status"]
                 
-                cursor.execute(sql, (kode, nama, tipe, lat, long, status, long, lat))
+#                 cursor.execute(sql, (kode, nama, tipe, lat, long, status, long, lat))
         
-        conn.commit()
-        print("csv berhasil di migrasi ke postresql")
+#         conn.commit()
+#         print("csv berhasil di migrasi ke postresql")
         
-    except ps.Error as e:
-        print("terjadi error pada saat migrasi ke database ", e)
-        conn.rollback()
+#     except ps.Error as e:
+#         print("terjadi error pada saat migrasi ke database ", e)
+#         conn.rollback()
         
-    finally:
-        conn.close()
-        
-def data_koordinat_wilayah(data):
-    conn = ps.connect(dbname="expedition_db", user="expedition_app", password="Jakgeyye123!@#", host="localhost", port="5432")
-    try:
-        cursor = conn.cursor(cursor_factory=RealDictCursor)
-        
-        cursor.execute("""
-        SELECT lat_wilayah, long_wilayah
-        FROM tmp_wilayah
-        WHERE kode_wilayah = %s
-        """, (data, ))
-        
-        data = cursor.fetchone()
-        
-        print("INI DATA DARI KOORDINAT WILAYAH BERDASARKAN KODE_WILAYAH ", data)
-        
-        conn.commit()
-        return data 
-    
-    except ps.Error as e:
-        print("terjadi error pada pengambilan data koordinat wilayah ", e)
-        conn.rollback()
-        
-    finally:
-        conn.close()         
+#     finally:
+#         conn.close()

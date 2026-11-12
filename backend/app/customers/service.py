@@ -18,7 +18,9 @@ def check_pelanggan(db: Session, nama_pelanggan, nomor_hp):
 
 
 def get_data_all_pelanggan(db: Session):
-    rows = db.scalars(select(Pelanggan)).all()
+    try:
+        return db.execute(select(Pelanggan)).mappings().all()
     
-    return rows
+    except Exception as e:
+        print(e)
     

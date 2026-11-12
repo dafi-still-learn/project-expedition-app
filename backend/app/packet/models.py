@@ -20,14 +20,15 @@ class Paket(Base):
     tanggal_sampai = Column(DateTime)
     harga_pengiriman = Column(String)
     
-    resi_paket = relationship("resi_paket" , back_populates="ResiPaket")
+    resi_paket = relationship("ResiPaket" , back_populates="paket")
+    pelanggan = relationship("Pelanggan", back_populates="paket")
 
 class ResiPaket(Base):
     __tablename__ = "resi_paket"
     
     id = Column(BigInteger, primary_key=True, index=True)
     id_paket = Column(BigInteger, ForeignKey("paket.id"))
-    nama_paket =Column(String, ForeignKey("paket.nama_paket"))
+    nama_paket =Column(String)
     nomor_resi_paket = Column(String, nullable=False)
     
-    paket = relationship("paket", back_populates="Paket")
+    paket = relationship("Paket", back_populates="resi_paket")

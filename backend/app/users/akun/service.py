@@ -17,7 +17,7 @@ def input_tabel_user(db: Session, email, username, password, role):
     return True
 # DITAMBAHKAN PADA FORM LOGIN, MEMVALIDASI DATA JIKA SAAT INGIN DIMASUKKAN PADA LOGIN DAN PEMATIKANYA PADA BUTTON FORM LOGIN
 def validate_akun_register(db: Session, email, username):
-    rows = db.scalars(select(Akun).where(Akun.email == email, Akun.username == username)).one()
+    rows = db.execute(select(Akun.email == email, Akun.username == username)).mappings().one()
     
     if rows is None:
         return False
@@ -27,7 +27,7 @@ def validate_akun_register(db: Session, email, username):
 
 
 def validate_akun_login(db: Session, username, password):
-    rows = db.scalars(select(Akun).where(Akun.username == username)).one()
+    rows = db.execute(select(Akun.username == username)).mappings().one()
     
     if rows is None:
         return False
@@ -45,7 +45,7 @@ def lupa_password_user(db: Session, email):
         print("404 not found")
         return False
     
-    rows = db.scalars(select(Akun).where(Akun.email == email_akun)).one()
+    rows = db.execute(select(Akun.email == email_akun)).mappings().one()
     
     return rows
 

@@ -7,8 +7,8 @@ class Profil(Base):
     
     id = Column(BigInteger, primary_key=True, index=True)
     user_id = Column(BigInteger, ForeignKey("akun.id")) 
-    email = Column(String, ForeignKey("akun.email"))
-    nama_user = Column(String, unique=True)
+    email = Column(String)
+    nama_user = Column(String)
     nama_panggilan = Column(String)
     tanggal_hari_user = Column(DateTime)
     nomor_hp_user = Column(String)
@@ -17,4 +17,4 @@ class Profil(Base):
     jabatan_sekarang = Column(String)
     
     
-    akun = relationship("akun", back_populates="Akun") 
+    akun = relationship("Akun", back_populates="profil") 

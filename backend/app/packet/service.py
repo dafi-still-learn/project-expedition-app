@@ -47,14 +47,17 @@ def input_database_paket(db: Session, nama_paket, nama_pengirim, jenis_paket, ju
 
 def cari_id_paket(db: Session, nama_pengirim)-> str:
     try:
-        rows = db.scalars(select(Paket).where(Paket.nama_pengirim == nama_pengirim)).one()
+        rows = db.scalars(select(Paket).where(Paket.nama_pengirim is nama_pengirim)).one()
         return rows
     except Exception as e:
         print("terjadi eror ambil id paket ", e)
 
 def get_data_harga_tanggal(db :Session)-> str:
     try:
-        rows = db.scalars(Paket(select(Paket).where(Paket.tanggal_pengiriman, Paket.harga_pengiriman))).all()
+        rows = db.execute(select(Paket.tanggal_pengiriman, Paket.harga_pengiriman)).mappings().all()
+        
+        print("data tanggal paket ", rows)
+        
         return rows
     except Exception as e:
         print("eror ambil paket ", e)

@@ -8,7 +8,7 @@ class Pelanggan(Base):
     __tablename__ = "pelanggan"
     
     id = Column(BigInteger, primary_key=True, index=True)
-    id_paket = Column(BigInteger, ForeignKey("pelanggan.id"))
+    id_paket = Column(BigInteger, ForeignKey("paket.id"))
     nama_pelanggan = Column(String)
     nomor_hp = Column(String)
     nama_paket = Column(String)
@@ -17,4 +17,4 @@ class Pelanggan(Base):
     jumlah_paket = Column(Integer)
     harga_paket = Column(String)
     
-    pelanggan = relationship("paket", back_populates="paket")
+    paket = relationship("Paket", back_populates="pelanggan")

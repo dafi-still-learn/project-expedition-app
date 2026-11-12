@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 import locale
 from app.packet.service import input_database_paket, get_data_harga_tanggal
 from app.customers.service import get_data_all_pelanggan
@@ -14,13 +14,16 @@ from app.service.generate_nomor_resi import generate_nomor_resi_paket
 from app.service.logical_transaksi import logika_harga
 
 from app.packet.resi_paket.service import get_data_resi_paket
+
+from app.database.connection import get_db
+from sqlalchemy.orm import Session
 router_packet = APIRouter(prefix="/packet")
 
+
 @router_packet.post("/input_packet")
-def input_packet_user(data: data_pengiriman):
+def input_packet_user(db: Session = Depends(get_db), data=data_pengiriman):
     try:        
-            
-        result_input = input_database_paket(data.nama_paket, data.nama_pengirim, data.jenis_paket, data.jumlah_paket, data.asal_paket, data.tujuan_paket, data.berat_paket, data.jalur_pengiriman, data.jarak_paket, data.nomor_hp_pengirim, data.nomor_hp_penerima, data.tanggal_pengiriman, data.tanggal_sampai, data.harga_pengiriman)
+        result_input = input_database_paket(db, data.nama_paket, data.nama_pengirim, data.jenis_paket, data.jumlah_paket, data.asal_paket, data.tujuan_paket, data.berat_paket, data.jalur_pengiriman, data.jarak_paket, data.nomor_hp_pengirim, data.nomor_hp_penerima, data.tanggal_pengiriman, data.tanggal_sampai, data.harga_pengiriman)
             
         print("ISI DARI RESULT INPUT DATABASE PAKET ", result_input)
         return {
@@ -35,9 +38,9 @@ def input_packet_user(data: data_pengiriman):
 # import_csv_wilayah("app/database/data_wilayah.csv")
 
 @router_packet.get("/harga_pengiriman")
-def get_harga_pengiriman(berat: float,jarak: float, jalur: str, jenis: str):
+def get_harga_pengiriman(db: Session = Depends(get_db), berat= float,jarak= float, jalur= str, jenis= str):
     try:
-        harga_pengiriman = logika_harga(berat, jarak, jalur, jenis)
+        harga_pengiriman = logika_harga(db, berat, jarak, jalur, jenis)
         
         locale.setlocale(locale.LC_ALL, "id_ID.UTF-8")
         
@@ -50,9 +53,9 @@ def get_harga_pengiriman(berat: float,jarak: float, jalur: str, jenis: str):
         raise HTTPException(status_code=500, detail=(e))
         
 @router_packet.get("/waktu_pengiriman")
-def get_waktu_pengiriman(jarak: float, jalur:str):
+def get_waktu_pengiriman(db: Session = Depends(get_db), jarak= float, jalur= str):
     try:
-        hasil_waktu = waktu_pengiriman(jarak, jalur)
+        hasil_waktu = waktu_pengiriman(db, jarak, jalur)
         
         if hasil_waktu is None:
             return {"waktu_berangkat": None, "waktu_sampai": None}
@@ -67,11 +70,11 @@ def get_waktu_pengiriman(jarak: float, jalur:str):
         raise HTTPException(status_code=500, detail=(e))
     
 @router_packet.get("/jarak_pengiriman")
-def get_jarak_pengiriman(asal: str, tujuan: str):
+def get_jarak_pengiriman(db: Session = Depends(get_db), asal= str, tujuan= str):
     try:
-        data_koordinat_asal = data_koordinat_wilayah(asal)
+        data_koordinat_asal = data_koordinat_wilayah(db, asal)
         
-        data_koordinat_tujuan = data_koordinat_wilayah(tujuan)
+        data_koordinat_tujuan = data_koordinat_wilayah(db, tujuan)
         
         print("data dari koordinat asal", data_koordinat_asal)
         
@@ -87,9 +90,9 @@ def get_jarak_pengiriman(asal: str, tujuan: str):
         raise HTTPException(status_code=500, detail=(e))
 
 @router_packet.get("/no_resi")
-def get_no_resi(id: int, pengirim: str):
+def get_no_resi(db: Session = Depends(get_db), id= int, pengirim= str):
     try:
-        hasil_generate_no_resi = generate_nomor_resi_paket(id)
+        hasil_generate_no_resi = generate_nomor_resi_paket(db, id)
         
         print("isi dari data id paket ", hasil_generate_no_resi)
         
@@ -104,12 +107,14 @@ def get_no_resi(id: int, pengirim: str):
 
 
 @router_packet.get("/all")
-def get_data_all_paket():
+def get_data_all_paket(db: Session = Depends(get_db)):
     try:
-        rows_paket = get_data_harga_tanggal() or []
-        rows_pelanggan = get_data_all_pelanggan() or []
-        print("ini data semua dari paket ", [row["harga_pengiriman"] for row in rows_paket])
-        print("ini data semua pelanggan ", [row for row in rows_pelanggan],)
+        rows_paket = get_data_harga_tanggal(db) or []
+        rows_pelanggan = get_data_all_pelanggan(db) or []
+        
+        
+        print("ini data semua dari paket ", rows_paket)
+        print("ini data semua pelanggan ", rows_pelanggan)
         return {
            "data_harga": [row["harga_pengiriman"] for row in rows_paket],
            "data_tanggal": [row["tanggal_pengiriman"] for row in rows_paket],
@@ -117,14 +122,14 @@ def get_data_all_paket():
            "success": True
         }
     except Exception as e:
-        print(e)
+        raise HTTPException(status_code=500, detail=(e))
         
 @router_packet.get("/resi_paket")
-def get_all_data_resi_paket(resi_paket: str):
+def get_all_data_resi_paket(db: Session = Depends(get_db), resi_paket= str)-> str:
     try:
-        data_all = get_data_resi_paket(resi_paket)
+        data_all = get_data_resi_paket(db, resi_paket)
         
-        print(data_all)
+        print("Data paket",data_all)
         return data_all
         
     except Exception as e:

@@ -112,7 +112,6 @@ def get_data_all_paket(db: Session = Depends(get_db)):
         rows_paket = get_data_harga_tanggal(db) or []
         rows_pelanggan = get_data_all_pelanggan(db) or []
         
-        
         print("ini data semua dari paket ", rows_paket)
         print("ini data semua pelanggan ", rows_pelanggan)
         return {

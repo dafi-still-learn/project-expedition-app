@@ -12,15 +12,17 @@ def get_insert_pelanggan(db: Session, id_paket, nama_pelanggan, nomor_hp_pelangg
     
          
 def check_pelanggan(db: Session, nama_pelanggan, nomor_hp):
-    rows = db.scalars(select(Pelanggan).where(Pelanggan.nama_pelanggan and Pelanggan.nomor_hp))
+    rows = db.scalars(select(Pelanggan).where(Pelanggan.nama_pelanggan is nama_pelanggan and Pelanggan.nomor_hp is nomor_hp))
     
     return rows
 
 
 def get_data_all_pelanggan(db: Session):
     try:
-        return db.execute(select(Pelanggan)).mappings().all()
-    
+        rows =  db.execute(select(Pelanggan)).mappings().all()
+
+        print("data rows ", type(rows))
+        return rows
     except Exception as e:
         print(e)
     

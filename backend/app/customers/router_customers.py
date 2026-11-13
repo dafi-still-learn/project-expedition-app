@@ -8,7 +8,7 @@ router_customers = APIRouter(prefix="/customers")
 router_customers.post("/input_customers")
 def input_customers(data: requestCustomers):
     try:
-        result_input_data_customers = get_insert_pelanggan(data.id_paket, data.nama_pelanggan, data.nama_paket, data.asal_pengiriman, data.tujuan_pengiriman,data.jumlah_paket, data.harga_paket)
+        result_input_data_customers = get_insert_pelanggan(data.id_paket, data.nama_pelanggan, data.nama_paket, data.asal_pengiriman, data.pengiriman,data.jumlah_paket, data.harga_paket)
 
         return result_input_data_customers
     

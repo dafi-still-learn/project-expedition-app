@@ -1,10 +1,8 @@
 import Navbar from "../components/navbar";
-import { CheckCircle } from "@boxicons/react";
-import LeafletMap from "../services/PengirimanOpenStreetMap";
+
 import DiagramFinansial from "../components/DiagramPieFinansial";
 import DiagramFinansialBar from "../components/DiagramBarPacket";
-import DiagramMultiLinePacket from "../components/DiagramMultiLinePacket";
-import DiagramMultiLineFinansial from "../components/DiagramMultiLinFinansial";
+
 import Profil from "../components/Profil";
 import { DiagramLine } from "../components/DiagramLine";
 import { useGetDataPaket } from "../hooks/useGetDataPaket";
@@ -16,9 +14,15 @@ function Dashboard() {
   const item_data = [123, 25, 13];
   const item_data_packet = [99, 32, 61];
 
+  console.log(Array.isArray(dataPelanggan));
+
+  dataPelanggan.forEach((item) => {
+    console.log(item.nama_pelanggan);
+  });
+
   const harga_pengiriman = Array.isArray(dataHarga)
-    ? dataHarga.map((p: any) => {
-        const raw = p ?? "0";
+    ? dataHarga.map((p) => {
+        const raw = String(p ?? "0");
         // Bersihkan format Indonesia: "Rp10.240.750,00" -> 10240750
         const cleaned = raw.replace(/[^\d,]/g, "").replace(",", ".");
         return parseFloat(cleaned) || 0;
@@ -66,22 +70,31 @@ function Dashboard() {
               </div>
               <div
                 className="shadow-lg grid grid-rows-2 col-span-1 gap-5
-             overflow-y-auto overflow-x-hidden"
+             overflow-y-auto overflow-x-hidden p-3"
               >
-                {dataPelanggan.map((item: any) => {
-                  return (
-                    <>
-                      <ul
-                        key={item.id}
-                        className="grid grid-cols-8 gap-1 justify-between list-inside bg-blue-200 cursor-pointer"
-                      >
-                        <li className="col-span-2">{item.nama_pelanggan}</li>
-                        <li className="col-span-3">{item.nama_paket}</li>
-                        <li className="col-span-3">{item.harga_paket}</li>
-                      </ul>
-                    </>
-                  );
-                })}
+                <h1>Daftar pelanggan</h1>
+                {loading ? (
+                  <p>Memuat data pelanggan...</p>
+                ) : dataPelanggan.length === 0 ? (
+                  <p>Belum ada data pelanggan</p>
+                ) : (
+                  dataPelanggan.map((pelanggan, index) => (
+                    <ul
+                      key={pelanggan.id ?? index}
+                      className="border rounded p-2 text-sm"
+                    >
+                      <li>Nama: {pelanggan.nama_pelanggan ?? "-"}</li>
+                      <li>No. HP: {pelanggan.nomor_hp ?? "-"}</li>
+                      <li>Paket: {pelanggan.nama_paket ?? "-"}</li>
+                      <li>
+                        Rute: {pelanggan.asal_pengiriman ?? "-"} →{" "}
+                        {pelanggan.tujuan_pengiriman ?? "-"}
+                      </li>
+                      <li>Jumlah: {pelanggan.jumlah_paket ?? "-"}</li>
+                      <li>Harga: {pelanggan.harga_paket ?? "-"}</li>
+                    </ul>
+                  ))
+                )}
               </div>
             </div>
           </div>

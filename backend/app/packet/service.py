@@ -26,7 +26,7 @@ def input_database_paket(db: Session, nama_paket, nama_pengirim, jenis_paket, ju
     rows_check_pelanggan = insert(select(Pelanggan).where(paket.nama_pengirim, paket.nomor_hp_pengirim))
     
     if rows_check_pelanggan is None:
-        pelanggan_insert = (insert(Pelanggan).values(id_paket = paket.id, nama_pelanggan = paket.nama_pengirim, nomor_hp = paket.nomor_hp_pengirim, nama_paket = paket.nama_paket, asal_pengiriman = paket.asal_pengiriman, tujuan_pengiriman = paket.tujuan_pengirimn, jumlah_paket = paket.jumlah_paket, harga_pengiriman = harga_pengiriman).returning(nama_pelanggan, nomor_hp))
+        pelanggan_insert = (insert(Pelanggan).values(id_paket = paket.id, nama_pelanggan = paket.nama_pengirim, nomor_hp = paket.nomor_hp_pengirim, nama_paket = paket.nama_paket, asal_pengiriman = paket.asal_paket, tujuan_pengiriman = paket.tujuan_paket, jumlah_paket = paket.jumlah_paket, harga_pengiriman = paket.harga_pengiriman).returning(nama_pelanggan, nomor_hp))
         
         pelanggan = db.scalars(pelanggan_insert).one()
     else:

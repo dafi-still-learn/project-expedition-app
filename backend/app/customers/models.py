@@ -13,7 +13,8 @@ class Pelanggan(Base):
     nomor_hp = Column(String)
     nama_paket = Column(String)
     asal_pengiriman = Column(String)
-    tujuan_pengirimn = Column(String)
+    tujuan_pengiriman = Column(String)
+    pengirimn = Column(String)
     jumlah_paket = Column(Integer)
     harga_paket = Column(String)
     

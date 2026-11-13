@@ -6,11 +6,14 @@ import DiagramFinansialBar from "../components/DiagramBarPacket";
 import Profil from "../components/Profil";
 import { DiagramLine } from "../components/DiagramLine";
 import { useGetDataPaket } from "../hooks/useGetDataPaket";
+import { useGetDataPelanggan } from "../hooks/useGetDataPelanggan";
 
 function Dashboard() {
   const openProfil = localStorage.getItem("profilComplete");
-  const { dataHarga, dataTanggalKirim, dataPelanggan, loading } =
-    useGetDataPaket();
+
+  const { dataHarga, dataTanggalKirim, loadingPaket } = useGetDataPaket();
+  const { dataPelanggan, loadingPelanggan } = useGetDataPelanggan();
+
   const item_data = [123, 25, 13];
   const item_data_packet = [99, 32, 61];
 
@@ -63,17 +66,25 @@ function Dashboard() {
             </div>
             <div className="row-span-1 grid grid-cols-3 gap-2 w-full h-full overflow-hidden">
               <div className="shadow-lg grid gap-1 grid-cols-1 col-span-2">
-                <DiagramLine
-                  data={harga_pengiriman}
-                  labels={dataTanggalKirim}
-                />
+                {loadingPaket ? (
+                  <p>Memuat data paket..</p>
+                ) : dataHarga.length === 0 || dataTanggalKirim.length === 0 ? (
+                  <p>Belum ada data paket..</p>
+                ) : (
+                  <>
+                    <DiagramLine
+                      data={harga_pengiriman}
+                      labels={dataTanggalKirim}
+                    />
+                  </>
+                )}
               </div>
               <div
-                className="shadow-lg grid grid-rows-2 col-span-1 gap-5
+                className="shadow-lg flex flex-col gap-5
              overflow-y-auto overflow-x-hidden p-3"
               >
                 <h1>Daftar pelanggan</h1>
-                {loading ? (
+                {loadingPelanggan ? (
                   <p>Memuat data pelanggan...</p>
                 ) : dataPelanggan.length === 0 ? (
                   <p>Belum ada data pelanggan</p>

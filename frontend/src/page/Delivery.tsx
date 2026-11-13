@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Filter } from "@boxicons/react";
 import DetailDelivery from "../components/DetailDelivery";
-import { useGetDataPaket } from "../hooks/useGetDataPaket";
+import { useGetDataPelanggan } from "../hooks/useGetDataPelanggan";
 
 const Pengiriman = () => {
-  const { dataPelanggan } = useGetDataPaket();
+  const { dataPelanggan } = useGetDataPelanggan();
 
   const [selectedItem, setSelectedItem] = useState<any>(null);
 

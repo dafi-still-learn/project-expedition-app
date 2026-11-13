@@ -110,14 +110,14 @@ def get_no_resi(db: Session = Depends(get_db), id= int, pengirim= str):
 def get_data_all_paket(db: Session = Depends(get_db)):
     try:
         rows_paket = get_data_harga_tanggal(db) or []
-        rows_pelanggan = get_data_all_pelanggan(db) or []
+        # rows_pelanggan = get_data_all_pelanggan(db) or []
         
-        print("ini data semua dari paket ", rows_paket)
-        print("ini data semua pelanggan ", rows_pelanggan)
+        # print("ini data semua dari paket ", rows_paket)
+        # print("ini data semua pelanggan ", rows_pelanggan)
         return {
            "data_harga": [row["harga_pengiriman"] for row in rows_paket],
            "data_tanggal": [row["tanggal_pengiriman"] for row in rows_paket],
-           "data_pelanggan": [row for row in rows_pelanggan],
+        #    "data_pelanggan": [row for row in rows_pelanggan],
            "success": True
         }
     except Exception as e:

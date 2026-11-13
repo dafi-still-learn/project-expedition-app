@@ -2,22 +2,10 @@ import { useEffect, useState } from "react";
 import baseURL from "../api/Axios";
 import { useAuth } from "../auth/AuthContext";
 
-export type Pelanggan = {
-  id?: number | string;
-  nama_pelanggan?: string;
-  nomor_hp?: string;
-  nama_paket?: string;
-  asal_pengiriman?: string;
-  tujuan_pengiriman?: string;
-  jumlah_paket?: number | string;
-  harga_paket?: string;
-};
-
 export const useGetDataPaket = () => {
   const [dataHarga, setDataHarga] = useState<string[]>([]);
   const [dataTanggalKirim, setDataTanggalKirim] = useState<string[]>([]);
-  const [dataPelanggan, setDataPelanggan] = useState<Pelanggan[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loadingPaket, setLoadingPaket] = useState<boolean>(true);
   const { token } = useAuth();
 
   useEffect(() => {
@@ -39,16 +27,12 @@ export const useGetDataPaket = () => {
         setDataTanggalKirim(
           Array.isArray(payload.data_tanggal) ? payload.data_tanggal : [],
         );
-        setDataPelanggan(
-          Array.isArray(payload.data_pelanggan) ? payload.data_pelanggan : [],
-        );
       } catch (err) {
         console.log("terjadi error pada saat pengambilan data", err);
         setDataHarga([]);
         setDataTanggalKirim([]);
-        setDataPelanggan([]);
       } finally {
-        setLoading(false);
+        setLoadingPaket(false);
       }
     };
 
@@ -58,7 +42,6 @@ export const useGetDataPaket = () => {
   return {
     dataHarga,
     dataTanggalKirim,
-    dataPelanggan,
-    loading,
+    loadingPaket,
   };
 };

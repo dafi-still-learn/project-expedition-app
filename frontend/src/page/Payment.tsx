@@ -1,9 +1,9 @@
 import "../css/Payment.css";
 
-import { useGetDataPaket } from "../hooks/useGetDataPaket";
+import { useGetDataPelanggan } from "../hooks/useGetDataPelanggan";
 
 function Pembayaran() {
-  const { dataPelanggan } = useGetDataPaket();
+  const { dataPelanggan } = useGetDataPelanggan();
 
   return (
     <>
@@ -17,7 +17,7 @@ function Pembayaran() {
               <div>berisi filter payment</div>
             </div>
             <div
-              className="row-span-4 grid gap-1 grid-rows-12 overflow-y-auto rounded-xl"
+              className="row-span-4 flex flex-col gap-3 overflow-y-auto rounded-xl"
               id="payment-item"
             >
               {dataPelanggan.map((item: any) => {

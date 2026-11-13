@@ -1,8 +1,8 @@
-import { useGetDataPaket } from "../hooks/useGetDataPaket";
+import { useGetDataPelanggan } from "../hooks/useGetDataPelanggan";
 import { Filter } from "@boxicons/react";
 
 function Pelanggan() {
-  const { dataPelanggan } = useGetDataPaket();
+  const { dataPelanggan } = useGetDataPelanggan();
   return (
     <>
       <section

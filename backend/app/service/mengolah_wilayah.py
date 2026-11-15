@@ -9,8 +9,8 @@ def haversine(c1: Coord, c2: Coord) -> float:
     
     R = 6371
     
-    lat1, lon1 = radians(c1["lat_wilayah"]), radians(c1["long_wilayah"])
-    lat2, lon2 = radians(c2["lat_wilayah"]), radians(c2["long_wilayah"])
+    lat1, lon1 = radians(c1.lat_wilayah), radians(c1.long_wilayah)
+    lat2, lon2 = radians(c2.lat_wilayah), radians(c2.long_wilayah)
     
     dlat, dlon = lat2 - lat1, lon2 - lon1
     

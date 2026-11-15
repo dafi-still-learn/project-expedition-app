@@ -75,10 +75,14 @@ def get_jarak_pengiriman(db: Session = Depends(get_db), asal= str, tujuan= str):
         data_koordinat_asal = data_koordinat_wilayah(db, asal)
         
         data_koordinat_tujuan = data_koordinat_wilayah(db, tujuan)
+        print("ini data dari asal", data_koordinat_asal)
+        print("ini data dari tujuan", data_koordinat_tujuan)
         
-        print("data dari koordinat asal", data_koordinat_asal)
+        result_data_asal = data_koordinat_asal
+        result_data_tujuan = data_koordinat_tujuan
+        print("data dari koordinat asal", result_data_asal)
         
-        print("data dari koordinat tujaun", data_koordinat_tujuan)
+        print("data dari koordinat tujaun", result_data_tujuan)
         
         hasil_dari_package_wilayah = haversine(data_koordinat_asal, data_koordinat_tujuan)
         

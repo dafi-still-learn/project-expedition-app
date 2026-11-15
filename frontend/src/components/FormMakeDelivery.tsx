@@ -131,11 +131,7 @@ function FormDelivery({
     setJalurD,
     setNomorHpPengirimD,
     setNomorHpPenerimaD,
-    //
-    // setTanggalPengirimanD,
-    // setTanggalSampaiD,
-    // setHargaPengirimanD,
-    //
+
     setIdAsalD,
     setIdTujuanD,
     setIdPaketD,

@@ -92,7 +92,7 @@ function Dashboard() {
                   dataPelanggan.map((pelanggan, index) => (
                     <ul
                       key={pelanggan.id ?? index}
-                      className="border rounded p-2 text-sm"
+                      className="border rounded p-10 text-sm"
                     >
                       <li>Nama: {pelanggan.nama_pelanggan ?? "-"}</li>
                       <li>No. HP: {pelanggan.nomor_hp ?? "-"}</li>

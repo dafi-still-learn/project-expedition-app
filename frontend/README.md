@@ -1,16 +1,44 @@
-# React + Vite
+# Frontend - Expedition App (React + Vite)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend ini adalah bagian UI dari project belajarku (learning by doing). Fokus utamanya: memahami alur autentikasi, integrasi API, state/data flow, dan visualisasi data.
 
-Currently, two official plugins are available:
+## Stack & Hal yang Sudah Dipelajari
+- **React + Vite** sebagai base aplikasi
+- **TypeScript + JavaScript** (migrasi bertahap, beberapa file masih `.jsx`)
+- **React Router** untuk routing halaman dan proteksi route/role
+- **Axios** untuk komunikasi ke backend FastAPI
+- **Chart.js** untuk dashboard/laporan visual
+- **CSS modular per page/component** untuk styling
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Struktur Penting (`frontend/src/`)
+- `api/` → konfigurasi Axios & pemanggilan endpoint
+- `auth/` → AuthContext, protected route, role route, helper auth
+- `components/` → komponen UI (diagram, form, sidebar, dll)
+- `hooks/` → custom hook pengambilan data (`useGetDataPaket`, `useGetDataPelanggan`)
+- `page/` → halaman aplikasi (Dashboard, Delivery, MakeDelivery, PacketTrack, dll)
+- `services/` → logic pendukung (estimasi jarak/harga/waktu, barcode, wilayah, dll)
 
-## React Compiler
+## Alur Frontend yang Perlu Diingat
+1. User login → token/role diproses di auth context.
+2. Route dilindungi oleh `ProtectedRoute` / `RoleRoute`.
+3. Halaman memanggil hook/service untuk fetch data backend.
+4. Response dinormalisasi (cek bentuk data, array/object, null-safe).
+5. State di-update → UI/chart dirender.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Catatan Progres Belajar Frontend
+- Sudah paham dasar integrasi frontend-backend dan auth flow.
+- Sudah praktik debugging render loop, masalah token/role, dan mismatch bentuk response.
+- Masih sering perlu mengingat pola syntax (hooks dependency, typing TS, bentuk response API), jadi biasakan cek `frontend/debugging.md` dan `learning.md`.
 
-## Expanding the ESLint configuration
+## Menjalankan Frontend
+```bash
+npm install
+npm run dev
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Biasanya berjalan di `http://localhost:5173` (tergantung konfigurasi Vite).
+
+## Catatan untuk Diri Sendiri
+- Saat error data/chart: cek dulu bentuk response API di console.
+- Saat error auth: cek token, refresh flow, dan guard (`?.`, kondisi loading/auth).
+- Saat bingung struktur: lihat contoh pola yang sudah ada di `hooks/`, `services/`, dan `page/`.

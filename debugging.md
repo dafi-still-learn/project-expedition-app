@@ -1,201 +1,81 @@
-# Debugging Logs for Expedition App
+# Debugging Log - Expedition App
 
-## Problem Summary
-During development of the expedition application, we encountered several critical bugs that affected data visualization and authentication flow. The main issues included:
+Catatan ringkas bug penting + pola debugging yang sering kepakai. Tujuan: cepat ingat penyebab dan cara cek saat error muncul lagi.
 
-1. Data fetching problems with inconsistent API responses
-2. Chart.js rendering errors due to improper canvas sizing
-3. CORS configuration issues blocking cross-origin requests
-4. Incorrect data structure handling in React components
+## 1. Kasus Penting yang Pernah Terjadi
 
-## Root Cause Analysis
+### A. Data/API & Chart (frontend-backend mismatch)
+- **Gejala**: chart kosong/error, data tidak tampil, mapping gagal.
+- **Penyebab umum**:
+  - Response backend tidak konsisten (list vs object/nested field).
+  - Frontend salah ambil data (mis. ambil flag `success` bukan array data).
+  - Tipe/format nilai tidak siap pakai (angka string, format koma/titik, null).
+  - Container/canvas Chart.js tidak punya ukuran jelas.
+- **Solusi pola**:
+  - Samakan kontrak response (contoh: `{ data: [...], success: true }`).
+  - Ambil data aman: `const rows = res?.data?.data ?? []`.
+  - Guard: `Array.isArray(rows)` sebelum `.map()`, normalisasi angka/tanggal.
+  - Pastikan wrapper chart punya tinggi/lebar (`min-height`, container relatif).
 
-### 1. Data Structure Mismatch
-- Initial `GetDataPaket` component was used incorrectly as a data service
-- API responses had inconsistent structures (objects vs arrays)
-- Frontend code assumed data was always in array format
+### B. Auth/JWT & Refresh Flow
+- **Gejala**: login loop, role hilang, terlempar ke login saat refresh, render berlebih.
+- **Penyebab umum**:
+  - Data dari DB (mis. ID/role) tidak diekstrak benar sebelum masuk JWT/response.
+  - Frontend akses data nested tanpa guard (`data.role_user[0][0]`) saat response null/error.
+  - Race condition & state effect tidak stabil (`useEffect`/`useCallback`/dependency/value context).
+  - Error non-auth ditangani seperti logout paksa.
+- **Solusi pola**:
+  - Backend: pastikan payload/token pakai nilai murni (bukan tuple/list mentah).
+  - Frontend: pakai optional chaining + fallback, pisahkan status loading/init/auth.
+  - Stabilkan fungsi/context (`useCallback`, `useMemo`) dan hindari pemrosesan ganda (login vs provider).
+  - Hanya hapus sesi pada kondisi auth invalid (mis. 401), bukan semua error.
 
-### 2. Backend API Design Issues
-- `get_data_harga_tanggal()` returned a list instead of structured data
-- Endpoint `/packet/all` incorrectly accessed list elements as dictionary keys
-- Response format didn't match frontend expectations
+### C. Database/Schema & Integrasi
+- **Gejala**: insert/update gagal, data tidak sesuai, fitur baru tidak sinkron.
+- **Penyebab umum**:
+  - Tipe kolom DB vs payload backend/frontend tidak cocok.
+  - Migration belum jalan / model belum selaras dengan schema.
+  - Perubahan di satu layer tidak diikuti layer lain.
+- **Solusi pola**:
+  - Cek schema & data langsung di PostgreSQL.
+  - Jalankan/cek Alembic (`alembic current`, `history`, `upgrade head`) dan review file migration.
+  - Update berurutan: schema/model → service/router → kontrak API → UI.
 
-### 3. Chart.js Rendering Issues
-- Canvas dimensions weren't properly constrained
-- No size constraints led to infinite canvas expansion
-- Chart.js failed to render properly without clear dimensions
+## 2. Checklist Cepat Saat Error (pakai ini dulu)
+1. **Reproduksi**: aksi apa yang memicu? (login, refresh, submit, fetch, render chart)
+2. **Tentukan layer**: frontend / backend / database.
+3. **Cek kontrak data**: log request & response aktual (bentuk + tipe).
+4. **Cek auth**: token terkirim, valid/expired, role terbaca benar.
+5. **Cek state/effect (FE)**: loading, guard null/array, dependency hook.
+6. **Cek schema/migration (DB)**: tipe kolom, relasi, migration status.
+7. **Fix kecil lalu tes ulang** (1 perubahan dalam 1 waktu).
+8. **Catat**: gejala, root cause, solusi, pencegahan (1-3 baris).
 
-### 5. Authentication Flow Issues
-- Token handling was inconsistent across components
-- Frontend and backend authentication flows were misaligned
-- Token wasn't properly passed to API endpoints
+## 3. Pola Debugging per Layer
 
-## Root Cause Analysis
+### Frontend (React/TS)
+- Cek: `res.data` vs `res.data.data`, `Array.isArray`, `?.`, `?? []`
+- Waspadai: render loop, race condition auth, stale state, dependency effect
+- Chart/form: normalisasi data sebelum render/submit
 
-### 1. Data Structure Mismatch
-The initial `GetDataPaket` component was treated as a data service when it was actually a React component. The API response structure was inconsistent, and the frontend code assumed data was always in array format.
+### Backend (FastAPI/Service)
+- Cek: schema request (422), bentuk return, exception handling, status code
+- Waspadai: logic bisnis salah hitung/format, akses data DB mentah (tuple/list) tanpa ekstraksi
 
-### 2. Backend API Design Issues
-The `get_data_harga_tanggal()` function returned a list of dictionaries instead of a structured object. The `/packet/all` endpoint incorrectly tried to access dictionary keys on a list object.
+### Database (PostgreSQL/SQLAlchemy/Alembic)
+- Cek: tipe data, constraint/relasi, hasil query di DB tool, migration applied
+- Waspadai: perubahan schema tidak sinkron dengan model/service/frontend
 
-### 3. Chart.js Rendering Issues
-The canvas element had no size constraints, causing Chart.js to attempt rendering at infinite dimensions. This led to "Canvas exceeds max size" errors.
+## 4. Fokus Tantangan Belajarku (untuk diperbaiki bertahap)
+- Mengingat syntax SQLAlchemy/Alembic saat menulis dari nol.
+- Menjaga konsistensi kontrak response antar endpoint.
+- Membiasakan update end-to-end saat schema/data berubah.
 
-### 5. Authentication Flow Issues
-Token handling was inconsistent across components, with frontend and backend authentication flows misaligned.
-
-## Root Cause Analysis
-
-### 1. Data Structure Mismatch
-The initial `GetDataPaket` component was treated as a data service when it was actually a React component. The API response structure was inconsistent, and the frontend code assumed data was always in array format.
-
-### 2. Backend API Design Issues
-The `get_data_harga_tanggal()` function returned a list of dictionaries instead of a structured object. The `/packet/all` endpoint incorrectly tried to access dictionary keys on a list object.
-
-### 3. Chart.js Rendering Issues
-The canvas element had no size constraints, causing Chart.js to attempt rendering at infinite dimensions. This led to "Canvas exceeds max size" errors.
-
-### 5. Authentication Flow Issues
-Token handling was inconsistent across components, with frontend and backend authentication flows misaligned.
-
-## Detailed Debugging Process
-
-### Step 1: Initial Debugging
-- Identified that `GetDataPaket` component was being used incorrectly
-- Discovered token wasn't being sent in Authorization header
-- Found that `GetDataPaket` component wasn't actually fetching data
-
-### Step 2: API Structure Analysis
-- Verified API response structure through manual curl requests
-- Identified that `get_data_harga_tanggal()` returned list of dicts instead of structured object
-- Found incorrect access pattern in `/packet/all` endpoint
-
-### Step 3: Chart.js Rendering Issues
-- Added wrapper div with proper dimensions
-- Set minimum height constraints for canvas container
-- Implemented size constraints to prevent infinite canvas expansion
-
-### Step 5. Authentication Flow Fixes
-- Ensured token was properly sent via Authorization header
-- Aligned frontend and backend authentication flows
-- Implemented proper token validation in backend
-
-## Detailed Logs
-
-### 1. Initial API Structure Analysis
-File: `backend/app/packet/router_packet.py`
-```python
-@router_packet.get("/all")
-def get_data_all_paket():
-    try:
-        result_get_data_all_paket = get_data_harga_tanggal()
-        return {
-            "data": result_get_data_all_paket["harga_pengiriman"],  # WRONG
-            "success": True,
-        }
+## 5. Template Catatan Bug Baru (singkat)
+```md
+### [Tanggal] - [Fitur/Modul]
+- Gejala:
+- Root cause:
+- Solusi:
+- Pencegahan:
 ```
-
-### 2. Database Packet Fetch
-File: `backend/app/database/database_packet.py`
-```python
-def get_data_harga_tanggal():
-    conn = ps.connect(...)
-    try:
-        cursor = conn.cursor(cursor_factory=RealDictCursor)
-        cursor.execute("SELECT tanggal_pengiriman, harga_pengiriman FROM paket")
-        data = cursor.fetchall()  # Returns list of dicts
-        return data  # Returns list of dictionaries
-```
-
-### 3. First Frontend Hook
-File: `frontend/src/hooks/useGetDataPaket.js`
-```javascript
-const result = response?.data;
-const dataResult = result?.data?.success;  // WRONG: getting boolean instead of array
-setData(dataResult);  // Storing boolean as data
-```
-
-### 4. First DiagramLine Component
-File: `frontend/src/components/DiagramLine.tsx`
-```typescript
-const harga_pengiriman = data.map((p) => {
-  const raw = p?.harga_pengiriman ?? "0";
-  const cleaned = raw.replace(/[^\d]/g, "");  // WRONG: removing all non-digits
-  return parseFloat(cleaned) || 0;
-});
-```
-
-### 5. After Fixes
-
-#### 1. Correct Hook Implementation
-File: `frontend/src/hooks/useGetDataPaket.js`
-```javascript
-const response = await baseURL.get("/packet/all", {
-  headers: { Authorization: `Bearer ${token}` },
-});
-
-// Correctly extract the data array from the nested structure
-setData(response?.data?.data ?? []);
-```
-
-#### 2. Corrected DiagramLine Component
-File: `frontend/src/components/DiagramLine.tsx`
-```typescript
-const harga_pengiriman = Array.isArray(data)
-  ? data.map((p: any) => {
-      const raw = p?.harga_pengiriman ?? "0";
-      const cleaned = raw.replace(/[^\d,]/g, "").replace(",", ".");
-      return parseFloat(cleaned) || 0;
-    })
-  : [];
-```
-
-#### 3. Backend Fix
-File: `backend/app/packet/router_packet.py`
-```python
-@router_packet.get("/all")
-def get_data_all_paket():
-    try:
-        rows = get_data_harga_tanggal() or []
-        return {
-            "data": rows,
-            "success": True,
-        }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-```
-
-## Step-by-Step Debugging Process
-
-### Step 1: Verify Data Flow
-- Checked API response structure through manual curl requests
-- Verified token was being sent correctly via Authorization header
-
-### Step 4: Chart.js Rendering Fixes
-- Added wrapper div with `w-full h-full relative` and `min-height: 200px`
-- Set canvas to fill container dimensions
-- Implemented loading state to prevent rendering before data is ready
-
-### 5. Data Flow Verification
-- Verified data flow from backend to frontend through console logs
-- Confirmed data structure was consistent across all components
-
-## Lessons Learned
-
-1. **Never assume data structure** - Always verify response structure through console logs
-2. **Use proper data extraction** - Extract nested data correctly using `response?.data?.data` instead of `response?.data?.success`
-4. **Chart.js requires size constraints** - Always constrain canvas dimensions to prevent rendering errors
-5. **Authentication flows must be consistent** - Ensure token is sent via Authorization header, not in URL or body
-6. **Error handling is critical** - Always implement proper error handling and fallback values
-7. **Use proper data structures** - Use arrays for lists, objects for structured data
-
-## Key Takeaways
-
-- Always verify data structure before using it
-- Use proper data extraction methods (nested object properties)
-- Implement proper error handling throughout the application
-- Test API responses manually before integrating with frontend
-- Chart.js requires clear size constraints to function properly
-- Authentication flows need consistent implementation across frontend and backend
-
-This debugging log serves as a reference for future troubleshooting and serves as a reminder of the importance of careful data structure handling and proper API design.

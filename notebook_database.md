@@ -967,3 +967,38 @@ Kalau service atau repository melempar error, `rollback()` membatalkan perubahan
 6. Baru kemudian masukkan Alembic untuk perubahan schema.
 
 Jangan mengganti semua file database sekaligus. Kode sekarang memakai psycopg2 dan masih berjalan sebagai acuan. SQLAlchemy menggantikan cara berbicara dengan database, tetapi pembagian tanggung jawabnya tetap: router menerima request, fungsi database atau repository menjalankan operasi data, dan satu file koneksi mengatur Session.
+---
+
+## 11. Catatan Progres Belajarku (Database Expedition App)
+
+Bagian ini aku tambahkan agar notebook ini tidak hanya jadi referensi teori, tapi juga jurnal progres belajarku.
+
+### A. Apa yang sudah aku praktikkan dari materi di notebook ini
+- **Mulai migrasi dari pendekatan manual/raw SQL** ke struktur yang lebih rapi dengan `models`, `connection`, dan pemisahan per domain (`packet`, `customers`, `users`, `wilayah`, dll).
+- **Mengenal dan mencoba Alembic** untuk perubahan skema (walaupun syntax/perintahnya masih sering perlu diingat ulang).
+- **Mulai memahami pentingnya tipe data dan relasi** karena pernah mengalami bug akibat format data tidak sesuai (mis. jumlah/harga/tanggal/struktur response).
+- **Menyadari masalah credential/config** dan pentingnya memusatkan konfigurasi koneksi.
+
+### B. Hal yang masih sering membingungkan (jujur)
+- Syntax SQLAlchemy (kapan pakai `select`, `scalars`, `execute`, `add`, `commit`, `refresh`).
+- Alur Alembic dari awal sampai aman dipakai (`revision`, autogenerate, review file, upgrade).
+- Perbedaan praktik query ORM vs SQL mentah dan kapan masing-masing tepat dipakai.
+- Mendesain relasi tabel yang rapi sebelum fitur berkembang lebih besar.
+
+### C. Contoh mini-latihan untuk mengingat (ulang berkala)
+1. **Session dasar**: buat fungsi `create`, `get_by_id`, `list_all` untuk 1 model sederhana.
+2. **Migration kecil**: tambah 1 kolom baru (mis. `status`), generate migration, review, lalu upgrade.
+3. **Query latihan**: ambil data paket + relasi terkait (jika ada), lalu tampilkan ke endpoint sederhana.
+4. **Debug data**: sengaja kirim tipe data salah dari request, lihat error, lalu perbaiki validasi/konversi.
+
+### D. Target belajar database berikutnya (bertahap)
+- [ ] Hafal pola dasar CRUD dengan SQLAlchemy Session tanpa lihat contoh.
+- [ ] Hafal alur Alembic dasar dan bisa menjelaskan isi file migration.
+- [ ] Merapikan konsistensi tipe data di tabel inti (paket/pelanggan/resi).
+- [ ] Menambah relasi/constraint yang jelas di model dan memahaminya.
+- [ ] Membiasakan menulis catatan singkat setiap selesai perubahan schema (apa berubah, kenapa, bagaimana rollback).
+
+### E. Catatan cara pakai notebook ini saat belajar
+- Baca bagian konsep → coba praktik kecil di project/contoh terpisah → tulis ringkasan syntax di catatan harian.
+- Jika lupa, cari dulu pola yang sama di bagian ini sebelum membuka banyak sumber lain (biar fokus).
+- Setelah berhasil memperbaiki bug DB, tambahkan 2-3 baris "pelajaran" ke bagian ini atau ke `debugging.md`.

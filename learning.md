@@ -1,346 +1,117 @@
-# Learning Guide for Expedition App
+# Learning Guide - Expedition App
 
-## Table of Contents
-1. [Project Overview](#project-overview)
-2. [Core Concepts](#core-concepts)
-3. [Data Flow Architecture](#data-flow-architecture)
-4. [React Components & Hooks](#react-components--hooks)
-5. [API Integration & Authentication](#api-integration--authentication)
-6. [Database Interaction](#database-interaction)
-6. [Chart.js Implementation](#chart-js-implementation)
-7. [Debugging Techniques](#debugging-techniques)
-7. [Best Practices](#best-practices)
-8. [Resources & References](#resources--references)
+Catatan ringkas untuk mengingat konsep, alur, dan syntax yang paling sering dipakai di project ini.
 
-## Project Overview
-The Expedition App is a full-stack application with:
-- Frontend: React + Chart.js + React Router
-- Backend: FastAPI (Python) with PostgreSQL
-- Authentication: JWT + Cookies
-- Data Visualization: Real-time charts using Chart.js
-- Data Flow: REST API with RESTful design
+## 1. Gambaran Project & Stack
+- **Frontend**: React + Vite, migrasi bertahap ke TypeScript, React Router, Axios, Chart.js
+- **Backend**: FastAPI (Python), struktur per domain (`auth`, `packet`, `customers`, `users`, `wilayah`)
+- **Database**: PostgreSQL, mulai migrasi dari raw SQL ke SQLAlchemy + Alembic
+- **Auth**: JWT/access token + refresh flow (cookie/session context), RBAC (`ADMIN`, `OPERATOR`)
 
-## Core Concepts
+## 2. Peta Progres Belajar (saat ini)
+**Sudah dikuasai/dipraktikkan:**
+- Alur full-stack dasar: UI → API → logic/service → DB → response → UI
+- Auth & proteksi route/role di frontend + backend
+- CRUD/fitur inti: paket, pelanggan, resi, wilayah, estimasi (jarak/harga/waktu), tracking, barcode, dashboard/chart
+- Debugging nyata: mismatch response, render loop React, masalah token/refresh, penyesuaian tipe data
 
-### 1. RESTful API Design
-- RESTful endpoints follow resource-based naming conventions
-- GET requests for data retrieval
-- POST for data creation
-- PUT/PUT for updates
-- DELETE for deletion
-- Proper HTTP status codes (200, 201, 404, 500)
+**Sedang diperdalam:**
+- Mengingat syntax SQLAlchemy (query/session/relasi/commit-rollback)
+- Alur & perintah Alembic migration
+- Konsistensi kontrak data (request/response/schema/tipe) antar layer
 
-### 2. Data Flow Architecture
-```
-Frontend (React) 
-  → REST API Calls (Axios) 
-  → Backend (FastAPI) 
-  → Database (PostgreSQL) 
-  → Business Logic (Python)
-  → Database (PostgreSQL)
-  → Backend (FastAPI) 
-  → REST API 
-  → Frontend (React)
-```
+## 3. Alur Full-Stack yang Harus Diingat
+1. **Frontend (event/hook/service)** memanggil API via Axios.
+2. **Router FastAPI** menerima request, validasi input/dependency.
+3. **Service/logic** proses aturan bisnis (resi, estimasi, dsb).
+4. **DB layer/ORM** baca/tulis PostgreSQL.
+5. **Response JSON** kembali ke frontend → normalisasi data → update state → render.
 
-### 2. Core Components
-- **Frontend**: React components, hooks, state management
-- **Backend**: FastAPI routes, database models, business logic
-- **Database**: PostgreSQL with SQLAlchemy ORM
-- **Authentication**: JWT tokens with cookie-based session management
+## 4. Cheat Sheet Cepat (Prioritas Ingatan)
 
-## 3. Data Flow Architecture
-
-### Data Flow Sequence
-1. User interaction triggers event (e.g., view dashboard)
-2. React component triggers hook (e.g., `useGetDataPaket`)
-3. Hook makes API request to `/packet/all`
-4. Backend service processes request:
-   - Connects to database
-   - Executes SQL query
-   - Returns JSON response
-5. Frontend receives data and updates state
-6. Component re-renders with new data
-7. Chart.js renders updated visualization
-
-### 3. Data Flow Diagram
-```
-[User] → [React Component] → [Custom Hook] 
-  → [Axios Request] → [Backend API] 
-  → [Database Query] → [Response] 
-  → [State Update] → [Component Re-render] 
-  → [Chart.js Rendering]
-```
-
-## 4. React Components & Hooks
-
-### 4.1 Component Structure
-- **Layout Components**: Layout, Navbar, Sidebar
-- **Page Components**: Dashboard, Setting, Expedition
-- **Chart Components**: DiagramLine, DiagramBarPacket, DiagramPieFinansial
-- **Utility Components**: LoadingSpinner, ErrorBoundary
-
-### 4.1.1 Component Hierarchy
-```
-App
- └── ExpeditionPage
-     ├── Sidebar
-     └── MainContent
-         ├── Dashboard
-         ├── Setting
-         └── Expedition
-```
-
-### 4.2 Custom Hooks
-Custom hooks are reusable logic abstractions. Key hooks used:
-
-1. **useGetDataPaket** - Data fetching hook for paket data
-2. **useAuth** - Authentication state management
-3. **useEffect** - Side effects management (data fetching, subscriptions)
-
-### 4.2.1 Custom Hook Best Practices
-- Use descriptive names (e.g., `useGetDataPaket` not `useGetData`)
-- Return consistent data structures
-- Handle loading and error states
-- Clean up subscriptions/cleanup effects
-- Avoid side effects in render phase
-
-## 5. API Integration & Authentication
-
-### 5.1 API Client (Axios)
-- Base URL: `http://localhost:8000`
-- Headers: `Authorization: Bearer {token}`
-- `withCredentials: true` for cookie-based auth
-- Error handling with try/catch
-
-### 5.1.1 Authentication Flow
-1. User logs in → receives token
-2. Token stored in state (or context)
-3. Token sent in Authorization header for protected routes
-4. Token refresh via `/auth/refresh_token` endpoint
-5. Cookies handle session persistence
-
-### 5.2. Authentication Flow
-1. User enters credentials → POST to `/auth/login`
-2. Server validates credentials → returns access token
-3. Access token stored in state
-4. Protected routes check for token validity
-5. Token refresh when expired (using refresh token)
-
-## 6. Database Interaction
-
-### 6.1 Database Schema
-Main tables:
-- `paket` - core data structure
-- `resi_paket` - resi records linked to paket
-- `customers` - customer information linked to paket
-- `users` - application users
-
-### 6.1.1 Query Examples
+### Backend / Database (SQLAlchemy + Alembic)
 ```python
-# Get all paket data
-cursor.execute("SELECT * FROM paket")
+# Dependency session (FastAPI)
+db: Session = Depends(get_db)
 
-# Get specific paket by ID
-cursor.execute("SELECT * FROM paket WHERE id = %s", (id,))
+# Select
+stmt = select(Model).where(Model.id == id)
+row = db.execute(stmt).scalars().first()      # .all() untuk banyak
+rows = db.execute(stmt).scalars().all()
 
-# Insert new paket
-cursor.execute("""
-    INSERT INTO paket (nama_paket, jenis_paket, jumlah_paket, ...)
-    VALUES (%s, %s, %s, ...)
-""", (nama, jenis, jumlah, ...))
+# Insert
+obj = Model(field=value)
+db.add(obj)
+db.commit()
+db.refresh(obj)
+
+# Aman saat error (di tempat yang sesuai)
+try:
+    ...
+    db.commit()
+except Exception:
+    db.rollback()
+    raise
 ```
 
-### 6.2 ORM Usage
-Using SQLAlchemy for database operations:
-```python
-# Query example
-result = session.query(Paket).filter(Paket.id == 1).first()
-
-# Insert example
-new_paket = Paket(nama_paket="Paket A", jumlah_paket=5)
-session.add(new_paket)
-session.commit()
+```bash
+# Alembic (ingat urutan: buat -> cek file -> apply)
+alembic revision -m "deskripsi"
+alembic revision --autogenerate -m "deskripsi"  # jika env/autogen siap
+alembic upgrade head
+alembic current
+alembic history
 ```
 
-## 7. Chart.js Implementation
+**PostgreSQL (konsep penting):**
+- Pakai tipe data tepat (`INTEGER/NUMERIC`, `TIMESTAMP`, dll), bukan semua string.
+- Cek relasi/foreign key dan konsistensi schema saat ubah fitur.
+- Jika ragu hasil query ORM, verifikasi di pgAdmin/DBeaver.
 
-### 6.1 Chart.js Basics
-- **Chart Types**: line, bar, pie, doughnut, radar
-- **Core Concepts**: datasets, labels, options
-- **Rendering**: canvas element with Chart.js library
-
-### 6.1.1 Chart.js Implementation Steps
-1. Import Chart.js library
-2. Create canvas element
-3. Define data structure:
-   - labels: array of strings
-   - datasets: array of data series
-4. Create chart instance
-5. Handle responsive design
-
-### 6.1.1 Chart.js Data Structure
-```javascript
-const data = {
-  labels: ['Mon', 'Tue', 'Wed'],
-  datasets: [{
-    label: 'Sales',
-    data: [100, 150, 200],
-    backgroundColor: 'rgba(75, 192, 192, 0.2)'
-  }]
-}
-```
-
-### 6.1.1 Chart.js Options
-```javascript
-const options = {
-  responsive: true,
-  maintainAspectRatio: false,
-  scales: {
-    y: {
-      beginAtZero: true
+### Frontend (React + TS + Auth/Data)
+```ts
+useEffect(() => {
+  const load = async () => {
+    try {
+      setLoading(true);
+      const res = await api.get("/packet/all");
+      setData(res.data?.data ?? []); // sesuaikan kontrak response
+    } catch (e) {
+      setError(e);
+    } finally {
+      setLoading(false);
     }
-  }
-}
+  };
+  load();
+}, []);
 ```
 
-## 7. Debugging Techniques
+**Pola wajib ingat:**
+- Jangan asumsi bentuk response: cek `res.data`, `res.data.data`, dll.
+- Guard sebelum render/list: `Array.isArray(data)` / `?.` / `??`.
+- Auth: token/role harus jelas; hati-hati race condition & dependency hook.
+- Chart.js: container/canvas harus punya ukuran jelas agar tidak error render.
 
-### 7.1 Frontend Debugging
-- `console.log()` for variable inspection
-- `Array.isArray()` to verify data type
-- `Array.isArray(data)` before `.map()`
-- Use `try/catch` for async operations
-- Use React DevTools for component inspection
+## 5. Pola Debugging Singkat
+- **Data/DB**: cek tipe kolom vs payload, query langsung di DB, status migration.
+- **Backend**: cek schema request, return shape, exception/HTTP status, logic service.
+- **Frontend**: cek response aktual, state/loading, dependency `useEffect`, guard data.
+- Lihat detail kasus di `debugging.md` dan `frontend/debugging.md`.
 
-### 7.2 Backend Debugging
-- Print data before returning
-- Use `print()` for SQL queries and results
-- Use `try/except` for error handling
-- Print request/response details
+## 6. Cara Belajar Hybrid (biar cepat ingat)
+- **Harian (10-20 menit)**: catat 1 syntax + 1 alur yang dipakai hari ini.
+- **Mini-practice**: coba pola kecil terisolasi (1 query, 1 migration, 1 hook fetch) sebelum ke fitur besar.
+- **Review berkala**: baca ulang catatan saat mulai task mirip (auth, paket, chart, migration).
+- **Prioritas hafalan**: syntax yang paling sering muncul di project ini dulu, bukan semua API.
 
-### 7.3 CORS Debugging
-- Check `Access-Control-Allow-Origin` header
-- Verify origins match frontend URL
-- Ensure credentials are enabled
-- Test with curl or Postman
+## 7. Referensi Cepat
+- FastAPI: https://fastapi.tiangolo.com/
+- SQLAlchemy: https://docs.sqlalchemy.org/
+- Alembic: https://alembic.sqlalchemy.org/
+- PostgreSQL: https://www.postgresql.org/docs/
+- React: https://react.dev/
+- Chart.js: https://www.chartjs.org/docs/latest/
 
-## 7. Best Practices
-
-### 7.1 Code Quality
-- Use consistent naming conventions
-- Write descriptive function names
-- Comment complex logic
-- Follow PEP8 for Python
-- Use ESLint for JavaScript
-
-### 8. Best Practices
-
-### 7.1 Code Quality
-- Use consistent naming conventions
-- Write descriptive function names
-- Comment complex logic
-- Follow PEP8 for Python
-- Use ESLint for JavaScript
-
-### 8.1 Error Handling
-- Implement proper error handling in API calls
-- Show user-friendly error messages
-- Log errors for debugging
-- Implement retry logic for network issues
-
-### 7.3 State Management
-- Use context for global state
-- Use hooks for component-specific logic
-- Keep state minimal and focused
-- Use useReducer for complex state logic
-
-## 8. Resources & References
-
-### 7.1 Documentation
-- [React Documentation](https://reactjs.org/docs/react-api.html)
-- [FastAPI Documentation](https://fastapi.tiangolo.com/)
-- [Chart.js Documentation](https://www.chartjs.org/docs/latest/)
-- [PostgreSQL Documentation](https://www.postgresql.org/docs/current/)
-
-### 7.2 Learning Resources
-- [React Tutorial](https://reactjs.org/tutorial/tutorial.html)
-- [FastAPI Tutorial](https://fastapi.tiangolo.com/tutorial/)
-- [Chart.js Tutorial](https://www.chartjs.org/docs/latest/getting-started/)
-- [PostgreSQL Tutorial](https://www.postgresql.org/docs/current/tutorial.html)
-
-### 7.3 Tools
-- [Postman](https://www.postman.com/) - API testing
-- [PostgreSQL](https://www.postgresql.org/) - database
-- [PostgreSQL Workbench](https://www.pgadmin.org/) - database management
-- [React DevTools](https://reactjs.org/blog/2020/08/17/new-react-devtools.html) - component inspection
-
-## 8. Best Practices
-
-### 7.1 Code Quality
-- Use consistent naming conventions
-- Write descriptive function names
-- Comment complex logic
-- Follow PEP8 for Python
-- Use ESLint for JavaScript
-
-### 7.1 Error Handling
-- Implement proper error handling in API calls
-- Show user-friendly error messages
-- Log errors for debugging
-- Implement retry logic for network issues
-
-### 7.3 State Management
-- Use context for global state
-- Use hooks for component-specific logic
-- Keep state minimal and focused
-- Use useReducer for complex state logic
-
-## 8. Resources & References
-
-### 7.1 Documentation
-- [React Documentation](https://reactjs.org/docs/react-api.html)
-- [FastAPI Documentation](https://fastapi.tiangolo.com/)
-- [Chart.js Documentation](https://www.chartjs.org/docs/latest/)
-- [PostgreSQL Documentation](https://www.postgresql.org/docs/current/)
-
-### 7.2 Learning Resources
-- [React Tutorial](https://reactjs.org/tutorial/tutorial.html)
-- [FastAPI Tutorial](https://fastapi.tiangolo.com/tutorial/)
-- [Chart.js Tutorial](https://www.chartjs.org/docs/latest/getting-started/)
-- [PostgreSQL Tutorial](https://www.postgresql.org/docs/current/tutorial.html)
-
-### 7.3 Tools
-- [Postman](https://www.postman.com/) - API testing
-- [PostgreSQL](https://www.postgresql.org/) - database
-- [PostgreSQL Workbench](https://www.pgadmin.org/) - database management
-- [React DevTools](https://reactjs.org/blog/2020/08/17/new-react-devtools.html) - component inspection
-
-## 8. Best Practices
-
-### 7.1 Code Quality
-- Use consistent naming conventions
-- Write descriptive function names
-- Comment complex logic
-- Follow PEP8 for Python
-- Use ESLint for JavaScript
-
-### 7.1 Error Handling
-- Implement proper error handling in API calls
-- Show user-friendly error messages
-- Log errors for debugging
-- Implement retry logic for network issues
-
-### 7.3 State Management
-- Use context for global state
-- Use hooks for component-specific logic
-- Keep state minimal and focused
-- Use useReducer for complex state logic
-
----
-
-*This learning document serves as a comprehensive reference for understanding the expedition application's architecture, implementation details, and best practices. It serves as a foundation for future development and maintenance.*
-
----
-
-*This document was created to help document the learning process and serve as a reference for future development and troubleshooting.*
+## 8. Catatan Pribadi
+- Repo ini adalah jurnal belajar: catat bug + root cause + solusi singkat setiap selesai memperbaiki masalah.
+- Saat bingung struktur/standar DB, cek `term_database.md` dan `notebook_database.md`.

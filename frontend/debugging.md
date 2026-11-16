@@ -123,3 +123,33 @@ Dari semua catatan di atas, polanya adalah:
 4.  **Database sangat ketat soal tipe data** (String tidak akan pernah sama dengan Integer, List tidak akan pernah sama dengan Integer).
 
 Simpan catatan ini. Jika besok-besok kamu menemui bug serupa, kamu akan jauh lebih cepat menyelesaikannya karena kamu sudah pernah melewati "neraka" ini! 🚀
+
+---
+
+## Checklist Debugging Frontend (Ringkasan Pribadi)
+
+Gunakan checklist ini saat ada bug di React/TypeScript:
+
+### Auth & Routing
+- [ ] Token ada/tidak? format dan sumbernya benar (state/cookie/response)?
+- [ ] `refresh_token` berhasil saat reload? kalau gagal, error-nya 401 atau masalah lain?
+- [ ] `role` sudah berbentuk nilai yang dipakai route (`ADMIN/OPERATOR`) bukan object mentah?
+- [ ] `ProtectedRoute` / `RoleRoute` menangani state loading (`inisialisasi`) dengan benar?
+
+### Data Fetching & State
+- [ ] Cek bentuk response di console: `res`, `res.data`, `res.data.data`.
+- [ ] Sudah pakai guard: `Array.isArray(...)`, optional chaining (`?.`), default value (`?? []`).
+- [ ] `useEffect` punya dependency array yang benar (tidak menyebabkan loop)?
+- [ ] Fungsi/objek yang dipakai di dependency perlu `useCallback` / `useMemo`?
+
+### UI / Chart / Form
+- [ ] Data untuk chart sudah dinormalisasi (angka jadi number, tanggal konsisten)?
+- [ ] Komponen chart punya container dengan ukuran jelas (height/width)?
+- [ ] Form mengirim field sesuai schema backend (nama field, tipe, required)?
+- [ ] Error ditampilkan dengan jelas ke user dan tidak membuat app crash?
+
+### Cara cepat isolasi masalah
+1. Reproduksi bug dengan langkah yang sama.
+2. Log di batas layer: sebelum request, setelah response, sebelum `setState`, sebelum render.
+3. Ubah satu hal kecil lalu tes ulang.
+4. Setelah fix, tulis 2-3 baris "penyebab & solusi" di file ini.

@@ -351,3 +351,26 @@ Feedback, suggestions, and constructive discussions are welcome.
 ## 📄 License
 
 No license has been assigned to this project yet.
+
+---
+
+## 🧭 Snapshot Progres Belajar (Update 17 Nov 2026)
+
+Bagian ini aku tambahkan agar README relevan dengan tahap belajarku saat ini (learning by doing), bukan hanya rencana fitur.
+
+### Apa yang sudah aku capai
+- **Database**: mulai dari raw SQL/manual query → migrasi ke struktur berbasis SQLAlchemy models + Alembic (`backend/app/database/`, `backend/alembic/`, `models.py` per domain). Sudah paham konsep tabel relasi dasar (akun, profil, pelanggan, paket, resi_paket, wilayah).
+- **Backend (FastAPI)**: sudah ada pemisahan per domain (`auth`, `packet`, `customers`, `users`, `wilayah`), router, service/logika bisnis, autentikasi JWT + cookie/refresh flow, endpoint untuk data paket/pelanggan/wilayah, dan penanganan error HTTP dasar.
+- **Frontend (React + TypeScript)**: migrasi bertahap JS → TS, routing + protected/role route, AuthContext, custom hooks (`useGetDataPaket`, `useGetDataPelanggan`), integrasi Axios, visualisasi Chart.js, fitur form pengiriman, tracking paket, barcode, dan dashboard.
+- **Modul pendukung**: peta/koordinat (OpenStreetMap/wilayah), estimasi jarak/harga/waktu, generate nomor resi/barcode, dokumentasi belajar & debugging (`learning.md`, `debugging.md`, `notebook_database.md`, `term_database.md`).
+
+### Hal yang masih jadi fokus belajar
+- Konsistensi penulisan & pemanggilan syntax SQLAlchemy/Alembic (sering perlu cek ulang dokumentasi/contoh).
+- Merapikan arsitektur agar makin sesuai standar (service/repository/dependency injection yang konsisten).
+- Testing, validasi data lebih kuat, dan deployment.
+
+### Cara aku pakai repo ini untuk mengingat
+- `learning.md` → peta konsep & alur end-to-end.
+- `debugging.md` / `frontend/debugging.md` → catatan bug, root cause, dan pola solusi.
+- `notebook_database.md` → catatan mendalam desain/migrasi database.
+- `term_database.md` → standar/istilah dan aturan praktik yang ingin aku ikuti.

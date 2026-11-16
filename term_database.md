@@ -141,3 +141,34 @@ Jika di kemudian hari proyek ini perlu migrasi atau diadaptasi ke database lain 
    - *SQLite*: Memerlukan ekstensi tambahan **Spatialite**, tidak selengkap PostGIS.
 4. **Tipe Data Khusus**:
    - PostgreSQL mendukung tipe data bawaan tingkat lanjut seperti `JSONB`, `UUID`, `ARRAY`. Pada database seperti MySQL atau SQLite, tipe data ini biasanya disimpan sebagai `TEXT` atau `JSON` standar dengan dukungan indexing yang lebih terbatas.
+
+---
+
+## 7. Status Penerapan di Project-ku (Progress Belajar)
+
+> Tujuan bagian ini: menghubungkan standar/istilah di dokumen ini dengan kondisi nyata project belajarku saat ini.
+
+### Sudah mulai diterapkan
+- **Pemisahan domain/modul**: struktur backend mulai dipisah per fitur (`auth`, `packet`, `customers`, `users`, `wilayah`) dengan `models/router/service` di beberapa bagian.
+- **Migrasi ke ORM/migration mindset**: sudah ada `backend/app/database/connection.py`, `base.py`, `models.py` per domain, dan folder `backend/alembic/` untuk versioning schema.
+- **Penggunaan PostgreSQL sebagai DB utama**: sudah dipakai untuk data operasional aplikasi ekspedisi.
+
+### Masih dalam proses / belum konsisten
+- **Konsistensi layer**: belum semua bagian mengikuti pola Router → Service → Data Access secara rapi.
+- **Keamanan konfigurasi**: perlu memastikan semua credential/config lewat environment variable (hindari hardcode di sisa kode lama).
+- **Standarisasi tipe data & relasi**: masih ada proses perbaikan/penyesuaian skema agar lebih ketat dan konsisten.
+- **Transaction/error pattern**: belum seragam di semua modul (commit/rollback/exception handling).
+
+### Fokus belajar database-ku saat ini
+- Mengingat syntax dasar SQLAlchemy Session/query (`select`, `add`, `commit`, `rollback`, `refresh`).
+- Mengingat alur Alembic (`revision` → review file → `upgrade head`).
+- Memahami kapan harus pakai ORM query vs raw SQL (dan dampaknya ke maintainability).
+- Membiasakan cek skema/tipe data di PostgreSQL sebelum dan sesudah migration.
+
+### Checklist pribadi sebelum ubah schema/fitur data
+- [ ] Apa tabel/kolom yang berubah? (tulis dulu di catatan)
+- [ ] Apakah butuh migration Alembic?
+- [ ] Apakah model ORM sudah sesuai dengan schema baru?
+- [ ] Apakah service/router yang memakai field itu ikut diupdate?
+- [ ] Apakah response ke frontend masih konsisten?
+- [ ] Sudah dites query-nya (manual/endpoint) dan dicatat di debugging log?

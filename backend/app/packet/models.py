@@ -7,6 +7,7 @@ class Paket(Base):
     
     id = Column(BigInteger, primary_key=True, index=True)
     nama_paket = Column(String, nullable=False) 
+    nama_pengirim = Column(String)
     jenis_paket = Column(String, nullable=False)
     jumlah_paket = Column(Integer)
     asal_paket = Column(String)
@@ -30,5 +31,6 @@ class ResiPaket(Base):
     id_paket = Column(BigInteger, ForeignKey("paket.id"))
     nama_paket =Column(String)
     nomor_resi_paket = Column(String, nullable=False)
+    raw_seed = Column(String, nullable=False)
     
     paket = relationship("Paket", back_populates="resi_paket")

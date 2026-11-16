@@ -83,4 +83,8 @@ def waktu_pengiriman(jarak, jalur):
                 "waktu_berangkat": (waktu_buat).strftime("%Y-%m-%d"),
                 "waktu_sampai":(waktu_buat + timedelta(days=3)).strftime("%Y-%m-%d")
             }
-            
+    else:
+        return{
+                    "waktu_berangkat": (waktu_buat).strftime("%Y-%m-%d"),
+                    "waktu_sampai":(waktu_buat + timedelta(days=2)).strftime("%Y-%m-%d")
+        }

@@ -1,6 +1,8 @@
 from sqlalchemy.orm import Session
 from app.packet.models import ResiPaket
+from fastapi import Depends
 from sqlalchemy import select
+from app.database.connection import get_db
 
 # import psycopg2 as ps
 # from psycopg2.extras import RealDictCursor
@@ -28,10 +30,15 @@ from sqlalchemy import select
 #         conn.close()
 
 def get_data_resi_paket(db: Session, resi_paket):
-    rows = db.scalars(select(ResiPaket).where(ResiPaket.nomor_resi_paket == resi_paket)).one()
+    rows = db.scalars(select(ResiPaket).where(ResiPaket.nomor_resi_paket == resi_paket)).first()
     
     if rows is None:
-        print("404, not found")
-    else:
+        print("data tidak ditemukan")
+    else:  
         return rows
+    # print("ini isi dari data resi paket", rows)
+    # if rows is None:
+    #     print("404, not found")
+    # else:
+    #     return rows
     

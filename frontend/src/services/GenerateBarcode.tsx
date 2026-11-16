@@ -20,6 +20,8 @@ export const GenerateBarcode = ({
           `/packet/no_resi?id=${id}&pengirim=${pengirim}`,
         );
 
+        console.log("isi id user", id);
+        console.log("isi id pengirim", pengirim);
         setDataBarcodeStatus(response?.data.status);
       } catch (err) {
         console.log(

@@ -45,7 +45,7 @@ def data_id_paket(nama_packet):
     finally:
         conn.close()
 
-def generate_nomor_resi_paket(order_id: int, prefix: str = "EXP") -> str:
+def generate_nomor_resi_paket(order_id: int, prefix: str = "EXP") -> dict:
     raw = f"{order_id}:{time.time_ns()}:{secrets.token_hex(8)}"
     
     raw_bytes = raw.encode("utf-8")

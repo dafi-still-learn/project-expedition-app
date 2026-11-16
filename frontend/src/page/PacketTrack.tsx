@@ -10,7 +10,8 @@ function Lacak_paket() {
   const [dataResi, setDataResi] = useState<any>([]);
   const [resiPaket, setResiPaket] = useState<string>("");
 
-  const handleDataResi = async () => {
+  const handleDataResi = async (e: React.FormEvent) => {
+    e.preventDefault();
     setLoading(true);
     try {
       const response = await baseURL.get(

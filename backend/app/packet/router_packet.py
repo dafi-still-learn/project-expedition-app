@@ -21,7 +21,7 @@ router_packet = APIRouter(prefix="/packet")
 
 
 @router_packet.post("/input_packet")
-def input_packet_user(db: Session = Depends(get_db), data=data_pengiriman):
+def input_packet_user(data:data_pengiriman, db: Session = Depends(get_db)):
     try:        
         result_input = input_database_paket(db, data.nama_paket, data.nama_pengirim, data.jenis_paket, data.jumlah_paket, data.asal_paket, data.tujuan_paket, data.berat_paket, data.jalur_pengiriman, data.jarak_paket, data.nomor_hp_pengirim, data.nomor_hp_penerima, data.tanggal_pengiriman, data.tanggal_sampai, data.harga_pengiriman)
             
@@ -32,15 +32,19 @@ def input_packet_user(db: Session = Depends(get_db), data=data_pengiriman):
         }
             
     except Exception as e:
-        raise HTTPException(status_code=500, detail=(e))
+        raise HTTPException(status_code=500, detail=str(e))
 
 # membuat_tabel_wilayah()
 # import_csv_wilayah("app/database/data_wilayah.csv")
 
 @router_packet.get("/harga_pengiriman")
-def get_harga_pengiriman(db: Session = Depends(get_db), berat= float,jarak= float, jalur= str, jenis= str):
+def get_harga_pengiriman(berat: float, jarak: float, jalur= str, jenis= str):
+    print("ini dari berat,", berat)
+    print("ini dari berat,", jarak)
+    print("ini dari berat,", jalur)
+    print("ini dari berat,", jenis)
     try:
-        harga_pengiriman = logika_harga(db, berat, jarak, jalur, jenis)
+        harga_pengiriman = logika_harga(berat, jarak, jalur, jenis)
         
         locale.setlocale(locale.LC_ALL, "id_ID.UTF-8")
         
@@ -50,12 +54,12 @@ def get_harga_pengiriman(db: Session = Depends(get_db), berat= float,jarak= floa
         return {"harga": hasil_dari_locale_harga}
     
     except Exception as e:
-        raise HTTPException(status_code=500, detail=(e))
+        raise HTTPException(status_code=500, detail=str(e))
         
 @router_packet.get("/waktu_pengiriman")
-def get_waktu_pengiriman(db: Session = Depends(get_db), jarak= float, jalur= str):
+def get_waktu_pengiriman(jarak: float, jalur= str):
     try:
-        hasil_waktu = waktu_pengiriman(db, jarak, jalur)
+        hasil_waktu = waktu_pengiriman(jarak, jalur)
         
         if hasil_waktu is None:
             return {"waktu_berangkat": None, "waktu_sampai": None}
@@ -67,7 +71,7 @@ def get_waktu_pengiriman(db: Session = Depends(get_db), jarak= float, jalur= str
         }
     
     except Exception as e:
-        raise HTTPException(status_code=500, detail=(e))
+        raise HTTPException(status_code=500, detail=str(e))
     
 @router_packet.get("/jarak_pengiriman")
 def get_jarak_pengiriman(db: Session = Depends(get_db), asal= str, tujuan= str):
@@ -91,12 +95,12 @@ def get_jarak_pengiriman(db: Session = Depends(get_db), asal= str, tujuan= str):
         return round(hasil_dari_package_wilayah, 2)
         
     except Exception as e:
-        raise HTTPException(status_code=500, detail=(e))
+        raise HTTPException(status_code=500, detail=str(e))
 
 @router_packet.get("/no_resi")
 def get_no_resi(db: Session = Depends(get_db), id= int, pengirim= str):
     try:
-        hasil_generate_no_resi = generate_nomor_resi_paket(db, id)
+        hasil_generate_no_resi = generate_nomor_resi_paket(id)
         
         print("isi dari data id paket ", hasil_generate_no_resi)
         
@@ -106,7 +110,7 @@ def get_no_resi(db: Session = Depends(get_db), id= int, pengirim= str):
             "status": "diproses"
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=(e))        
+        raise HTTPException(status_code=500, detail=str(e))        
     
 
 
@@ -125,15 +129,28 @@ def get_data_all_paket(db: Session = Depends(get_db)):
            "success": True
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=(e))
+        raise HTTPException(status_code=500, detail=str(e))
         
 @router_packet.get("/resi_paket")
-def get_all_data_resi_paket(db: Session = Depends(get_db), resi_paket= str)-> str:
+def get_all_data_resi_paket(resi_paket: str, db: Session = Depends(get_db)):
     try:
+        print("RESI PAKET DARI FRONTEND", resi_paket)
         data_all = get_data_resi_paket(db, resi_paket)
         
-        print("Data paket",data_all)
-        return data_all
+        print("Data paket", data_all)
+        if data_all is None:
+            raise HTTPException(status_code=404, detail="Data resi paket tidak ditemukan")
+
+        return {
+            "id": data_all.id,
+            "id_paket": data_all.id_paket,
+            "nama_paket": data_all.nama_paket,
+            "nomor_resi_paket": data_all.nomor_resi_paket,
+            "raw_seed": data_all.raw_seed,
+            "success": True
+        }
         
+    except HTTPException:
+        raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=(e))
+        raise HTTPException(status_code=500, detail=str(e))

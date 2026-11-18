@@ -1,19 +1,18 @@
 import LeafletMap from "../services/PengirimanOpenStreetMap";
+import PackageMapLocation from "../services/MapsForLocation";
 
+// LOCATION DIGUNAKAN UNTUK MENAMPILKAN LOKASI DARI MITRA PADA EXPEDITION ATAU BISA DIGUNAKN UNTUK UNIT JUGAX
 function Lokasi() {
   return (
     <>
       <section className="w-screen h-screen" id="Container-location">
         <div className="w-full h-full" id="location">
           <div
-            className="grid gap-6 grid-rows-5 w-full h-full"
+            className="grid gap-6 grid-rows-7 w-full h-full"
             id="pengiriman-card"
           >
-            <div className="row-span-2">
-              <div id="list-pengiriman">berisi filter lokasi</div>
-            </div>
-            <div className="row-span-3">
-              <LeafletMap />
+            <div className="row-span-7">
+              <PackageMapLocation />
             </div>
           </div>
         </div>

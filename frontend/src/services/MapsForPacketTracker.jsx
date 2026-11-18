@@ -1,6 +1,5 @@
 // SEBUAH KOMPONEN YANG DIGUNAKAN UNTUK MENANDAKAN MARK DI PETA DARI ASAL DAN TUJUAN
-
-import { useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import baseURL from "../api/Axios";
 import {
   MapContainer,
@@ -10,9 +9,10 @@ import {
   Polyline,
   useMapEvents,
 } from "react-leaflet";
-
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import "leaflet-routing-machine";
+import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -49,11 +49,90 @@ function ClickHandler({ mode, setOrigin, setDestination }) {
   return null;
 }
 
-export default function PackageMap() {
+export default memo(function PackageMapTracker({ lokasiAsal, lokasiTujuan }) {
   const [mode, setMode] = useState("origin");
   const [origin, setOrigin] = useState(null);
   const [destination, setDestination] = useState(null);
   const [saving, setSaving] = useState(false);
+  const mapRef = useRef(null);
+  const routeControlRef = useRef(null);
+
+  const setMapRef = useRef((el) => {
+    mapRef.current = el;
+  }).current;
+
+  useEffect(() => {
+    const asalValid =
+      Array.isArray(lokasiAsal) &&
+      lokasiAsal.length >= 2 &&
+      Number.isFinite(lokasiAsal[0]) &&
+      Number.isFinite(lokasiAsal[1]);
+    const tujuanValid =
+      Array.isArray(lokasiTujuan) &&
+      lokasiTujuan.length >= 2 &&
+      Number.isFinite(lokasiTujuan[0]) &&
+      Number.isFinite(lokasiTujuan[1]);
+
+    const nextOrigin = asalValid ? lokasiAsal : null;
+    const nextDestination = tujuanValid ? lokasiTujuan : null;
+
+    setOrigin((prev) =>
+      prev &&
+      nextOrigin &&
+      prev[0] === nextOrigin[0] &&
+      prev[1] === nextOrigin[1]
+        ? prev
+        : nextOrigin,
+    );
+    setDestination((prev) =>
+      prev &&
+      nextDestination &&
+      prev[0] === nextDestination[0] &&
+      prev[1] === nextDestination[1]
+        ? prev
+        : nextDestination,
+    );
+  }, [lokasiAsal, lokasiTujuan]);
+
+  useEffect(() => {
+    const origLat = origin?.[0];
+    const origLng = origin?.[1];
+    const destLat = destination?.[0];
+    const destLng = destination?.[1];
+
+    if (
+      !Number.isFinite(origLat) ||
+      !Number.isFinite(origLng) ||
+      !Number.isFinite(destLat) ||
+      !Number.isFinite(destLng) ||
+      !mapRef.current
+    )
+      return;
+
+    if (routeControlRef.current) {
+      mapRef.current.removeControl(routeControlRef.current);
+      routeControlRef.current = null;
+    }
+
+    const rc = L.Routing.control({
+      waypoints: [L.latLng(origLat, origLng), L.latLng(destLat, destLng)],
+      routeWhileDragging: false,
+      showAlternatives: false,
+      show: true,
+      lineOptions: {
+        styles: [{ color: "blue", opacity: 0.6, weight: 6 }],
+      },
+    }).addTo(mapRef.current);
+
+    routeControlRef.current = rc;
+
+    return () => {
+      if (routeControlRef.current && mapRef.current) {
+        mapRef.current.removeControl(routeControlRef.current);
+        routeControlRef.current = null;
+      }
+    };
+  }, [origin?.[0], origin?.[1], destination?.[0], destination?.[1]]);
 
   const handleSave = async () => {
     if (!origin || !destination) {
@@ -63,7 +142,7 @@ export default function PackageMap() {
     setSaving(true);
 
     try {
-      const res = await baseURL.post(
+      const res = await baseURL.get(
         "/wilayah/jarak_paket",
         {
           origin: { lat: origin[0], lng: origin[1] },
@@ -81,15 +160,15 @@ export default function PackageMap() {
       setSaving(false);
     }
   };
-
   return (
     <>
-      <div>
+      {/* <div>
         <button
           onClick={() => setMode("origin")}
           style={{
             fontWeight: mode === "origin" ? "bold" : "normal",
             marginRight: 8,
+            cursor: "pointer",
           }}
         >
           tentukan asal
@@ -97,17 +176,21 @@ export default function PackageMap() {
 
         <button
           onClick={() => setMode("destination")}
-          style={{ fontWeight: mode === "destinantion" ? "bold" : "normal" }}
-          tentukan
-          tujuan
-        ></button>
-      </div>
+          style={{
+            fontWeight: mode === "destination" ? "bold" : "normal",
+            cursor: "pointer",
+            border: "2px solid red",
+          }}
+        >
+          tentukan tujuan
+        </button>
+      </div> */}
 
       {/* INFO KOORDINAT */}
-      <div>
+      {/* <div>
         <div>
           Asal:
-          {origin ? "${origin[0].toFixed(6)}, ${origin[1].toFixed(6)}" : "-"}
+          {origin ? `${origin[0].toFixed(6)}, ${origin[1].toFixed(6)}` : "-"}
         </div>
 
         <div>
@@ -116,17 +199,18 @@ export default function PackageMap() {
             ? `${destination[0].toFixed(6)}, ${destination[1].toFixed(6)}`
             : "-"}
         </div>
-      </div>
+      </div> */}
 
       {/* INFO PETA */}
       <MapContainer
+        ref={setMapRef}
         center={[-2.5, 118]}
         zoom={5}
-        style={{ height: "500px", width: "100%" }}
+        style={{ height: "100%", width: "100%" }}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <ClickHandler
           mode={mode}
@@ -134,30 +218,31 @@ export default function PackageMap() {
           setDestination={setDestination}
         />
 
-        {origin && (
-          <Marker position={origin} icon={greenIcon}>
+        {/* POSITION BERISI LATITUDE DAN LONGITUDE BERBENTUK ARRAY ATAU DICT */}
+
+        {lokasiAsal && (
+          <Marker position={lokasiAsal} icon={greenIcon}>
             <Popup>Asal Paket</Popup>
           </Marker>
         )}
 
-        {destination && (
-          <Marker position={destination} icon={redIcon}>
+        {lokasiTujuan && (
+          <Marker position={lokasiTujuan} icon={redIcon}>
             <Popup>tujuan paket</Popup>
           </Marker>
         )}
-
-        {origin && destination && (
+        {lokasiAsal && lokasiTujuan && (
           <Polyline
-            positions={[origin, destination]}
+            positions={[lokasiAsal, lokasiTujuan]}
             color="blue"
             dashArray="5,10"
           />
         )}
 
         <button onClick={handleSave} disabled={saving} style={{ marginTop: 8 }}>
-          {saving ? "Menyimpan..." : "Simpan Paket"}
+          {saving ? "Menyimpan..." : "Simpan Paket"} save
         </button>
       </MapContainer>
     </>
   );
-}
+});

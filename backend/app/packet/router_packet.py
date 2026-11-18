@@ -118,14 +118,10 @@ def get_no_resi(db: Session = Depends(get_db), id= int, pengirim= str):
 def get_data_all_paket(db: Session = Depends(get_db)):
     try:
         rows_paket = get_data_harga_tanggal(db) or []
-        # rows_pelanggan = get_data_all_pelanggan(db) or []
-        
-        # print("ini data semua dari paket ", rows_paket)
-        # print("ini data semua pelanggan ", rows_pelanggan)
+
         return {
            "data_harga": [row["harga_pengiriman"] for row in rows_paket],
            "data_tanggal": [row["tanggal_pengiriman"] for row in rows_paket],
-        #    "data_pelanggan": [row for row in rows_pelanggan],
            "success": True
         }
     except Exception as e:
@@ -142,11 +138,19 @@ def get_all_data_resi_paket(resi_paket: str, db: Session = Depends(get_db)):
             raise HTTPException(status_code=404, detail="Data resi paket tidak ditemukan")
 
         return {
-            "id": data_all.id,
-            "id_paket": data_all.id_paket,
-            "nama_paket": data_all.nama_paket,
-            "nomor_resi_paket": data_all.nomor_resi_paket,
-            "raw_seed": data_all.raw_seed,
+            "id": data_all["data_resi_paket"].id,
+            "id_paket": data_all["data_resi_paket"].id_paket,
+            "nama_paket": data_all["data_resi_paket"].nama_paket,
+            "nomor_resi_paket": data_all["data_resi_paket"].nomor_resi_paket,
+            "raw_seed": data_all["data_resi_paket"].raw_seed,
+            "data_lokasi_asal": {
+                "lat": float(data_all["data_lokasi_asal"].lat_wilayah),
+                "lng": float(data_all["data_lokasi_asal"].long_wilayah)
+            },
+            "data_lokasi_tujuan": {
+                "lat": float(data_all["data_lokasi_tujuan"].lat_wilayah),
+                "lng": float(data_all["data_lokasi_tujuan"].long_wilayah)
+            },
             "success": True
         }
         

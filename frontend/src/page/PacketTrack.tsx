@@ -3,12 +3,17 @@ import baseURL from "../api/Axios";
 import LeafletMap from "../services/PengirimanOpenStreetMap";
 import { useAuth } from "../auth/AuthContext";
 import { useState } from "react";
+import PackageMapTracker from "../services/MapsForPacketTracker";
 
 function Lacak_paket() {
   const { token } = useAuth();
   const [loading, setLoading] = useState<boolean>(false);
-  const [dataResi, setDataResi] = useState<any>([]);
+  const [dataResi, setDataResi] = useState<any>(null);
   const [resiPaket, setResiPaket] = useState<string>("");
+  const [lokasiAsal, setLokasiAsal] = useState<[number, number] | null>(null);
+  const [lokasiTujuan, setLokasiTujuan] = useState<[number, number] | null>(
+    null,
+  );
 
   const handleDataResi = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,9 +26,21 @@ function Lacak_paket() {
         },
       );
 
-      console.log("isi dari respose pelacak paket ", response);
+      const data = response?.data;
+      setDataResi(data || null);
 
-      setDataResi(response?.data || []);
+      const asal = data?.data_lokasi_asal;
+      const tujuan = data?.data_lokasi_tujuan;
+      setLokasiAsal(
+        Number.isFinite(asal?.lat) && Number.isFinite(asal?.lng)
+          ? [asal.lat, asal.lng]
+          : null,
+      );
+      setLokasiTujuan(
+        Number.isFinite(tujuan?.lat) && Number.isFinite(tujuan?.lng)
+          ? [tujuan.lat, tujuan.lng]
+          : null,
+      );
     } catch (err) {
       console.log("terjadi error ", err);
     } finally {
@@ -31,15 +48,6 @@ function Lacak_paket() {
     }
   };
 
-  if (loading) {
-    return (
-      <>
-        <h1>sedang mencari data paket...</h1>
-      </>
-    );
-  }
-
-  console.log("isi state dari state dataResi Paket ", dataResi);
   return (
     <>
       <section className="w-screen h-screen" id="Container-track-packet">
@@ -50,7 +58,10 @@ function Lacak_paket() {
           >
             <div className="grid row-span-4">
               <div id="list-pengiriman">
-                <LeafletMap />
+                <PackageMapTracker
+                  lokasiAsal={lokasiAsal}
+                  lokasiTujuan={lokasiTujuan}
+                />
               </div>
             </div>
             <div className="row-span-1 grid grid-cols-2 gap-2">
@@ -80,10 +91,15 @@ function Lacak_paket() {
               </form>
               <div className="col-span-1">
                 <h1>hasil pencarian:</h1>
-                <ul>
-                  <li>id paket: {dataResi.id}</li>
-                  <li>nama paket: {dataResi.nama_paket}</li>
-                </ul>
+                {loading ? (
+                  <p>sedang mencari data paket...</p>
+                ) : (
+                  <ul>
+                    <li>id paket: {dataResi?.id ?? "-"}</li>
+                    <li>nama paket: {dataResi?.nama_paket ?? "-"}</li>
+                    <li>nomor resi: {dataResi?.nomor_resi_paket ?? "-"}</li>
+                  </ul>
+                )}
               </div>
             </div>
           </div>

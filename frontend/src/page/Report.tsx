@@ -1,9 +1,15 @@
 import DiagramMultiLineFinansial from "../components/DiagramMultiLinFinansial";
 import { DiagramLine } from "../components/DiagramLine";
 import { useGetDataPaket } from "../hooks/useGetDataPaket";
+import { useGetDataPelanggan } from "../hooks/useGetDataPelanggan";
+import filterReport from "../services/filterReport";
+import { useState } from "react";
 
 function Laporan() {
-  const { dataHarga, dataTanggalKirim, dataPelanggan } = useGetDataPaket();
+  const { dataHarga, dataTanggalKirim } = useGetDataPaket();
+  const { dataPelanggan } = useGetDataPelanggan();
+  const [topic, setTopic] = useState<string>("");
+  const [waktu, setWaktu] = useState<string>("");
 
   const harga_pengiriman = Array.isArray(dataHarga)
     ? dataHarga.map((p: any) => {
@@ -25,7 +31,7 @@ function Laporan() {
       })
     : [];
 
-  console.log(id_pelanggan);
+  console.log("ini isi dari id pelanggan", id_pelanggan);
   return (
     <>
       <section
@@ -37,8 +43,8 @@ function Laporan() {
             className="grid gap-6 grid-rows-5 w-full h-full"
             id="pengiriman-card"
           >
-            <div className="row-span-1">
-              <div id="list-pengiriman">berisi laporan</div>
+            <div>
+              <filterReport />
             </div>
             <div className="row-span-4 grid grid-cols-2 gap-4 overflow-auto">
               <div className="shadow-lg">

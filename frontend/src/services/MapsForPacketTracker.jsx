@@ -212,11 +212,11 @@ export default memo(function PackageMapTracker({ lokasiAsal, lokasiTujuan }) {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <ClickHandler
+        {/* <ClickHandler
           mode={mode}
           setOrigin={setOrigin}
           setDestination={setDestination}
-        />
+        /> */}
 
         {/* POSITION BERISI LATITUDE DAN LONGITUDE BERBENTUK ARRAY ATAU DICT */}
 

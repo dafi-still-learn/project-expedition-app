@@ -21,6 +21,10 @@
   width: 215px;
 }
 
+#label-input label input {
+  margin-left: 10px;
+}
+
 #btn-setting {
   border-radius: 10px;
   background-color: var(--color-primary);

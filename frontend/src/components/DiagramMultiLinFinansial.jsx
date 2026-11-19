@@ -1,7 +1,7 @@
 import Chart from "chart.js/auto";
 import { useRef, useEffect } from "react";
 
-function DiagramMultiLineFinansial({ data_item }) {
+function DiagramMultiLineFinansial() {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -43,7 +43,7 @@ function DiagramMultiLineFinansial({ data_item }) {
     });
 
     return () => chart.destroy();
-  }, [data_item]);
+  });
   return <canvas ref={canvasRef}></canvas>;
 }
 

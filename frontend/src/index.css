@@ -8,6 +8,33 @@
   --color-primay-dark: oklch(20.5% 0 none);
 }
 
+/* Gaya default light (tidak perlu diubah, variabel sudah di atas) */
+
+/* --- Dark theme --- */
+html[data-theme="dark"] {
+  --color-primary: oklch(65% 0.2 260);
+  --color-secondary-bg: oklch(15% 0.02 300);
+  --color-primary-bright: #1a1a1a;
+  --color-for-cards: oklch(25% 0.02 300);
+}
+
+/* Override text color for dark theme */
+html[data-theme="dark"] body {
+  color: #e5e5e5;
+}
+
+/* Make sure all headings and paragraphs use light text in dark mode */
+html[data-theme="dark"] h1,
+html[data-theme="dark"] h2,
+html[data-theme="dark"] h3,
+html[data-theme="dark"] h4,
+html[data-theme="dark"] h5,
+html[data-theme="dark"] h6,
+html[data-theme="dark"] p,
+html[data-theme="dark"] li {
+  color: #e5e5e5;
+}
+
 * {
   padding: 0;
   margin: 0;

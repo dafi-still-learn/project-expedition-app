@@ -45,3 +45,41 @@
   border-radius: 10px;
   background-color: var(--color-secondary-bg);
 }
+
+#setting-detail h1 {
+  margin-top: 0;
+  color: var(--color-primary);
+}
+
+/* Dark theme support */
+html[data-theme="dark"] #container-setting {
+  background-color: #1a1a1a;
+  border: 2px solid #333;
+}
+
+html[data-theme="dark"] #container-setting div ul {
+  background-color: #2d2d2d;
+}
+
+html[data-theme="dark"] #container-setting div button {
+  background-color: #333;
+  color: #fff;
+}
+
+html[data-theme="dark"] #btn-setting {
+  background-color: #0f0f0f;
+  color: #fff;
+}
+
+html[data-theme="dark"] #btn-setting:hover {
+  background-color: #1a1a1a;
+  color: #000;
+}
+
+html[data-theme="dark"] #setting-detail {
+  background-color: #2d2d2d;
+}
+
+html[data-theme="dark"] #setting-detail h1 {
+  color: #0f0f0f;
+}

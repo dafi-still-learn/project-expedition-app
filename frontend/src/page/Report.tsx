@@ -1,37 +1,35 @@
-import DiagramMultiLineFinansial from "../components/DiagramMultiLinFinansial";
 import { DiagramLine } from "../components/DiagramLine";
-import { useGetDataPaket } from "../hooks/useGetDataPaket";
-import { useGetDataPelanggan } from "../hooks/useGetDataPelanggan";
-import filterReport from "../services/filterReport";
+import { FilterReport } from "../services/filterReport";
 import { useState } from "react";
+import { DiagramLineReport } from "../services/DiagramLineReport";
+
+type filterReportProps = {
+  jumlah: [];
+  waktu: [];
+};
 
 function Laporan() {
-  const { dataHarga, dataTanggalKirim } = useGetDataPaket();
-  const { dataPelanggan } = useGetDataPelanggan();
-  const [topic, setTopic] = useState<string>("");
-  const [waktu, setWaktu] = useState<string>("");
+  const [filterData, setFilterData] = useState<filterReportProps | null>(null); //berisi filter data
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const harga_pengiriman = Array.isArray(dataHarga)
-    ? dataHarga.map((p: any) => {
-        const raw = p ?? "0";
-        console.log(raw);
-        // Bersihkan format Indonesia: "Rp10.240.750,00" -> 10240750
-        const cleaned = raw.replace(/[^\d,]/g, "").replace(",", ".");
-        console.log(cleaned);
-        return parseFloat(cleaned) || 0;
-      })
-    : [];
+  // const formattedLabels =
+  //   filterData.waktu.map((tanggal) => {
+  //     return new Date(tanggal).toLocaleDateString("id-ID", {
+  //       day: "numeric",
+  //       month: "short",
+  //       year: "numeric",
+  //     });
+  //   }) ?? [];
 
-  const id_pelanggan = Array.isArray(dataPelanggan)
-    ? dataPelanggan.map((p: any) => {
-        const raw = p ?? "";
-        console.log("data raw ", raw.id);
+  console.log("ini isi dari filter data ", filterData);
+  if (loading) {
+    return (
+      <>
+        <h1>masih mencari data...</h1>
+      </>
+    );
+  }
 
-        return raw.id;
-      })
-    : [];
-
-  console.log("ini isi dari id pelanggan", id_pelanggan);
   return (
     <>
       <section
@@ -40,22 +38,28 @@ function Laporan() {
       >
         <div className="w-full h-full" id="report">
           <div
-            className="grid gap-6 grid-rows-5 w-full h-full"
+            className="grid gap-6 grid-rows-9 w-full h-full"
             id="pengiriman-card"
           >
-            <div>
-              <filterReport />
+            <div className="row-span-4">
+              <FilterReport
+                filterData={setFilterData}
+                setLoading={setLoading}
+              />
             </div>
-            <div className="row-span-4 grid grid-cols-2 gap-4 overflow-auto">
-              <div className="shadow-lg">
+            <div className="row-span-5 grid grid-cols-2 gap-4 overflow-auto">
+              {filterData &&
+              "jumlah" in filterData &&
+              filterData.jumlah.length > 0 ? (
                 <DiagramLine
-                  data={harga_pengiriman}
-                  labels={dataTanggalKirim}
+                  data={filterData.jumlah}
+                  labels={filterData.waktu.map((item) =>
+                    new Date(item).toLocaleDateString("id-ID"),
+                  )}
                 />
-              </div>
-              <div className="shadow-lg">
-                <DiagramLine data={id_pelanggan} labels={dataTanggalKirim} />
-              </div>
+              ) : (
+                <DiagramLineReport />
+              )}
             </div>
           </div>
         </div>

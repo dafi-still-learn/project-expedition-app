@@ -23,6 +23,8 @@ def get_data_filter_report(topic: str, waktu: int, db: Session=Depends(get_db)):
                 "jumlah":[r.jumlah_paket for r in rows_data],
                 "waktu":[r.tanggal_pengiriman for r in rows_data]
             }
+        # ini masih belum selesai
+            
         if topic == "pelanggan":
             data_id_pelanggan = db.scalars(select(Pelanggan).where(Pelanggan.id)).all()
             data_waktu_pengiriman = db.execute(select(Paket.tanggal_pengiriman).order_by(Paket.tanggal_pengiriman.desc()).limit(waktu)).all()

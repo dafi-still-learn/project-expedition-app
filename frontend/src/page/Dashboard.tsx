@@ -11,7 +11,7 @@ import { useGetDataPelanggan } from "../hooks/useGetDataPelanggan";
 function Dashboard() {
   const openProfil = localStorage.getItem("profilComplete");
 
-  const { dataPaket } = useGetDataPaket();
+  const { dataPaket, loadingPaket } = useGetDataPaket();
   const { dataPelanggan, loadingPelanggan } = useGetDataPelanggan();
 
   const item_data = [123, 25, 13];
@@ -23,9 +23,11 @@ function Dashboard() {
     console.log(item.nama_pelanggan);
   });
 
-  const harga_pengiriman = Array.isArray(dataPaket.harga_pengiriman)
-    ? dataPaket.harga_pengiriman.map(({ p }: any) => {
-        const raw = String(p ?? "0");
+  const harga_pengiriman = Array.isArray(
+    dataPaket.map((item) => item.harga_pengiriman),
+  )
+    ? dataPaket.map((p) => {
+        const raw = String(p.harga_pengiriman ?? "0");
         // Bersihkan format Indonesia: "Rp10.240.750,00" -> 10240750
         const cleaned = raw.replace(/[^\d,]/g, "").replace(",", ".");
         return parseFloat(cleaned) || 0;
@@ -68,14 +70,16 @@ function Dashboard() {
               <div className="shadow-lg grid gap-1 grid-cols-1 col-span-2">
                 {loadingPaket ? (
                   <p>Memuat data paket..</p>
-                ) : dataPaket.harga_pengiriman.length === 0 ||
-                  dataPaket.tanggal_pengiriman.length === 0 ? (
+                ) : dataPaket.map((item) => item.harga_pengiriman).length ===
+                    0 ||
+                  dataPaket.map((item) => item.tanggal_pengiriman).length ===
+                    0 ? (
                   <p>Belum ada data paket..</p>
                 ) : (
                   <>
                     <DiagramLine
                       data={harga_pengiriman}
-                      labels={dataPaket.tanggal_pengiriman}
+                      labels={dataPaket.map((item) => item.tanggal_pengiriman)}
                     />
                   </>
                 )}

@@ -62,13 +62,15 @@ def cari_id_paket(db: Session, nama_pengirim)-> str:
         print("terjadi eror ambil id paket ", e)
         return None
 
-def get_data_all_paket(db :Session)-> dict:
+def get_data_all_paket(db :Session)-> list[dict]:
     try:
-        rows = db.execute(select(Paket)).mappings().all()
+        rows = db.query(Paket).all()
+        
+        data = [{k: v for k, v in obj.__dict__.items() if not k.startwith('_')} for obj in rows]
         
         print("data tanggal paket ", rows)
         
-        return rows
+        return data
     except Exception as e:
         print("eror ambil paket ", e)
         return []

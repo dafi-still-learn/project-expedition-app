@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends
 import locale
-from app.packet.service import input_database_paket, get_data_harga_tanggal
+from app.packet.service import input_database_paket, get_data_all_paket
 from app.customers.service import get_data_all_pelanggan
 from app.packet.schemas import data_pengiriman
 from app.service.waktu_pengiriman_sampai import waktu_pengiriman
@@ -100,7 +100,7 @@ def get_jarak_pengiriman(db: Session = Depends(get_db), asal= str, tujuan= str):
 @router_packet.get("/no_resi")
 def get_no_resi(db: Session = Depends(get_db), id= int, pengirim= str):
     try:
-        hasil_generate_no_resi = generate_nomor_resi_paket(id)
+        hasil_generate_no_resi = generate_nomor_resi_paket(db, id)
         
         print("isi dari data id paket ", hasil_generate_no_resi)
         
@@ -117,13 +117,11 @@ def get_no_resi(db: Session = Depends(get_db), id= int, pengirim= str):
 @router_packet.get("/all")
 def get_data_all_paket(db: Session = Depends(get_db)):
     try:
-        rows_paket = get_data_harga_tanggal(db) or []
-        print("data dari semua data paket ", rows_paket)
+        rows_paket = get_data_all_paket(db)
+        print("data dari semua data paket 121312323123123123", rows_paket)
         
-        return {
-           "data_all_paket": rows_paket,
-           "success": True
-        }
+        return rows_paket
+        
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
         

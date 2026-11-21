@@ -6,16 +6,16 @@ import { useGetDataPelanggan } from "../hooks/useGetDataPelanggan";
 import DiagramMultiLineFinansial from "../components/DiagramMultiLinFinansial";
 
 export const DiagramLineReport = (): React.JSX.Element => {
-  const { dataHarga, dataTanggalKirim } = useGetDataPaket();
+  const { dataPaket } = useGetDataPaket();
   const { dataPelanggan } = useGetDataPelanggan();
 
-  const harga_pengiriman = Array.isArray(dataHarga)
-    ? dataHarga.map((p: any) => {
-        const raw = p ?? "0";
-        console.log(raw);
+  const harga_pengiriman = Array.isArray(
+    dataPaket.map((item) => item.harga_pengiriman),
+  )
+    ? dataPaket.map((p) => {
+        const raw = String(p.harga_pengiriman ?? "0");
         // Bersihkan format Indonesia: "Rp10.240.750,00" -> 10240750
         const cleaned = raw.replace(/[^\d,]/g, "").replace(",", ".");
-        console.log(cleaned);
         return parseFloat(cleaned) || 0;
       })
     : [];
@@ -32,13 +32,28 @@ export const DiagramLineReport = (): React.JSX.Element => {
   return (
     <>
       <div className="shadow-lg">
-        <DiagramLine data={harga_pengiriman} labels={dataTanggalKirim} />
+        <DiagramLine
+          data={harga_pengiriman}
+          labels={dataPaket.map((item) =>
+            new Date(item.tanggal_pengiriman).toLocaleDateString("id-ID"),
+          )}
+        />
       </div>
       <div className="shadow-lg">
-        <DiagramLine data={id_pelanggan} labels={dataTanggalKirim} />
+        <DiagramLine
+          data={id_pelanggan}
+          labels={dataPaket.map((item) =>
+            new Date(item.tanggal_pengiriman).toLocaleDateString("id-ID"),
+          )}
+        />
       </div>
       <div className="shadow-lg">
-        <DiagramLine data={harga_pengiriman} labels={dataTanggalKirim} />
+        <DiagramLine
+          data={harga_pengiriman}
+          labels={dataPaket.map((item) =>
+            new Date(item.tanggal_pengiriman).toLocaleDateString("id-ID"),
+          )}
+        />
       </div>
       <div className="shadow-lg">
         <DiagramMultiLineFinansial />

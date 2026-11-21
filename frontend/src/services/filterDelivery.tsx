@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../auth/AuthContext";
 import baseURL from "../api/Axios";
-import { Filter } from "@boxicons/react";
 
-export const FitlerDelivery = ({ filterData }: any): React.JSX.Element => {
+export const FitlerDelivery = ({
+  filterData,
+  onClose,
+}: any): React.JSX.Element => {
   const [namaPengirim, setNamaPengirim] = useState<string>("");
   const [namaPaket, setNamaPaket] = useState<string>("");
   const [tipePaket, setTipePaket] = useState<string>("");
@@ -33,6 +35,7 @@ export const FitlerDelivery = ({ filterData }: any): React.JSX.Element => {
       });
 
       filterData(response.data);
+      onClose();
     } catch (err) {
       console.log("terjadi error saat mengambil data pengiriman ", err);
     }
@@ -40,7 +43,10 @@ export const FitlerDelivery = ({ filterData }: any): React.JSX.Element => {
 
   return (
     <>
-      <div>
+      <div
+        className="w-300 h-400 fixed flex flex-col gap-3"
+        id="filter-delivery"
+      >
         <form onSubmit={handleFilterData}>
           <div>
             <label htmlFor="">

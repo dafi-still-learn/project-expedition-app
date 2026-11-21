@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends
 import locale
-from app.packet.service import input_database_paket, get_data_all_paket
+from app.packet.service import input_database_paket, get_data_all_paket as get_data_all_paket_service
 from app.customers.service import get_data_all_pelanggan
 from app.packet.schemas import data_pengiriman
 from app.service.waktu_pengiriman_sampai import waktu_pengiriman
@@ -117,8 +117,7 @@ def get_no_resi(db: Session = Depends(get_db), id= int, pengirim= str):
 @router_packet.get("/all")
 def get_data_all_paket(db: Session = Depends(get_db)):
     try:
-        rows_paket = get_data_all_paket(db)
-        print("data dari semua data paket 121312323123123123", rows_paket)
+        rows_paket = get_data_all_paket_service(db)
         
         return rows_paket
         

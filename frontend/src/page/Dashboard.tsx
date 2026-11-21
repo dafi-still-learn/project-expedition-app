@@ -79,7 +79,11 @@ function Dashboard() {
                   <>
                     <DiagramLine
                       data={harga_pengiriman}
-                      labels={dataPaket.map((item) => item.tanggal_pengiriman)}
+                      labels={dataPaket.map((item) =>
+                        new Date(item.tanggal_pengiriman).toLocaleDateString(
+                          "id-ID",
+                        ),
+                      )}
                     />
                   </>
                 )}

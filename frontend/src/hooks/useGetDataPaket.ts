@@ -43,7 +43,7 @@ export const useGetDataPaket = () => {
           },
         });
 
-        setDataPaket(response.data?.data);
+        setDataPaket(response.data ?? []);
       } catch (err) {
         console.log("terjadi error pada saat pengambilan data", err);
         setDataPaket([]);

@@ -4,10 +4,14 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import Setting from "../page/Setting";
 import Sidebar from "../components/sidebar";
+import { FitlerDelivery } from "../services/filterDelivery";
+import Pengiriman from "../page/Delivery";
 
 function ExpeditionPage() {
   const location = useLocation();
-  const [openSetting, setOpenSetting] = useState(false);
+  const [openSetting, setOpenSetting] = useState<boolean>(false);
+  const [openFilter, setOpenFilter] = useState<boolean>(false);
+  const [dataFilter, setDataFilter] = useState<any[]>([]);
 
   return (
     <>
@@ -16,9 +20,19 @@ function ExpeditionPage() {
         id="container-expedition"
       >
         <Sidebar openSetting={() => setOpenSetting(true)} />
+        {/* <Pengiriman
+          dataFilter={dataFilter}
+          openFilter={() => setOpenFilter(true)}
+        ></Pengiriman> */}
         <Outlet context={{ location, openSetting }} />
 
         {openSetting && <Setting onClose={() => setOpenSetting(false)} />}
+        {openFilter && (
+          <FitlerDelivery
+            filterData={setDataFilter}
+            onClose={() => setOpenFilter(false)}
+          ></FitlerDelivery>
+        )}
       </div>
     </>
   );

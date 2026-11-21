@@ -9,26 +9,27 @@ def get_data_resi_paket(db: Session, resi_paket):
     
     if rows is None:
         print("data tidak ditemukan")
-    else:
+
+        return None;
         # PAKAI ID_PAKET RESI PAKET
-        data_id_paket = db.scalars(select(Paket).where(Paket.id == rows.id_paket)).first()
-        print("isi id paket", data_id_paket)
+    data_id_paket = db.scalars(select(Paket).where(Paket.id == rows.id_paket)).first()
+    print("isi id paket", data_id_paket)
         
         # KEMUDIAN ID_PAKET DIGUNAKAN UNTUK AMBIL ASAL DAN TUJUAN PAKET
-        data_lokasi_asal_paket = db.scalars(select(Wilayah).where(Wilayah.nama_wilayah == data_id_paket.asal_paket)).one()
-        print("isi dari asal paket", data_lokasi_asal_paket)
+    data_lokasi_asal_paket = db.scalars(select(Wilayah).where(Wilayah.nama_wilayah == data_id_paket.asal_paket)).one()
+    print("isi dari asal paket", data_lokasi_asal_paket)
         
-        data_lokasi_tujuan_paket = db.scalars(select(Wilayah).where(Wilayah.nama_wilayah == data_id_paket.tujuan_paket)).one()
-        print("isi data tujuan paket", data_lokasi_tujuan_paket)
+    data_lokasi_tujuan_paket = db.scalars(select(Wilayah).where(Wilayah.nama_wilayah == data_id_paket.tujuan_paket)).one()
+    print("isi data tujuan paket", data_lokasi_tujuan_paket)
         
-        print(f"titik koordinat asal, {data_lokasi_asal_paket.lat_wilayah} {data_lokasi_asal_paket.long_wilayah}")
+    print(f"titik koordinat asal, {data_lokasi_asal_paket.lat_wilayah} {data_lokasi_asal_paket.long_wilayah}")
         
-        print(f"titik koordinat tujuan , {data_lokasi_tujuan_paket.lat_wilayah} {data_lokasi_tujuan_paket.long_wilayah}")
+    print(f"titik koordinat tujuan , {data_lokasi_tujuan_paket.lat_wilayah} {data_lokasi_tujuan_paket.long_wilayah}")
         
         # DARI ASAL DAN TUJUAN AMBIL LAT DAN LONG
         # DIKIRIM KE FRONTEND UNTUK PETA
-        return {
+    return {
             "data_resi_paket": rows,
             "data_lokasi_asal": data_lokasi_asal_paket,
             "data_lokasi_tujuan": data_lokasi_tujuan_paket
-        }
+    }

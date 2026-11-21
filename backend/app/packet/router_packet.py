@@ -118,10 +118,10 @@ def get_no_resi(db: Session = Depends(get_db), id= int, pengirim= str):
 def get_data_all_paket(db: Session = Depends(get_db)):
     try:
         rows_paket = get_data_harga_tanggal(db) or []
-
+        print("data dari semua data paket ", rows_paket)
+        
         return {
-           "data_harga": [row["harga_pengiriman"] for row in rows_paket],
-           "data_tanggal": [row["tanggal_pengiriman"] for row in rows_paket],
+           "data_all_paket": rows_paket,
            "success": True
         }
     except Exception as e:

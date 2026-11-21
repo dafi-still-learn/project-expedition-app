@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Filter } from "@boxicons/react";
 import DetailDelivery from "../components/DetailDelivery";
-import { useGetDataPelanggan } from "../hooks/useGetDataPelanggan";
+import { useGetDataPaket } from "../hooks/useGetDataPaket";
 
 const Pengiriman = () => {
-  const { dataPelanggan } = useGetDataPelanggan();
+  const { dataPaket } = useGetDataPaket();
 
   const [selectedItem, setSelectedItem] = useState<any>(null);
 
@@ -29,7 +29,7 @@ const Pengiriman = () => {
                 </div>
               </div>
               <div className="overflow-y-scroll bg-red-200">
-                {dataPelanggan.map((item: any) => (
+                {dataPaket.map((item: any) => (
                   <>
                     <ul
                       key={item.id}

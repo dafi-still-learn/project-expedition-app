@@ -62,9 +62,9 @@ def cari_id_paket(db: Session, nama_pengirim)-> str:
         print("terjadi eror ambil id paket ", e)
         return None
 
-def get_data_harga_tanggal(db :Session)-> str:
+def get_data_all_paket(db :Session)-> dict:
     try:
-        rows = db.execute(select(Paket.tanggal_pengiriman, Paket.harga_pengiriman)).mappings().all()
+        rows = db.execute(select(Paket)).mappings().all()
         
         print("data tanggal paket ", rows)
         

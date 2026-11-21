@@ -40,7 +40,8 @@ def get_data_filter_delivery(nama_pengirim: str | None = Form(None), nama_paket:
         hasil = db.execute(query).scalars().all()
         
         print("bentukan data dari filter ", hasil)
-    
+        
+        return hasil
     except Exception as e:
         raise HTTPException(status_code=500, detail=(e))
                         

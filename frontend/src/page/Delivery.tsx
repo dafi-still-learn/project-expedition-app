@@ -2,17 +2,26 @@ import { useState } from "react";
 import { Filter } from "@boxicons/react";
 import DetailDelivery from "../components/DetailDelivery";
 import { useGetDataPaket } from "../hooks/useGetDataPaket";
+import { FitlerDelivery } from "../services/filterDelivery";
 
-const Pengiriman = ({ dataFilter, openFilter }: any) => {
+const Pengiriman = () => {
   const { dataPaket } = useGetDataPaket();
   const [selectedItem, setSelectedItem] = useState<any>(null);
+  const [openFilter, setOpenFilter] = useState<boolean>(false);
+  const [dataFilter, setDataFilter] = useState<any[]>([]);
 
   const displayData =
     Array.isArray(dataFilter) && dataFilter.length > 0 ? dataFilter : dataPaket;
   console.log("data dari filter data ", displayData);
   return (
     <>
-      <section className="w-screen h-screen" id="Container-delivery">
+      <section className="w-screen h-screen relative" id="Container-delivery">
+        {openFilter && (
+          <FitlerDelivery
+            filterData={setDataFilter}
+            onClose={() => setOpenFilter(false)}
+          ></FitlerDelivery>
+        )}
         <div className="w-full h-full relative" id="delivery">
           <div
             className="grid gap-6 grid-cols-5 w-full h-full"
@@ -25,8 +34,11 @@ const Pengiriman = ({ dataFilter, openFilter }: any) => {
               >
                 <h1>pengiriman</h1>
                 <div>
-                  <button className="cursor-pointer">
-                    <Filter onClick={openFilter} />
+                  <button
+                    className="cursor-pointer"
+                    onClick={() => setOpenFilter(true)}
+                  >
+                    <Filter />
                   </button>
                 </div>
               </div>

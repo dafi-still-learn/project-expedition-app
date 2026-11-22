@@ -1,8 +1,18 @@
 import { useGetDataPelanggan } from "../hooks/useGetDataPelanggan";
 import { Filter } from "@boxicons/react";
+import { useState } from "react";
+import { FilterPelanggan } from "../services/filterPelanggan";
 
 function Pelanggan() {
   const { dataPelanggan } = useGetDataPelanggan();
+
+  const [dataFilter, setDataFilter] = useState<any[]>([]);
+
+  const displayData =
+    Array.isArray(dataFilter) && dataFilter.length > 0
+      ? dataFilter
+      : dataPelanggan;
+  console.log("data dari filter data ", displayData);
   return (
     <>
       <section
@@ -10,17 +20,15 @@ function Pelanggan() {
         id="Container-customer"
       >
         <div
-          className="grid gap-6 grid-rows-5 overflow-hidden"
+          className="grid gap-6 grid-rows-10 overflow-hidden"
           id="pengiriman-card"
         >
-          <div className="grid grid-rows-3 row-span-1 bg-red-200">
-            <h1 className="row-span-1">daftar pelanggan</h1>
-
-            <div className="row-span-2 gap-2">
-              <h1>isi Filter</h1>
+          <div className="flex place-item-center row-span-2 bg-red-200">
+            <div className="w-full h-full">
+              <FilterPelanggan filterData={setDataFilter}></FilterPelanggan>
             </div>
           </div>
-          <div className="row-span-4 grid grid-cols-1 gap-2 overflow-y-auto">
+          <div className="row-span-8 grid grid-cols-1 gap-2 overflow-y-auto">
             {dataPelanggan.map((item: any) => (
               <>
                 <ul key={item.id} className="grid grid-cols-22 cursor-pointer">

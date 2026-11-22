@@ -10,8 +10,6 @@ import Pengiriman from "../page/Delivery";
 function ExpeditionPage() {
   const location = useLocation();
   const [openSetting, setOpenSetting] = useState<boolean>(false);
-  const [openFilter, setOpenFilter] = useState<boolean>(false);
-  const [dataFilter, setDataFilter] = useState<any[]>([]);
 
   return (
     <>
@@ -27,12 +25,6 @@ function ExpeditionPage() {
         <Outlet context={{ location, openSetting }} />
 
         {openSetting && <Setting onClose={() => setOpenSetting(false)} />}
-        {openFilter && (
-          <FitlerDelivery
-            filterData={setDataFilter}
-            onClose={() => setOpenFilter(false)}
-          ></FitlerDelivery>
-        )}
       </div>
     </>
   );

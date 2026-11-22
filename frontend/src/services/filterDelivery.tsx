@@ -14,6 +14,7 @@ export const FitlerDelivery = ({
   const [waktu, setWaktu] = useState<string>("");
   const { token } = useAuth();
 
+  console.log("ini filter pengiriman");
   const handleFilterData = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -43,12 +44,9 @@ export const FitlerDelivery = ({
 
   return (
     <>
-      <div
-        className="w-300 h-400 fixed flex flex-col gap-3"
-        id="filter-delivery"
-      >
-        <form onSubmit={handleFilterData}>
-          <div>
+      <div className="w-100 h-80 fixed flex gap-3 bg-white z-1000 rounded-xl translate-x-[-50%] translate-y-[-50%] top-[50%] left-[50%] outline-2 p-10">
+        <form onSubmit={handleFilterData} className="grid grid-rows-8">
+          <div className="flex flex-col justify-around gap-2 row-span-6">
             <label htmlFor="">
               nama pengirim
               <input
@@ -85,7 +83,7 @@ export const FitlerDelivery = ({
               />
             </label>
           </div>
-          <div>
+          <div className="row-span-1">
             <select name="" id="" onChange={(e) => setWaktu(e.target.value)}>
               <option value="3">3 hari</option>
               <option value="7">7 hari</option>
@@ -93,7 +91,9 @@ export const FitlerDelivery = ({
               <option value="30">30 hari</option>
             </select>
           </div>
-          <button type="submit">filter</button>
+          <button type="submit" className="w-70 h-10 bg-red-200 row-span-1">
+            filter
+          </button>
         </form>
       </div>
     </>

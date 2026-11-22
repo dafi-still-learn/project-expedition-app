@@ -11,7 +11,8 @@ from app.users.router_profil import router_profil
 from app.customers.router_customers import router_customers
 from app.wilayah.router import router_wilayah
 from app.report.router_report import router_report
-from app.delivery.router_delivery import router_delivery
+from app.filter.delivery.router_delivery import router_delivery
+from app.filter.pelanggan.pelanggan_router import router_pelanggan
 
 Base.metadata.create_all(bind=engine)
 
@@ -32,6 +33,7 @@ app.include_router(router_customers)
 app.include_router(router_wilayah)
 app.include_router(router_report)
 app.include_router(router_delivery)
+app.include_router(router_pelanggan)
 
 app.add_middleware(
     CORSMiddleware,

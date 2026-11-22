@@ -26,12 +26,13 @@ export const FilterPelanggan = ({ filterData }: any): React.JSX.Element => {
 
     try {
       const queryString = params.toString();
-      const response = await baseURL.get(`/pengiriman/filter?${queryString}`, {
+      const response = await baseURL.get(`/pelanggan/filter?${queryString}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
+      console.log("tipe data dari response ", response.data);
       filterData(response.data);
     } catch (err) {
       console.log("terjadi error saat mengambil data pengiriman ", err);

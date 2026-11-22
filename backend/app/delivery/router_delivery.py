@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Form, HTTPException
+from fastapi import APIRouter, Depends, Query, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import select, and_
 from app.database.connection import get_db
@@ -8,8 +8,15 @@ from datetime import datetime, timedelta
 router_delivery = APIRouter(prefix="/pengiriman")
 
 @router_delivery.get("/filter")
-def get_data_filter_delivery(nama_pengirim: str | None = Form(None), nama_paket: str | None = Form(None), tipe_paket: str | None = Form(None), asal_kota: str | None = Form(None), tujuan_kota: str | None = Form(None), waktu: int | None = Form(None), db: Session=Depends(get_db)):
-    waktu_filter = datetime.now() - timedelta(days=waktu)
+def get_data_filter_delivery(
+    nama_pengirim: str | None = Query(None),
+    nama_paket: str | None = Query(None),
+    tipe_paket: str | None = Query(None),
+    asal_kota: str | None = Query(None),
+    tujuan_kota: str | None = Query(None),
+    waktu: int | None = Query(None),
+    db: Session = Depends(get_db)
+):
     try:
         query = select(Paket)
         kondisi = []
@@ -36,13 +43,12 @@ def get_data_filter_delivery(nama_pengirim: str | None = Form(None), nama_paket:
         if kondisi:
             query = query.where(and_(*kondisi))
             
-        
         hasil = db.execute(query).scalars().all()
         
         print("bentukan data dari filter ", hasil)
         
         return hasil
     except Exception as e:
-        raise HTTPException(status_code=500, detail=(e))
+        raise HTTPException(status_code=500, detail=str(e))
                         
         

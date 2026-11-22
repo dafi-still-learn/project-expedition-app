@@ -26,7 +26,7 @@ export const FilterKurir = ({ filterData }: any): React.JSX.Element => {
 
     try {
       const queryString = params.toString();
-      const response = await baseURL.get(`/delivery/filter?${queryString}`, {
+      const response = await baseURL.get(`/pengiriman/filter?${queryString}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

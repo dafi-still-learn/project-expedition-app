@@ -3,12 +3,12 @@ import { useAuth } from "../auth/AuthContext";
 import baseURL from "../api/Axios";
 
 export const FilterKurir = ({ filterData }: any): React.JSX.Element => {
-  const [namaPengirim, setNamaPengirim] = useState<string>("");
-  const [namaPaket, setNamaPaket] = useState<string>("");
-  const [tipePaket, setTipePaket] = useState<string>("");
-  const [asalKota, setAsalKota] = useState<string>("");
-  const [tujuanKota, setTujuanKota] = useState<string>("");
-  const [waktu, setWaktu] = useState<string>("");
+  const [namaKurir, setNamaKurir] = useState<string>("");
+  const [jalurKurir, setJalurKurir] = useState<string>("");
+  const [daerahKurir, setDaerahKurir] = useState<string>("");
+  const [statusKurir, setStatusKurir] = useState<string>("");
+  const [ratingKurir, setRatingKurir] = useState<string>("");
+  const [alamatKurir, setAlamatKurir] = useState<string>("");
   const { token } = useAuth();
 
   console.log("ini filter pengiriman");
@@ -17,16 +17,16 @@ export const FilterKurir = ({ filterData }: any): React.JSX.Element => {
 
     const params = new URLSearchParams();
 
-    if (namaPengirim) params.append("nama_pengirim", namaPengirim);
-    if (namaPaket) params.append("nama_paket", namaPaket);
-    if (tipePaket) params.append("tipe_paket", tipePaket);
-    if (asalKota) params.append("asal_kota", asalKota);
-    if (tujuanKota) params.append("tujuan_kota", tujuanKota);
-    if (waktu) params.append("waktu", waktu);
+    if (namaKurir) params.append("nama_pengirim", namaKurir);
+    if (jalurKurir) params.append("nama_paket", jalurKurir);
+    if (daerahKurir) params.append("tipe_paket", daerahKurir);
+    if (statusKurir) params.append("asal_kota", statusKurir);
+    if (ratingKurir) params.append("tujuan_kota", ratingKurir);
+    if (alamatKurir) params.append("alamat_kurir", alamatKurir);
 
     try {
       const queryString = params.toString();
-      const response = await baseURL.get(`/pengiriman/filter?${queryString}`, {
+      const response = await baseURL.get(`/kurir/filter?${queryString}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -42,50 +42,49 @@ export const FilterKurir = ({ filterData }: any): React.JSX.Element => {
     <>
       <div className="w-full h-full">
         <form onSubmit={handleFilterData} className="grid grid-colsd-8">
-          <div className="flex justify-around gap-2 col-span-6">
+          <div className="flex justify-around gap-2 col-span-7">
             <label htmlFor="">
-              nama pengirim
+              nama kurir
               <input
                 type="text"
-                onChange={(e) => setNamaPengirim(e.target.value)}
+                onChange={(e) => setNamaKurir(e.target.value)}
               />
             </label>
             <label htmlFor="">
-              nama paket
+              jalur kurir
               <input
                 type="text"
-                onChange={(e) => setNamaPaket(e.target.value)}
+                onChange={(e) => setJalurKurir(e.target.value)}
               />
             </label>
             <label htmlFor="">
-              tipe paket
+              daerah kurir
               <input
                 type="text"
-                onChange={(e) => setTipePaket(e.target.value)}
+                onChange={(e) => setDaerahKurir(e.target.value)}
               />
             </label>
             <label htmlFor="">
-              asal kota
+              status kurir
               <input
                 type="text"
-                onChange={(e) => setAsalKota(e.target.value)}
+                onChange={(e) => setStatusKurir(e.target.value)}
               />
             </label>
             <label htmlFor="">
-              tujuan kota
+              rating kurir
               <input
                 type="text"
-                onChange={(e) => setTujuanKota(e.target.value)}
+                onChange={(e) => setRatingKurir(e.target.value)}
               />
             </label>
-          </div>
-          <div className="col-span-1">
-            <select name="" id="" onChange={(e) => setWaktu(e.target.value)}>
-              <option value="3">3 hari</option>
-              <option value="7">7 hari</option>
-              <option value="14">14 hari</option>
-              <option value="30">30 hari</option>
-            </select>
+            <label htmlFor="">
+              alamat kurir
+              <input
+                type="text"
+                onChange={(e) => setAlamatKurir(e.target.value)}
+              />
+            </label>
           </div>
           <button type="submit" className="w-70 h-10 bg-red-200 col-span-1">
             filter

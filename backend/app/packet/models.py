@@ -21,6 +21,7 @@ class Paket(Base):
     tanggal_sampai = Column(DateTime)
     harga_pengiriman = Column(String)
     
+    pembayaran = relationship("Pembayaran", back_populates="paket")
     resi_paket = relationship("ResiPaket" , back_populates="paket")
     pelanggan = relationship("Pelanggan", back_populates="paket")
 

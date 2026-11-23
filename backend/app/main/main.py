@@ -13,6 +13,8 @@ from app.wilayah.router import router_wilayah
 from app.report.router_report import router_report
 from app.filter.delivery.router_delivery import router_delivery
 from app.filter.pelanggan.pelanggan_router import router_pelanggan
+from app.filter.pembayaran.router_pembayaran import router_pembayaran
+from app.filter.kurir.router_kurir import router_kurir
 
 Base.metadata.create_all(bind=engine)
 
@@ -34,6 +36,8 @@ app.include_router(router_wilayah)
 app.include_router(router_report)
 app.include_router(router_delivery)
 app.include_router(router_pelanggan)
+app.include_router(router_pembayaran)
+app.include_router(router_kurir)
 
 app.add_middleware(
     CORSMiddleware,

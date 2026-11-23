@@ -26,7 +26,7 @@ export const FilterPembayaran = ({ filterData }: any): React.JSX.Element => {
 
     try {
       const queryString = params.toString();
-      const response = await baseURL.get(`/pengiriman/filter?${queryString}`, {
+      const response = await baseURL.get(`/pembayaran/filter?${queryString}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

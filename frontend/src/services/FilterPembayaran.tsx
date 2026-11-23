@@ -3,11 +3,10 @@ import { useAuth } from "../auth/AuthContext";
 import baseURL from "../api/Axios";
 
 export const FilterPembayaran = ({ filterData }: any): React.JSX.Element => {
-  const [namaPengirim, setNamaPengirim] = useState<string>("");
-  const [namaPaket, setNamaPaket] = useState<string>("");
-  const [tipePaket, setTipePaket] = useState<string>("");
-  const [asalKota, setAsalKota] = useState<string>("");
-  const [tujuanKota, setTujuanKota] = useState<string>("");
+  const [pihakPembayaran, setPihakPembayaran] = useState<string>("");
+  const [tanggalPembayaran, setTanggalPembayaran] = useState<string>("");
+  const [nominalPembayaran, setNominalPembayaran] = useState<string>("");
+  const [metodePembayaran, setMetodePembayaran] = useState<string>("");
   const [waktu, setWaktu] = useState<string>("");
   const { token } = useAuth();
 
@@ -17,11 +16,12 @@ export const FilterPembayaran = ({ filterData }: any): React.JSX.Element => {
 
     const params = new URLSearchParams();
 
-    if (namaPengirim) params.append("nama_pengirim", namaPengirim);
-    if (namaPaket) params.append("nama_paket", namaPaket);
-    if (tipePaket) params.append("tipe_paket", tipePaket);
-    if (asalKota) params.append("asal_kota", asalKota);
-    if (tujuanKota) params.append("tujuan_kota", tujuanKota);
+    if (tanggalPembayaran)
+      params.append("tanggal_pembayaran", tanggalPembayaran);
+    if (pihakPembayaran) params.append("pihak_pembayaran", pihakPembayaran);
+    if (nominalPembayaran)
+      params.append("nominal_pembayaran", nominalPembayaran);
+    if (metodePembayaran) params.append("metode_pembayaran", metodePembayaran);
     if (waktu) params.append("waktu", waktu);
 
     try {
@@ -44,38 +44,30 @@ export const FilterPembayaran = ({ filterData }: any): React.JSX.Element => {
         <form onSubmit={handleFilterData} className="grid grid-colsd-8">
           <div className="flex justify-around gap-2 col-span-6">
             <label htmlFor="">
-              nama pengirim
+              nama pembayar
               <input
                 type="text"
-                onChange={(e) => setNamaPengirim(e.target.value)}
+                onChange={(e) => setPihakPembayaran(e.target.value)}
               />
             </label>
             <label htmlFor="">
-              nama paket
               <input
                 type="text"
-                onChange={(e) => setNamaPaket(e.target.value)}
+                onChange={(e) => setTanggalPembayaran(e.target.value)}
               />
             </label>
             <label htmlFor="">
               tipe paket
               <input
                 type="text"
-                onChange={(e) => setTipePaket(e.target.value)}
+                onChange={(e) => setNominalPembayaran(e.target.value)}
               />
             </label>
             <label htmlFor="">
               asal kota
               <input
                 type="text"
-                onChange={(e) => setAsalKota(e.target.value)}
-              />
-            </label>
-            <label htmlFor="">
-              tujuan kota
-              <input
-                type="text"
-                onChange={(e) => setTujuanKota(e.target.value)}
+                onChange={(e) => setMetodePembayaran(e.target.value)}
               />
             </label>
           </div>

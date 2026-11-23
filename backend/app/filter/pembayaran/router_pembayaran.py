@@ -32,9 +32,9 @@ def get_data_filter_pelanggan(
         if metode_pembayaran:
             kondisi.append(Pembayaran.metode_pembayaran == metode_pembayaran)
         
-        # if waktu is not None:
-        #     waktu_filter = datetime.now() - timedelta(days=waktu)
-        #     kondisi.append(Pelanggan.tanggal_pengiriman >= waktu_filter)
+        if waktu is not None:
+            waktu_filter = datetime.now() - timedelta(days=waktu)
+            kondisi.append(Pembayaran.tanggal_pembayaran >= waktu_filter)
 
         if kondisi:
             query = query.where(and_(*kondisi))

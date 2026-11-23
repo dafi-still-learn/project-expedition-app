@@ -11,10 +11,9 @@ router_pelanggan = APIRouter(prefix="/pelanggan")
 def get_data_filter_pelanggan(
     nama_pengirim: str | None = Query(None),
     nama_paket: str | None = Query(None),
-    tipe_paket: str | None = Query(None),
     asal_kota: str | None = Query(None),
     tujuan_kota: str | None = Query(None),
-    waktu: int | None = Query(None),
+    # waktu: int | None = Query(None),
     db: Session = Depends(get_db)
 ):
     try:
@@ -22,23 +21,20 @@ def get_data_filter_pelanggan(
         kondisi = []
         
         if nama_pengirim:
-            kondisi.append(Pelanggan.nama_pengirim == nama_pengirim)
+            kondisi.append(Pelanggan.nama_pelanggan == nama_pengirim)
         
         if nama_paket:
             kondisi.append(Pelanggan.nama_paket == nama_paket)
             
-        if tipe_paket:
-            kondisi.append(Pelanggan.jenis_paket == tipe_paket)
-            
         if asal_kota:
-            kondisi.append(Pelanggan.asal_paket == asal_kota)
+            kondisi.append(Pelanggan.asal_pengiriman == asal_kota)
         
         if tujuan_kota:
-            kondisi.append(Pelanggan.tujuan_paket == tujuan_kota)
+            kondisi.append(Pelanggan.tujuan_pengiriman == tujuan_kota)
         
-        if waktu is not None:
-            waktu_filter = datetime.now() - timedelta(days=waktu)
-            kondisi.append(Pelanggan.tanggal_pengiriman >= waktu_filter)
+        # if waktu is not None:
+        #     waktu_filter = datetime.now() - timedelta(days=waktu)
+        #     kondisi.append(Pelanggan.tanggal_pengiriman >= waktu_filter)
 
         if kondisi:
             query = query.where(and_(*kondisi))

@@ -33,17 +33,17 @@ function Pelanggan() {
               <p className="text-center text-gray-500">Tidak ada data</p>
             ) : (
               displayData.map((item) => (
-                <ul key={item.id} className="grid grid-cols-28 cursor-pointer">
+                <ul key={item.id} className="grid grid-cols-22 cursor-pointer">
                   <li className="col-span-2">paket: {item.id}</li>
-                  <li className="col-span-3">nama: {item.nama_pengirim}</li>
+                  <li className="col-span-3">nama: {item.nama_pelanggan}</li>
                   <li className="col-span-5">nama paket: {item.nama_paket}</li>
                   <li className="col-span-4">
-                    asal pengiriman: {item.asal_paket}
+                    asal pengiriman: {item.asal_pengiriman}
                   </li>
                   <li className="col-span-4">
-                    tujuan pengiriman: {item.tujuan_paket}
+                    tujuan pengiriman: {item.tujuan_pengiriman}
                   </li>
-                  <li className="col-span-5">
+                  {/* <li className="col-span-5">
                     tanggal pengiriman:
                     {item.tanggal_pengiriman
                       ? typeof item.tanggal_pengiriman === "object" &&
@@ -53,12 +53,9 @@ function Pelanggan() {
                             "id-ID",
                           )
                       : "Belum ada"}
-                  </li>
+                  </li> */}
                   <li className="col-span-4">
-                    harga pengiriman: {item.harga_pengiriman}
-                  </li>
-                  <li className="col-span-1">
-                    jumlah paket: {item.jumlah_paket}
+                    harga pengiriman: {item.harga_paket}
                   </li>
                 </ul>
               ))

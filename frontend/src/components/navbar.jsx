@@ -1,27 +1,23 @@
-import { UserCircle } from "@boxicons/react";
+import { UserCircle, Bell } from "@boxicons/react";
 
 function Navbar() {
   return (
     <>
-      <div className="grid grid-cols-5">
-        <div className="col-span-1 flex place-content-center" id="hero-navbar">
-          <h1>Overview</h1>
-        </div>
-        <div id="container-navbar" className="col-span-4">
-          <div className="grid grid-cols-9">
+      <div className="w-full h-full">
+        <div id="container-navbar">
+          <div className="flex justify-between">
             <button
-              className="col-span-2 cursor-pointer flex gap-2 w-full h-full"
+              className="cursor-pointer flex gap-2 w-full h-full col-span-1"
               id="button-profil"
             >
               <UserCircle />
-              <h1>Dafi</h1>
+              <h1>Hai, selamat datang Dafi</h1>
             </button>
-            <ul className="flex col-span-7 justify-evenly">
-              <li>profil</li>
-              <li>about me</li>
-              <li>services</li>
-              <li>contact me</li>
-            </ul>
+            <div className="col-span-1">
+              <button className="cursor-pointer">
+                <Bell />
+              </button>
+            </div>
           </div>
         </div>
       </div>
